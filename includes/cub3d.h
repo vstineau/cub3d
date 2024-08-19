@@ -19,6 +19,28 @@
 # define WIN_WIDTH 960
 # define WIN_HEIGHT 540
 
+typedef enum s_tile
+{
+	FLOOR,
+	WALL,
+	DOOR
+}				t_tile;
+
+typedef struct	s_player
+{
+	int	x;
+	int	y;
+	int	z;
+}			t_player;
+
+typedef struct s_point
+{
+	t_tile		tile;
+	int			x;
+	int			y;
+	int			z;
+}				t_point;
+
 typedef struct s_data
 {
 	void		*img;
@@ -39,8 +61,9 @@ typedef struct s_vars
 	void			*mlx;
 	void			*win;
 	float			err;
-	int				**map;
-	t_data			data;
+	t_player	player;
+	t_point		**map;
+	t_data		data;
 	t_fn			f[0xFFFF];
 }				t_vars;
 
