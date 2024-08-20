@@ -23,14 +23,31 @@ typedef enum s_tile
 {
 	FLOOR,
 	WALL,
-	DOOR
-}				t_tile;
+	DOOR,
+	VOID
+}	t_tile;
 
-typedef struct	s_player
+//enum to define player's spawning orientation
+typedef enum s_dir
 {
-	int	x;
-	int	y;
-	int	z;
+	NORTH,
+	SOUTH,
+	EAST,
+	WEST
+}	t_dir;
+
+// y and x is the player position
+// dir_x and dir_y is the direction of the player
+// plane_x and plane_y is the camera plane of the player
+typedef struct    s_player
+{
+    int		x;
+    int		y;
+    int		dir_x;
+    int		dir_y;
+    int		plane_x;
+    int		plane_y;
+	t_dir	dir;
 }			t_player;
 
 typedef struct s_point
@@ -38,7 +55,6 @@ typedef struct s_point
 	t_tile		tile;
 	int			x;
 	int			y;
-	int			z;
 }				t_point;
 
 typedef struct s_data
@@ -58,15 +74,27 @@ typedef void			(*t_fn)(t_vars *vars);
 
 typedef struct s_vars
 {
-	void			*mlx;
-	void			*win;
-	float			err;
+	void		*mlx;
+	void		*win;
+	float		err;
 	t_player	player;
 	t_point		**map;
 	t_data		data;
-	t_fn			f[0xFFFF];
+	t_fn		f[0xFFFF];
 }				t_vars;
 
-char    *read_map(char *argv);
+//struct used for map parsing
+typedef struct s_parse
+{
+	char 	*map;
+	char	*north;
+	char	*south;
+	char	*west;
+	char	*east;
+	int		floor;
+	int		ceiling;
+}			t_parse;
+
+int	read_map(char *argv, t_parse *parse);
 
 #endif

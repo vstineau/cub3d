@@ -12,35 +12,37 @@ char	*join_free(char *line, char *buffer)
 	return (temp);
 }
 
-char    *read_map(char *argv)
+int read_map(char *argv, t_parse *parse)
 {
     const int		fd = open(argv, O_RDONLY);
     int				rd;
-    char			*map;
     char			buffer[4097];
 
     rd = 4096;
-    map = ft_calloc(1, 1);
-    if (!map)
-        return(close(fd), NULL);
+    parse->map = ft_calloc(1, 1);
+    if (!parse->map)
+        return(close(fd), 1);
     while (rd >= 4096)
     {
         rd = read(fd, buffer, 4096);
         if (rd == -1)
         {
-            free(map);
-            return (close(fd), NULL);
+            free(parse->map);
+            return (close(fd), 1);
         }
         buffer[rd] = '\0';
-        map = join_free(map, buffer);
+        parse->map = join_free(parse->map, buffer);
     }
-    return (close(fd), map);
+    return (close(fd), 0);
 }
 int main(int ac, char **av)
 {
+    t_parse parse;
+
 	if(ac != 2)
 		return (1);
-	char *map = read_map(av[1]);
-	printf("%s", map);
+	read_map(av[1], &parse);
+	printf("%s", parse.map);
+    free(parse.map);
 	return (0);
 }
