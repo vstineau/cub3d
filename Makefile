@@ -4,10 +4,13 @@ CFLAGS 		= -Wall -Wextra -Werror -MMD -g3 -O2 -fno-builtin -gdwarf-4
 SRC_PATH 	= src/
 OBJ_PATH 	= .obj/
 SRC_NAME 	= main.c \
-INCLUDES 	= -I. -ILIBFT -IMINILIBX
-OBJ_NAME 	= $(SRC_NAME:.c=.o) \
+						exec/image.c \
+						exec/player_motions.c \
+						exec/window_action.c 
+OBJ_NAME 	= $(SRC_NAME:.c=.o) 
 MINILIBX	= .minilibx-linux/libmlx.a
 LIBFT 		= .LIBFT/libft.a
+INCLUDES 	= -I. -ILIBFT -IMINILIBX)
 OBJ 			= $(addprefix $(OBJ_PATH), $(OBJ_NAME))
 SRC 			= $(addprefix $(SRC_PATH), $(SRC_NAME))
 
@@ -29,7 +32,7 @@ display_ascii_art :
 all: $(NAME)
 
 $(NAME): $(OBJ) $(LIBFT) $(MINILIBX)
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(MINILIBX) -lm -lX11 -lXext
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(MINILIBX) -lm -lX11 -lXext -lft -L.LIBFT
 	@$(MAKE) -s display_ascii_art
 
 $(MINILIBX):

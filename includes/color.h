@@ -6,12 +6,24 @@
 /*   By: vstineau <vstineau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 14:53:01 by vstineau          #+#    #+#             */
-/*   Updated: 2024/08/09 14:53:05 by vstineau         ###   ########.fr       */
+/*   Updated: 2024/08/20 13:19:33 by vstineau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef COLOR_H
 # define COLOR_H
+
+//------------------------------
+//PIXEL COLOR
+
+# define P_WHITE 0xFFFFFFFF
+# define P_RED 0x00FF0000
+# define P_CYAN 0x0000FFFF
+# define P_MAGENTA 0x00FF00FF
+# define P_YELLOW 0x00FFFF00
+# define P_GREEN 0x0000FF00
+# define P_BLUE 0x000000FF
+//------------------------------
 
 //------------------------------
 //REGULAR COLOR
