@@ -1,15 +1,15 @@
 NAME 			= cub3d
 CC 				= cc #clang
+LIBFT 		= .LIBFT/libft.a
+INCLUDES 	= -I -ILIBFT -IMINILIBX
+MINILIBX	= .minilibx-linux/libmlx.a
 CFLAGS 		= -Wall -Wextra -Werror -MMD -g3 -O2 -fno-builtin -gdwarf-4
 SRC_PATH 	= src/
 OBJ_PATH 	= .obj/
-SRC_NAME 	= main.c \
-INCLUDES 	= -I. -ILIBFT -IMINILIBX
-OBJ_NAME 	= $(SRC_NAME:.c=.o) \
-MINILIBX	= .minilibx-linux/libmlx.a
-LIBFT 		= .LIBFT/libft.a
-OBJ 			= $(addprefix $(OBJ_PATH), $(OBJ_NAME))
-SRC 			= $(addprefix $(SRC_PATH), $(SRC_NAME))
+SRC_NAME 	= parsing/main.c
+OBJ_NAME 	= $(SRC_NAME:.c=.o)
+OBJ 		= $(addprefix $(OBJ_PATH), $(OBJ_NAME))
+SRC 		= $(addprefix $(SRC_PATH), $(SRC_NAME))
 
 .DEFAULT_GOAL := all
 
@@ -29,7 +29,7 @@ display_ascii_art :
 all: $(NAME)
 
 $(NAME): $(OBJ) $(LIBFT) $(MINILIBX)
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(MINILIBX) -lm -lX11 -lXext
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(MINILIBX) -lm -lX11 -lXext -lft -L.LIBFT
 	@$(MAKE) -s display_ascii_art
 
 $(MINILIBX):

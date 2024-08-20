@@ -67,6 +67,6 @@ typedef struct s_vars
 	t_fn			f[0xFFFF];
 }				t_vars;
 
-
+char    *read_map(char *argv);
 
 #endif
