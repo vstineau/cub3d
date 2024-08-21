@@ -38,26 +38,41 @@ typedef enum s_dir
     WEST
 }    t_dir;
 
+typedef struct s_vect
+{
+	float x;
+	float y;
+}				t_vect;
+
 // y and x is the player position
 // dir_x and dir_y is the direction of the player
 // plane_x and plane_y is the camera plane of the player
 typedef struct	s_player
 {
-	float	x;
-	float	y;
-	float	dir_x;
-	float	dir_y;
-	float	plane_x;
-	float	plane_y;
-	t_dir dir;
+	t_vect		pos;
+	t_vect		dir;
+	t_vect		plane;
+	t_vect		ray_dir;
+	t_vect		side_dist;
+	t_vect		delta_dist;
+	t_vect		step;
+	float			perpwalldist;
+	int				line_heigt;
+	int				draw_start;
+	int				draw_end;
+	int				hit;
+	int				side;
+	int				camera_x;
+	int				time;
+	int				old_time;
+	t_dir			di;
 }			t_player;
 
 typedef struct s_point
 {
 	t_tile		tile;
-	int			x;
-	int			y;
-	t_dir		dir;
+	int				x;
+	int				y;
 }				t_point;
 
 typedef struct s_data
@@ -104,5 +119,7 @@ void	start_image(t_vars *v);
 void	color_ceiling(t_vars *v, int color);
 void	color_floor(t_vars *v, int color);
 void	clear_image(t_vars *v, int color);
+
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 
 #endif
