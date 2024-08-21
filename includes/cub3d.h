@@ -41,13 +41,13 @@ typedef enum s_dir
 // plane_x and plane_y is the camera plane of the player
 typedef struct    s_player
 {
-    int		x;
-    int		y;
-    int		dir_x;
-    int		dir_y;
-    int		plane_x;
-    int		plane_y;
-	t_dir	dir;
+    float		x;
+    float		y;
+    float		dir_x;
+    float		dir_y;
+    float		plane_x;
+    float		plane_y;
+	t_dir		dir;
 }			t_player;
 
 typedef struct s_point
@@ -55,6 +55,7 @@ typedef struct s_point
 	t_tile		tile;
 	int			x;
 	int			y;
+	t_dir		dir;
 }				t_point;
 
 typedef struct s_data
@@ -86,14 +87,14 @@ typedef struct s_vars
 //struct used for map parsing
 typedef struct s_parse
 {
-	char 	*map;
-	char	*north;
-	char	*south;
-	char	*west;
-	char	*east;
-	int		floor;
-	int		ceiling;
-}			t_parse;
+	char 				*map;
+	char				*north;
+	char				*south;
+	char				*west;
+	char				*east;
+	unsigned int		f_color;
+	unsigned int		c_color;
+}						t_parse;
 
 int	read_map(char *argv, t_parse *parse);
 

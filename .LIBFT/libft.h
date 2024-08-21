@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vstineau <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: wnocchi <wnocchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 12:24:54 by vstineau          #+#    #+#             */
-/*   Updated: 2024/03/17 01:51:09 by vstineau         ###   ########.fr       */
+/*   Updated: 2024/08/20 14:57:27 by wnocchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #ifndef LIBFT_H
 # define LIBFT_H
 
@@ -56,6 +57,8 @@ int		ft_atoi_base(char *str, char *base);
 void	*ft_calloc(size_t nmemb, size_t size);
 void	*ft_realloc(void *old, size_t old_length, size_t new_length);
 char	*ft_strdup(const char *s);
+char	*ft_strndup(const char *s1, size_t n);
+char	*ft_strndup(const char *s1, size_t n);
 char	*ft_substr(char const *s, unsigned int strat, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strtrim(char const *s1, char const *set);
