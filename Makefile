@@ -6,6 +6,7 @@ OBJ_PATH 	= .obj/
 SRC_NAME 	= main.c \
 						exec/image.c \
 						exec/player_motions.c \
+						exec/parsing_liddle.c \
 						exec/raycasting.c \
 						exec/window_action.c 
 OBJ_NAME 	= $(SRC_NAME:.c=.o) 

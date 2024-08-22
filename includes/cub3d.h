@@ -57,7 +57,12 @@ typedef struct	s_player
 	t_vect		delta_dist;
 	t_vect		step;
 	float			perpwalldist;
-	int				line_heigt;
+	float			frame_time;
+	float			movespeed;
+	float			rotspeed;
+	float			old_dir_x;
+	float			old_plane_x;
+	int				line_height;
 	int				draw_start;
 	int				draw_end;
 	int				hit;
@@ -120,6 +125,12 @@ void	color_ceiling(t_vars *v, int color);
 void	color_floor(t_vars *v, int color);
 void	clear_image(t_vars *v, int color);
 
+/*----------------RAYCASTING-----------------------------------*/
+
+void	raycasting(t_vars *v);
+
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+void	parsing_liddle(char *argv, t_vars *v);
+char    *read_map(char *argv);
 
 #endif
