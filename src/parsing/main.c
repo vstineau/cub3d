@@ -87,13 +87,12 @@ int	ft_isspace(int c)
 }
 
 //clear string to isolate cardinal point path
-char    *isolate_element(char *line, char * c_point)
+char    *isolate_element(char *line, char * key)
 {
-    (void)c_point;
     int     i;
 
     i = 0;
-    line = ft_strnstr(line, c_point, ft_strlen(line));
+    line = ft_strnstr(line, key, ft_strlen(line));
     while(line[i] && !ft_isspace(line[i]))
         i++;
     while(line[i] && ft_isspace(line[i]))
@@ -103,19 +102,68 @@ char    *isolate_element(char *line, char * c_point)
     return(ft_substr(line, i, ft_strlen(line) - i));
 }
 
-//browse map to find cardinal points
-char *find_in_map(char **map, char *c_point)
+void    ft_err(char *arg, char *err)
 {
-    int y;
+    ft_putstr_fd("Error: ", 2);
+    if(arg)
+        ft_putstr_fd(arg, 2);
+    ft_putendl_fd(err, 2);
+}
 
-    y = 0;
-    while(map[y])
+//skip white space and cmp
+int skip_cmp(char *line, char *cmp)
+{
+    int i;
+
+    i = 0;
+    while(line[i] && ft_isspace(line[i]))
+        i++;
+    if(line[i] == '\0')
+        return (0);
+    return(ft_strncmp(line + i, cmp, ft_strlen(cmp)));
+}
+
+// check if map config is valid
+int check_config_error(char **map)
+{
+    int i;
+
+    i = 0;
+    while(map[i])
     {
-        if(map[y] && ft_strnstr(map[y], c_point, ft_strlen(map[y])))
-            return(isolate_element(map[y], c_point));
-        y++;
+        if(map[i] && skip_cmp(map[i], "NO") && skip_cmp(map[i], "SO")
+            && skip_cmp(map[i], "WE") && skip_cmp(map[i], "EA")
+                && skip_cmp(map[i], "F") && skip_cmp(map[i], "C")
+                    && skip_cmp(map[i], "1"))
+                        return (1);
+        i++;
     }
-    return (NULL);
+    return (0);
+}
+
+//browse map to find key
+char *find_in_map(char **map, char *key)
+{
+    int i;
+    char *res;
+    bool found;
+
+    res = NULL;
+    found = false;
+    i = 0;
+    while(map[i])
+    {
+        if(map[i] && ft_strnstr(map[i], key, ft_strlen(map[i])))
+        {
+            if(found == true)
+                return(free(res),
+                    ft_err(key, " found multiple times"), NULL);
+            found = true;
+            res = isolate_element(map[i], key);
+        }
+        i++;
+    }
+    return (res);
 }
 
 int tab_len(char **tab)
@@ -251,6 +299,17 @@ void	atribute_color(char **c, char **f, t_parse *parse)
 	free_tab(f);
 }
 
+void print_map(char **map)
+{
+    ft_printf("-----------------[Raw Map]------------------\n");
+    for(int i = 0; map[i]; i++)
+    {
+        ft_printf("%d-",i);
+        ft_putendl_fd(map[i], 1);
+    }
+    ft_printf("-----------------[Raw Map]------------------\n");
+}
+
 // get the texture path of each wall sides
 int find_map_config(t_parse *parse)
 {
@@ -262,6 +321,9 @@ int find_map_config(t_parse *parse)
     i = 0;
     if(!split)
         return (1);
+    if(check_config_error((char **)split))
+        return (ft_err(NULL, "invalid map"), 1);
+    print_map((char **)split);
     parse->north = find_in_map((char **)split, "NO");
     parse->south = find_in_map((char **)split, "SO");
     parse->east = find_in_map((char **)split, "EA");

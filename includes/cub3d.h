@@ -55,7 +55,6 @@ typedef struct s_point
 	t_tile		tile;
 	int			x;
 	int			y;
-	t_dir		dir;
 }				t_point;
 
 typedef struct s_data
