@@ -232,7 +232,7 @@ bool     check_format(char **rgb)
     {
         if(overflow(rgb[i]))
 		{
-			ft_putendl_fd("the RGB code range is 0 to 255", 2);
+			ft_err(rgb[i], ": invalid number");
             return (true);
 		}
     }
