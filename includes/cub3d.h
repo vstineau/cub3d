@@ -17,9 +17,12 @@
 # include "../.LIBFT/libft.h"
 # include "color.h"
 
+//SIZE OF THE SCREEN
 # define WIN_WIDTH 960
 # define WIN_HEIGHT 540
-
+//TEXTURE FORMAT
+# define T_WIDTH 64
+# define T_HEIGHT 64
 
 typedef enum s_tile
 {
@@ -40,8 +43,8 @@ typedef enum s_dir
 
 typedef struct s_vect
 {
-	float x;
-	float y;
+	double	x;
+	double	y;
 }				t_vect;
 
 // y and x is the player position
@@ -56,20 +59,18 @@ typedef struct	s_player
 	t_vect		side_dist;
 	t_vect		delta_dist;
 	t_vect		step;
-	float			perpwalldist;
-	float			frame_time;
-	float			movespeed;
-	float			rotspeed;
-	float			old_dir_x;
-	float			old_plane_x;
+	double			perpwalldist;
+	double			frame_time;
+	double			movespeed;
+	double			rotspeed;
+	double			old_dir_x;
+	double			old_plane_x;
+	double			camera_x;
 	int				line_height;
 	int				draw_start;
 	int				draw_end;
 	int				hit;
 	int				side;
-	int				camera_x;
-	int				time;
-	int				old_time;
 	t_dir			di;
 }			t_player;
 
@@ -99,6 +100,10 @@ typedef struct s_vars
 {
 	void			*mlx;
 	void			*win;
+	void			*east;
+	void			*west;
+	void			*south;
+	void			*north;
 	float			err;
 	t_player	player;
 	t_point		**map;
@@ -128,6 +133,10 @@ void	clear_image(t_vars *v, int color);
 /*----------------RAYCASTING-----------------------------------*/
 
 void	raycasting(t_vars *v);
+
+/*----------------RAYCASTING-----------------------------------*/
+
+int    load_sprites(t_vars *v);
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void	parsing_liddle(char *argv, t_vars *v);
