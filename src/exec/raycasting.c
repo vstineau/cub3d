@@ -36,7 +36,6 @@ void	raycasting(t_vars *v)
 		mapy = (int)v->player.pos.y;
 		v->player.delta_dist.x = fabs(1 / v->player.ray_dir.x);
 		v->player.delta_dist.y = fabs(1 / v->player.ray_dir.y);
-		printf("%d ", (int)v->player.delta_dist.x);
 		v->player.hit = 0;
 		if (v->player.ray_dir.x < 0)
 		{
@@ -102,5 +101,5 @@ void	raycasting(t_vars *v)
 			color = P_BLUE;
 		vert_line(x++, v->player.draw_start, v, color);
 	}
-	printf("\n");
+//	printf("\n");
 }

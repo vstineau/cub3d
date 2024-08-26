@@ -15,8 +15,8 @@ int	main(int argc, char **argv)
 	v.player.pos.y = 5;
 	v.player.dir.x = 0.0;
 	v.player.dir.y = -1.0;
-	v.player.plane.x = 0.66;
-	v.player.plane.y = 0.66;
+	v.player.plane.x = 0.85;
+	v.player.plane.y = 0.0;
 	parsing_liddle(argv[1], &v);
 	for (int j =0; j < 24 ; j++)
 	{
@@ -32,7 +32,7 @@ int	main(int argc, char **argv)
 	raycasting(&v);
 	mlx_put_image_to_window(v.mlx, v.win, v.data.img, 0, 0);
 	mlx_hook(v.win, DestroyNotify, 0, close_windows, &v);
-	mlx_hook(v.win, KeyRelease, KeyRelease, window_action, &v);
+	mlx_hook(v.win, KeyPress, KeyPressMask, window_action, &v);
 	mlx_loop(v.mlx);
 	mlx_destroy_image(v.mlx, v.data.img);
 	mlx_destroy_window(v.mlx, v.win);

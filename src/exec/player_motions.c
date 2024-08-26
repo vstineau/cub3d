@@ -28,7 +28,7 @@ void	move_backward(t_vars *v)
 	}
 }
 
-void	move_left(t_vars *v)
+void	rotate_left(t_vars *v)
 {
 	v->player.old_dir_x = v->player.dir.x;
 	v->player.dir.x = v->player.dir.x * cos(-v->player.rotspeed)
@@ -42,7 +42,7 @@ void	move_left(t_vars *v)
 		+ v->player.plane.y * cos(-v->player.rotspeed);
 }
 
-void	move_right(t_vars *v)
+void	rotate_right(t_vars *v)
 {
 	v->player.old_dir_x = v->player.dir.x;
 	v->player.dir.x = v->player.dir.x * cos(v->player.rotspeed)

@@ -24,6 +24,22 @@
 # define T_WIDTH 64
 # define T_HEIGHT 64
 
+
+//typedef struct	s_img
+//{
+//	XImage			*image;
+//	Pixmap			pix;
+//	GC				gc;
+//	int				size_line;
+//	int				bpp;
+//	int				width;
+//	int				height;
+//	int				type;
+//	int				format;
+//	char			*data;
+//	XShmSegmentInfo	shm;
+//}		
+
 typedef enum s_tile
 {
 	FLOOR,
@@ -115,6 +131,8 @@ typedef struct s_vars
 
 void	move_forward(t_vars *v);
 void	move_backward(t_vars *v);
+void	rotate_left(t_vars *v);
+void	rotate_right(t_vars *v);
 void	move_left(t_vars *v);
 void	move_right(t_vars *v);
 
