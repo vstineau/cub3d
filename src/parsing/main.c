@@ -86,20 +86,30 @@ int	ft_isspace(int c)
 	return (0);
 }
 
-//clear string to isolate cardinal point path
+//skip white space before and after the argument and check errors
 char    *isolate_element(char *line, char * key)
 {
-    int     i;
+    int	i;
+	int	end;
+	int	check;
 
     i = 0;
     line = ft_strnstr(line, key, ft_strlen(line));
     while(line[i] && !ft_isspace(line[i]))
-        i++;
+		i++;
     while(line[i] && ft_isspace(line[i]))
-        i++;
-    if(line[i] == '\0')
-        return (NULL);
-    return(ft_substr(line, i, ft_strlen(line) - i));
+		i++;
+	if(line[i] == '\0')
+		return (NULL);
+	end = i;
+	while(line[end] && !ft_isspace(line[end]))
+		end++;
+	check = end;
+	while(line[check] && ft_isspace(line[check]))
+		check++;
+	if(line[check] != 0)
+		return (NULL);
+    return(ft_substr(line, i, end - i));
 }
 
 void    ft_err(char *arg, char *err)
@@ -202,11 +212,6 @@ bool	overflow(char *s)
 	nbr = 0;
 	while ((s[i] >= 9 && s[i] <= 13) || s[i] == ' ')
 		i++;
-	// if (s[i] == '-')
-	// {
-	// 	sign *= -1;
-	// 	i++;
-	// }
 	if (only_digit_string(s + i))
 		return (true);
 	while (s[i] >= '0' && s[i] <= '9')
@@ -232,7 +237,7 @@ bool     check_format(char **rgb)
     {
         if(overflow(rgb[i]))
 		{
-			ft_err(rgb[i], ": invalid number");
+			ft_err(rgb[i], ": invalid number, the range is between 0 to 255");
             return (true);
 		}
     }
@@ -352,10 +357,10 @@ int main(int ac, char **av)
 	read_map(av[1], &parse);
     if(find_map_config(&parse))
 		return (free_parsing(&parse), 1);
-    printf("%s\n", parse.north);
-    printf("%s\n", parse.south);
-    printf("%s\n", parse.east);
-    printf("%s\n", parse.west);
+    printf("'%s'\n", parse.north);
+    printf("'%s'\n", parse.south);
+    printf("'%s'\n", parse.east);
+    printf("'%s'\n", parse.west);
 	printf("f_color = %d\n", parse.f_color);
 	printf("c_color = %d\n", parse.c_color);
     free_parsing(&parse);
