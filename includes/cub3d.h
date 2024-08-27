@@ -57,11 +57,33 @@ typedef enum s_dir
     WEST
 }    t_dir;
 
+typedef struct s_vecti
+{
+	int	x;
+	int	y;
+}				t_vecti;
+
 typedef struct s_vect
 {
 	double	x;
 	double	y;
 }				t_vect;
+
+typedef struct s_text
+{
+	int			x;
+	int			y;
+	double	wallx;
+	double	step;
+	double	pos;
+	t_img		*win;
+	t_img		*east;
+	t_img		*west;
+	t_img		*south;
+	t_img		*north;
+	t_img		*canva;
+
+}				t_text;
 
 // y and x is the player position
 // dir_x and dir_y is the direction of the player
@@ -95,6 +117,7 @@ typedef struct s_point
 	t_tile		tile;
 	int				x;
 	int				y;
+	t_dir			di;
 }				t_point;
 
 typedef struct s_data
@@ -116,13 +139,11 @@ typedef struct s_vars
 {
 	void			*mlx;
 	void			*win;
-	void			*east;
-	void			*west;
-	void			*south;
-	void			*north;
 	float			err;
 	t_player	player;
+	t_text		text;
 	t_point		**map;
+	int			buffer[WIN_HEIGHT][WIN_WIDTH];
 	t_data		data;
 	t_fn			f[0xFFFF];
 }				t_vars;

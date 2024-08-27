@@ -1,6 +1,6 @@
 NAME 			= cub3d
 CC 				= cc #clang
-CFLAGS 		= -Wall -Wextra -Werror -MMD -g3 -O2 -fno-builtin -gdwarf-4
+CFLAGS 		= -Wall -Wextra -Werror -MMD -g3 -fno-builtin
 SRC_PATH 	= src/
 OBJ_PATH 	= .obj/
 SRC_NAME 	= main.c \

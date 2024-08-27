@@ -24,8 +24,8 @@ int	window_action(int keycode, t_vars *vars)
 		return (0);
 	else
 		vars->f[keycode](vars);
-	color_ceiling(vars, P_BLACK);
-	color_floor(vars, P_BLACK);
+	color_ceiling(vars, P_WHITE);
+	color_floor(vars, P_WHITE);
 	raycasting(vars);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->data.img, 0, 0);
 	return (0);
