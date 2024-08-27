@@ -41,21 +41,6 @@ int read_map(char *argv, t_parse *parse)
     return (close(fd), 0);
 }
 
-//free pre_parsing struct
-void    free_parsing(t_parse *parse)
-{
-    if(parse->east)
-        free(parse->east);
-    if(parse->north)
-        free(parse->north);
-    if(parse->south)
-        free(parse->south);
-    if(parse->west)
-        free(parse->west);
-    if(parse->map)
-        free(parse->map);
-}
-
 void	free_tab(char **tab)
 {
 	int	i;
@@ -76,6 +61,24 @@ void	free_tab(char **tab)
 		tab = NULL;
 	}
 }
+
+//free pre_parsing struct
+void    free_parsing(t_parse *parse)
+{
+	if(parse->east)
+		free(parse->east);
+	if(parse->north)
+		free(parse->north);
+	if(parse->south)
+		free(parse->south);
+	if(parse->west)
+		free(parse->west);
+	if(parse->map)
+		free(parse->map);
+	if(parse->f_map)
+		free_tab(parse->f_map);
+}
+
 
 //do i really need to explain what this does?
 int	ft_isspace(int c)
@@ -277,9 +280,9 @@ char    **check_color(char **split, char *ceiling_or_floor)
     free((char *)line);
     if(!rgb)
         return (free((char *)line), NULL);
-    for(int i = 0; rgb[i]; i++)
-        printf("%s ", rgb[i]);
-    printf("\n");
+    // for(int i = 0; rgb[i]; i++)
+    //     printf("%s ", rgb[i]);
+    // printf("\n");
     if(check_format(rgb))
         return (free_tab((char **)rgb), NULL);
     return ((char **)rgb);
@@ -309,10 +312,41 @@ void print_map(char **map)
     ft_printf("-----------------[Raw Map]------------------\n");
     for(int i = 0; map[i]; i++)
     {
-        ft_printf("%d-",i);
-        ft_putendl_fd(map[i], 1);
+        ft_printf("%d- %s",i , map[i]);
+        // ft_putendl_fd(map[i], 1);
     }
-    ft_printf("-----------------[Raw Map]------------------\n");
+    ft_printf("\n-----------------[Raw Map]------------------\n");
+}
+
+int	isolate_map(char *av, t_parse *parse)
+{
+	const int	fd = open(av, O_RDONLY);
+	int			count;
+	int			i;
+	char		*line;
+
+	i = 0;
+	count = 1;
+	while (parse->map[i])
+	{
+		if (parse->map[i] == '\n')
+			count++;
+		i++;
+	}
+	parse->f_map = ft_calloc(count + 1, sizeof(char *));
+	if (!parse->f_map)
+		return (1);
+	i = 0;
+	line = get_next_line(fd);
+	if (!line)
+		return (close(fd), 1);
+	parse->f_map[i++] = line;
+	while (line)
+	{
+		line = get_next_line(fd);
+		parse->f_map[i++] = line;
+	}
+	return (0);
 }
 
 // get the texture path of each wall sides
@@ -328,7 +362,7 @@ int find_map_config(t_parse *parse)
         return (1);
     if(check_config_error((char **)split))
         return (ft_err(NULL, "invalid map"), 1);
-    print_map((char **)split);
+    // print_map((char **)split);
     parse->north = find_in_map((char **)split, "NO");
     parse->south = find_in_map((char **)split, "SO");
     parse->east = find_in_map((char **)split, "EA");
@@ -357,12 +391,16 @@ int main(int ac, char **av)
 	read_map(av[1], &parse);
     if(find_map_config(&parse))
 		return (free_parsing(&parse), 1);
-    printf("'%s'\n", parse.north);
-    printf("'%s'\n", parse.south);
-    printf("'%s'\n", parse.east);
-    printf("'%s'\n", parse.west);
-	printf("f_color = %d\n", parse.f_color);
-	printf("c_color = %d\n", parse.c_color);
+	if(isolate_map(av[1], &parse))
+		return (free_parsing(&parse), 1);
+    ft_printf("'%s'\n", parse.map);
+    print_map(parse.f_map);
+	// printf("'%s'\n", parse.north);
+	// printf("'%s'\n", parse.south);
+	// printf("'%s'\n", parse.east);
+	// printf("'%s'\n", parse.west);
+	// printf("f_color = %d\n", parse.f_color);
+	// printf("c_color = %d\n", parse.c_color);
     free_parsing(&parse);
 	return (0);
 }

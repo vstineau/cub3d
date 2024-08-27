@@ -55,6 +55,7 @@ typedef struct s_point
 	t_tile		tile;
 	int			x;
 	int			y;
+	t_dir		di;
 }				t_point;
 
 typedef struct s_data
@@ -87,6 +88,7 @@ typedef struct s_vars
 typedef struct s_parse
 {
 	char 				*map;
+	char				**f_map;
 	char				*north;
 	char				*south;
 	char				*west;
