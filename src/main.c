@@ -1,5 +1,6 @@
 #include "../includes/cub3d.h"
 #include <X11/X.h>
+#include <stdint.h>
 
 int	main(int argc, char **argv)
 {
@@ -9,6 +10,7 @@ int	main(int argc, char **argv)
 
 	v = (t_vars){0};
 	v.player = (t_player){0};
+	v.text = (t_text){0};
 	v.player.movespeed = 0.2;
 	v.player.rotspeed = 0.09;
 	v.player.pos.x = 5;

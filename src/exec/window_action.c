@@ -4,7 +4,7 @@
 
 static void	f_init(t_vars *vars)
 {
-	ft_memset(vars->f, 0, 0xFFF);
+	ft_memset(vars->f, 0, 0xFFFF);
 	vars->f[XK_Escape] = (void *)close_windows;
 	vars->f[XK_Left] = (void *)rotate_left;
 	vars->f[XK_a] = (void *)move_left;
@@ -20,7 +20,7 @@ int	window_action(int keycode, t_vars *vars)
 {
 	f_init(vars);
 	clear_image(vars, 0);
-	if (keycode >= 0xFFF && !vars->f[keycode])
+	if (keycode >= 0xFFFF || !vars->f[keycode])
 		return (0);
 	else
 		vars->f[keycode](vars);

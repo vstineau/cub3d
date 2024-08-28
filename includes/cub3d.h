@@ -16,13 +16,11 @@
 # include "../.minilibx-linux/mlx_int.h"
 # include "../.LIBFT/libft.h"
 # include "color.h"
+# include "inline.h"
 
 //SIZE OF THE SCREEN
 # define WIN_WIDTH 960
 # define WIN_HEIGHT 540
-//TEXTURE FORMAT
-# define T_WIDTH 64
-# define T_HEIGHT 64
 
 
 //typedef struct	s_img
@@ -38,7 +36,7 @@
 //	int				format;
 //	char			*data;
 //	XShmSegmentInfo	shm;
-//}		
+//}	
 
 typedef enum s_tile
 {
@@ -143,7 +141,6 @@ typedef struct s_vars
 	t_player	player;
 	t_text		text;
 	t_point		**map;
-	int			buffer[WIN_HEIGHT][WIN_WIDTH];
 	t_data		data;
 	t_fn			f[0xFFFF];
 }				t_vars;
