@@ -8,19 +8,19 @@ int    load_sprites(t_vars *v)
 	height = 10000;
 	width = 10000;
 	v->text.east = mlx_xpm_file_to_image(v->mlx, \
-		"textures/jungle3.xpm", &width, &height);
+		"textures/up.xpm", &width, &height);
 	if (!v->text.east)
 		return (1);
 	v->text.west = mlx_xpm_file_to_image(v->mlx, \
-		"textures/water.xpm", &width, &height);
+		"textures/up.xpm", &width, &height);
 	if (!v->text.west)
 		return (1);
 	v->text.south = mlx_xpm_file_to_image(v->mlx, \
-		"textures/goldrock.xpm", &width, &height);
+		"textures/up.xpm", &width, &height);
 	if (!v->text.south)
 		return (1);
 	v->text.north = mlx_xpm_file_to_image(v->mlx, \
-		"textures/redrock.xpm", &width, &height);
+		"textures/up.xpm", &width, &height);
 	if (!v->text.north)
 		return (1);
 	return (0);

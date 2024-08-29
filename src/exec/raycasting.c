@@ -1,46 +1,46 @@
 #include "../../includes/cub3d.h"
-#include <stdint.h>
 //https://lodev.org/cgtutor/raycasting.html
 
 static void	vert_line(int x, int draw_start, t_vars *v, t_dir d)
 {
 	int	height;
 	int	width;
-	int	color;
+	uint32_t	color;
 
 	while (draw_start < v->player.draw_end)
 	{
-		v->text.pos += v->text.step;
 		if (d == NORTH)
 		{
 			height = v->text.north->height;
-			v->text.y = (int)v->text.pos & (height - 1);
+			v->text.y = (int)v->text.pos % height;
 			width = v->text.north->width;
-			color = ((int *)v->text.north->data)[v->text.north->width * v->text.y + v->text.x];
+			color = ((int *)v->text.north->data)[width * v->text.y + v->text.x];
 		}
-		if (d == SOUTH)
+		else if (d == SOUTH)
 		{
 			height = v->text.south->height;
-			v->text.y = (int)v->text.pos & (height - 1);
+			v->text.y = (int)v->text.pos % height;
 			width = v->text.south->width;
-			color = ((int *)v->text.south->data)[v->text.south->width * v->text.y + v->text.x];
+			color = ((int *)v->text.south->data)[width * v->text.y + v->text.x];
 		}
-		if (d == EAST)
+		else if (d == EAST)
 		{
 			height = v->text.east->height;
-			v->text.y = (int)v->text.pos & (height - 1);
+			v->text.y = (int)v->text.pos % height;
 			width = v->text.east->width;
-			color = ((int *)v->text.east->data)[v->text.east->width * v->text.y + v->text.x];
+			color = ((int *)v->text.east->data)[width * v->text.y + v->text.x];
 		}
-		if (d == WEST)
+		else if (d == WEST)
 		{
 			height = v->text.west->height;
-			v->text.y = (int)v->text.pos & (height - 1);
+			v->text.y = (int)v->text.pos % height;
 			width = v->text.west->width;
-			color = ((int *)v->text.west->data)[v->text.west->width * v->text.y + v->text.x];
+			color = ((uint32_t *)v->text.west->data)[width * v->text.y + v->text.x];
 		}
 		my_mlx_pixel_put(&v->data, x, draw_start++, color);
+		v->text.pos += v->text.step;
 	}
+	printf("\n");
 }
 
 void	raycasting(t_vars *v)
@@ -100,15 +100,9 @@ void	raycasting(t_vars *v)
 				v->player.hit = 1;
 		}
 		if (v->player.side == 0)
-		{
 			v->player.perpwalldist = (v->player.side_dist.x - v->player.delta_dist.x);
-			v->text.wallx = (int)(v->player.pos.y + v->player.perpwalldist * v->player.ray_dir.y);
-		}
 		else
-		{
 			v->player.perpwalldist = (v->player.side_dist.y - v->player.delta_dist.y);
-			v->text.wallx =(int)(v->player.pos.x + v->player.perpwalldist * v->player.ray_dir.x);
-		}
 		v->player.line_height = (int)(WIN_HEIGHT / v->player.perpwalldist);
 		v->player.draw_start = -v->player.line_height / 2 + WIN_HEIGHT / 2;
 		if (v->player.draw_start < 0)
@@ -116,6 +110,11 @@ void	raycasting(t_vars *v)
 		v->player.draw_end = v->player.line_height / 2 + WIN_HEIGHT / 2;
 		if (v->player.draw_end >= WIN_HEIGHT)
 			v->player.draw_end = WIN_HEIGHT - 1;
+		if (v->player.side == 0)
+			v->text.wallx = v->player.pos.y + v->player.perpwalldist * v->player.ray_dir.y;
+		else
+			v->text.wallx = v->player.pos.x + v->player.perpwalldist * v->player.ray_dir.x;
+		v->text.wallx = fmod(v->text.wallx, 1);
 		if (v->player.side == 0 && v->player.ray_dir.x > 0)
 			d = WEST;
 		if (v->player.side == 0 && v->player.ray_dir.x <= 0)
@@ -126,50 +125,35 @@ void	raycasting(t_vars *v)
 			d = SOUTH;
 		if (d == NORTH)
 		{
-			v->text.x = (int)v->text.wallx * (double)v->text.north->height;
-			if (v->player.side == 0 && v->player.ray_dir.x > 0)
+			v->text.x = v->text.wallx * v->text.north->width;
+			if (v->player.ray_dir.y > 0)
 				v->text.x = v->text.north->width - v->text.x - 1;
-			if (v->player.side == 1 && v->player.ray_dir.x < 0)
-				v->text.x = v->text.north->width - v->text.x - 1;
-			if (v->text.x < 0)
-				v->text.x = 0;
 			v->text.step = 1.0 * v->text.north->height / v->player.line_height;
 		}
-		if (d == SOUTH)
+		else if (d == SOUTH)
 		{
-			v->text.x = (int)v->text.wallx * (double)v->text.south->height;
-			if (v->player.side == 0 && v->player.ray_dir.x > 0)
+			v->text.x = v->text.wallx * v->text.south->width;
+			if (v->player.ray_dir.y < 0)
 				v->text.x = v->text.south->width - v->text.x - 1;
-			if (v->player.side == 1 && v->player.ray_dir.x < 0)
-				v->text.x = v->text.south->width - v->text.x - 1;
-			if (v->text.x < 0)
-				v->text.x = 0;
 			v->text.step = 1.0 * v->text.south->height / v->player.line_height;
 		}
-		if (d == EAST)
+		else if (d == EAST)
 		{
-			v->text.x = (int)v->text.wallx * (double)v->text.east->height;
-			if (v->player.side == 0 && v->player.ray_dir.x > 0)
+			v->text.x = v->text.wallx * v->text.east->width;
+			if (v->player.ray_dir.x < 0)
 				v->text.x = v->text.east->width - v->text.x - 1;
-			if (v->player.side == 1 && v->player.ray_dir.x < 0)
-				v->text.x = v->text.east->width - v->text.x - 1;
-			if (v->text.x < 0)
-				v->text.x = 0;
 			v->text.step = 1.0 * v->text.east->height / v->player.line_height;
 		}
-		if (d == WEST)
+		else if (d == WEST)
 		{
-			v->text.x = (int)v->text.wallx * (double)v->text.west->height;
-			if (v->player.side == 0 && v->player.ray_dir.x > 0)
+			v->text.x = v->text.wallx * v->text.west->width;
+			if (v->player.ray_dir.x > 0)
 				v->text.x = v->text.west->width - v->text.x - 1;
-			if (v->player.side == 1 && v->player.ray_dir.x < 0)
-				v->text.x = v->text.west->width - v->text.x - 1;
-			if (v->text.x < 0)
-				v->text.x = 0;
 			v->text.step = 1.0 * v->text.west->height / v->player.line_height;
 		}
-		v->text.pos = (v->player.draw_start - (double)WIN_HEIGHT / 2 + (double)v->player.line_height / 2) * v->text.step;
+			if (v->text.x < 0)
+				v->text.x = 0;
+		v->text.pos = ((double)v->player.draw_start - (double)WIN_HEIGHT / 2 + (double)v->player.line_height / 2) * v->text.step;
 		vert_line(x++, v->player.draw_start, v, d);
 	}
-//	printf("\n");
 }

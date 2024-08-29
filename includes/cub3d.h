@@ -96,7 +96,6 @@ typedef struct	s_player
 	t_vect		delta_dist;
 	t_vect		step;
 	double			perpwalldist;
-	double			frame_time;
 	double			movespeed;
 	double			rotspeed;
 	double			old_dir_x;
@@ -107,7 +106,6 @@ typedef struct	s_player
 	int				draw_end;
 	int				hit;
 	int				side;
-	t_dir			di;
 }			t_player;
 
 typedef struct s_point
