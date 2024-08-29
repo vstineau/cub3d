@@ -29,6 +29,3 @@ void	move_left(t_vars *v)
 		v->player.pos.y -= v->player.plane.y * v->player.movespeed;
 	}
 }
-
-
-

@@ -167,6 +167,7 @@ void	clear_image(t_vars *v, int color);
 /*----------------RAYCASTING-----------------------------------*/
 
 void	raycasting(t_vars *v);
+void	raycast_one(t_vars *v, t_vecti map, t_dir d);
 
 /*----------------RAYCASTING-----------------------------------*/
 

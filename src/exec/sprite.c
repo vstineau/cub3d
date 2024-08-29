@@ -1,6 +1,6 @@
 #include "../../includes/cub3d.h"
 
-int    load_sprites(t_vars *v)
+int	load_sprites(t_vars *v)
 {
 	int	height;
 	int	width;

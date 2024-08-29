@@ -21,7 +21,6 @@ void	start_image(t_vars *v)
 
 void	clear_image(t_vars *v, int color)
 {
-
 	int		y;
 	int		x;
 	char	*pixel;
