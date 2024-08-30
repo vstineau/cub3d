@@ -69,8 +69,6 @@ void	raycasting(t_vars *v)
 		v->player.delta_dist.y = d_abs(1 / v->player.ray_dir.y);
 		v->player.hit = 0;
 		raycast_one(v, map, &d);
-		if (d == DOOR)
-			printf("%d\n", d);
 		vert_line(x++, v->player.draw_start, v, d);
 	}
 }

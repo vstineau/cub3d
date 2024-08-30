@@ -6,7 +6,7 @@
 /*   By: vstineau <vstineau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 14:53:01 by vstineau          #+#    #+#             */
-/*   Updated: 2024/08/23 11:16:25 by vstineau         ###   ########.fr       */
+/*   Updated: 2024/08/30 12:16:42 by vstineau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,14 +121,14 @@
 //------------------------------
 //HIGH INTENSITY BACKGROUND COLOR (plus clair)
 
-# define HIBG_BLACK "\001\033[0;100m\002"
-# define HIBG_RED "\001\033[0;101m\002"
-# define HIBG_GREEN "\001\033[0;102m\002"
-# define HIBG_YELLOW "\001\033[0;103m\002"
-# define HIBG_BLUE "\001\033[0;104m\002"
-# define HIBG_MAGENTA "\001\033[0;105m\002"
-# define HIBG_CYAN "\001\033[0;106m\002"
-# define HIBG_WHITE "\001\033[0;107m\002"
+# define BGHI_BLACK "\001\033[0;100m\002"
+# define BGHI_RED "\001\033[0;101m\002"
+# define BGHI_GREEN "\001\033[0;102m\002"
+# define BGHI_YELLOW "\001\033[0;103m\002"
+# define BGHI_BLUE "\001\033[0;104m\002"
+# define BGHI_MAGENTA "\001\033[0;105m\002"
+# define BGHI_CYAN "\001\033[0;106m\002"
+# define BGHI_WHITE "\001\033[0;107m\002"
 //------------------------------
 
 #endif
