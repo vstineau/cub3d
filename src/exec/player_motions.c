@@ -3,12 +3,16 @@
 void	move_forward(t_vars *v)
 {
 	if (v->map[(int)(v->player.pos.x + v->player.dir.x
-			* v->player.movespeed)][(int)v->player.pos.y].tile == FLOOR)
+			* v->player.movespeed)][(int)v->player.pos.y].tile == FLOOR
+			|| v->map[(int)(v->player.pos.x + v->player.dir.x
+			* v->player.movespeed)][(int)v->player.pos.y].tile == DOOR_O)
 	{
 		v->player.pos.x += v->player.dir.x * v->player.movespeed;
 	}
 	if (v->map[(int)(v->player.pos.x)][(int)(v->player.pos.y
-		+ v->player.dir.y * v->player.movespeed)].tile == FLOOR)
+		+ v->player.dir.y * v->player.movespeed)].tile == FLOOR
+		|| v->map[(int)(v->player.pos.x)][(int)(v->player.pos.y
+		+ v->player.dir.y * v->player.movespeed)].tile == DOOR_O)
 	{
 		v->player.pos.y += v->player.dir.y * v->player.movespeed;
 	}
@@ -17,12 +21,16 @@ void	move_forward(t_vars *v)
 void	move_backward(t_vars *v)
 {
 	if (v->map[(int)(v->player.pos.x - v->player.dir.x
-			* v->player.movespeed)][(int)v->player.pos.y].tile == FLOOR)
+			* v->player.movespeed)][(int)v->player.pos.y].tile == FLOOR
+			|| v->map[(int)(v->player.pos.x - v->player.dir.x
+			* v->player.movespeed)][(int)v->player.pos.y].tile == DOOR_O)
 	{
 		v->player.pos.x -= v->player.dir.x * v->player.movespeed;
 	}
 	if (v->map[(int)(v->player.pos.x)][(int)(v->player.pos.y
-		- v->player.dir.y * v->player.movespeed)].tile == FLOOR)
+		- v->player.dir.y * v->player.movespeed)].tile == FLOOR
+		|| v->map[(int)(v->player.pos.x)][(int)(v->player.pos.y
+		- v->player.dir.y * v->player.movespeed)].tile == DOOR_O)
 	{
 		v->player.pos.y -= v->player.dir.y * v->player.movespeed;
 	}

@@ -14,6 +14,7 @@ static void	f_init(t_vars *vars)
 	vars->f[XK_w] = (void *)move_forward;
 	vars->f[XK_Down] = (void *)move_backward;
 	vars->f[XK_s] = (void *)move_backward;
+	vars->f[XK_f] = (void *)handle_door;
 }
 
 int	window_action(int keycode, t_vars *vars)

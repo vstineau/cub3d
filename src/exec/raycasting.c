@@ -8,7 +8,7 @@ static int	vert_line_utils(t_vars *v, t_img *texture, int *height, int *width)
 	*height = texture->height;
 	v->text.y = (int)v->text.pos % *height;
 	*width = texture->width;
-	color = ((int *)v->text.north->data)[*width * v->text.y + v->text.x];
+	color = ((int *)texture->data)[*width * v->text.y + v->text.x];
 	return (color);
 }
 
@@ -20,7 +20,9 @@ static void	vert_line(int x, int draw_start, t_vars *v, t_dir d)
 
 	while (draw_start < v->player.draw_end)
 	{
-		if (d == NORTH)
+		if (d == DOOR)
+			color = vert_line_utils(v, v->text.door, &height, &width);
+		else if (d == NORTH)
 			color = vert_line_utils(v, v->text.north, &height, &width);
 		else if (d == SOUTH)
 			color = vert_line_utils(v, v->text.south, &height, &width);
@@ -31,7 +33,18 @@ static void	vert_line(int x, int draw_start, t_vars *v, t_dir d)
 		my_mlx_pixel_put(&v->data, x, draw_start++, color);
 		v->text.pos += v->text.step;
 	}
-	printf("\n");
+}
+
+void	init_raycasting(t_vars *v)
+{
+	v->player.movespeed = 0.2;
+	v->player.rotspeed = 0.09;
+	v->player.pos.x = 5;
+	v->player.pos.y = 5;
+	v->player.dir.x = 0.0;
+	v->player.dir.y = -1.0;
+	v->player.plane.x = 0.85;
+	v->player.plane.y = 0.0;
 }
 
 void	raycasting(t_vars *v)
@@ -55,7 +68,9 @@ void	raycasting(t_vars *v)
 		v->player.delta_dist.x = d_abs(1 / v->player.ray_dir.x);
 		v->player.delta_dist.y = d_abs(1 / v->player.ray_dir.y);
 		v->player.hit = 0;
-		raycast_one(v, map, d);
+		raycast_one(v, map, &d);
+		if (d == DOOR)
+			printf("%d\n", d);
 		vert_line(x++, v->player.draw_start, v, d);
 	}
 }

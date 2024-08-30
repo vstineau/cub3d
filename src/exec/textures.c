@@ -1,27 +1,30 @@
 #include "../../includes/cub3d.h"
 
-int	load_sprites(t_vars *v)
+int	load_textures(t_vars *v)
 {
-	int	height;
-	int	width;
+	t_vecti	dim;
 
-	height = 10000;
-	width = 10000;
+	dim.x = 10000;
+	dim.y = 10000;
 	v->text.east = mlx_xpm_file_to_image(v->mlx, \
-		"textures/up.xpm", &width, &height);
+		"textures/brown.xpm", &dim.y, &dim.x);
 	if (!v->text.east)
 		return (1);
 	v->text.west = mlx_xpm_file_to_image(v->mlx, \
-		"textures/up.xpm", &width, &height);
+		"textures/jungle2.xpm", &dim.y, &dim.x);
 	if (!v->text.west)
 		return (1);
 	v->text.south = mlx_xpm_file_to_image(v->mlx, \
-		"textures/up.xpm", &width, &height);
+		"textures/redrock.xpm", &dim.y, &dim.x);
 	if (!v->text.south)
 		return (1);
 	v->text.north = mlx_xpm_file_to_image(v->mlx, \
-		"textures/up.xpm", &width, &height);
+		"textures/water.xpm", &dim.y, &dim.x);
 	if (!v->text.north)
+		return (1);
+	v->text.door = mlx_xpm_file_to_image(v->mlx, \
+		"textures/up.xpm", &dim.y, &dim.x);
+	if (!v->text.door)
 		return (1);
 	return (0);
 }

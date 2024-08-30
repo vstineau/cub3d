@@ -10,8 +10,10 @@ static void	set_line(char **line_split, int i, t_point *map)
 	while (j < 24)
 	{
 		t = ft_atoi(line_split[j]);
-		if (t)
+		if (t == 1)
 			map[j].tile = WALL;
+		else if (t == 3)
+			map[j].tile = DOOR_C;
 		else
 			map[j].tile = FLOOR;
 		j++;

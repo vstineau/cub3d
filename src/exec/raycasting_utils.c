@@ -8,23 +8,27 @@ static void	raycast_five(t_vars *v, t_img *texture)
 	v->text.step = 1.0 * texture->height / v->player.line_height;
 }
 
-static void	raycast_four(t_vars *v, t_dir d)
+static void	raycast_four(t_vars *v, t_vecti map, t_dir *d)
 {
-	if (v->player.side == 0 && v->player.ray_dir.x > 0)
-		d = WEST;
-	if (v->player.side == 0 && v->player.ray_dir.x <= 0)
-		d = EAST;
-	if (v->player.side == 1 && v->player.ray_dir.y > 0)
-		d = NORTH;
-	if (v->player.side == 1 && v->player.ray_dir.y <= 0)
-		d = SOUTH;
-	if (d == NORTH)
+	if (v->map[map.x][map.y].tile == DOOR_C)
+		*d = DOOR;
+	else if (v->player.side == 0 && v->player.ray_dir.x > 0)
+		*d = WEST;
+	else if (v->player.side == 0 && v->player.ray_dir.x <= 0)
+		*d = EAST;
+	else if (v->player.side == 1 && v->player.ray_dir.y > 0)
+		*d = NORTH;
+	else if (v->player.side == 1 && v->player.ray_dir.y <= 0)
+		*d = SOUTH;
+	if (*d == DOOR)
+		raycast_five(v, v->text.door);
+	else if (*d == NORTH)
 		raycast_five(v, v->text.north);
-	else if (d == SOUTH)
+	else if (*d == SOUTH)
 		raycast_five(v, v->text.south);
-	else if (d == EAST)
+	else if (*d == EAST)
 		raycast_five(v, v->text.east);
-	else if (d == WEST)
+	else if (*d == WEST)
 		raycast_five(v, v->text.west);
 	if (v->text.x < 0)
 			v->text.x = 0;
@@ -33,7 +37,7 @@ static void	raycast_four(t_vars *v, t_dir d)
 			+ (double)v->player.line_height / 2) * v->text.step;
 }
 
-static void	raycast_three(t_vars *v, t_dir d)
+static void	raycast_three(t_vars *v, t_vecti map, t_dir *d)
 {
 	if (v->player.side == 0)
 		v->player.perpwalldist
@@ -55,10 +59,10 @@ static void	raycast_three(t_vars *v, t_dir d)
 		v->text.wallx = v->player.pos.x
 			+ v->player.perpwalldist * v->player.ray_dir.x;
 	v->text.wallx = fmod(v->text.wallx, 1);
-	raycast_four(v, d);
+	raycast_four(v, map, d);
 }
 
-static void	raycast_two(t_vars *v, t_vecti map, t_dir d)
+static void	raycast_two(t_vars *v, t_vecti map, t_dir *d)
 {
 	while (v->player.hit == 0)
 	{
@@ -77,13 +81,14 @@ static void	raycast_two(t_vars *v, t_vecti map, t_dir d)
 			map.y += (int)v->player.step.y;
 			v->player.side = 1;
 		}
-		if (v->map[map.x][map.y].tile == WALL)
+		if (v->map[map.x][map.y].tile == WALL
+			|| v->map[map.x][map.y].tile == DOOR_C)
 			v->player.hit = 1;
 	}
-	raycast_three(v, d);
+	raycast_three(v, map, d);
 }
 
-void	raycast_one(t_vars *v, t_vecti map, t_dir d)
+void	raycast_one(t_vars *v, t_vecti map, t_dir *d)
 {
 	if (v->player.ray_dir.x < 0)
 	{

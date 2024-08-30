@@ -40,19 +40,21 @@
 
 typedef enum s_tile
 {
+	DOOR_O,
+	DOOR_C,
 	FLOOR,
 	WALL,
-	DOOR,
 	VOID
 }				t_tile;
 
 //enum to define orientation
 typedef enum s_dir
 {
-    NORTH,
-    SOUTH,
-    EAST,
-    WEST
+	NORTH,
+	SOUTH,
+	EAST,
+	WEST,
+	DOOR
 }    t_dir;
 
 typedef struct s_vecti
@@ -79,7 +81,7 @@ typedef struct s_text
 	t_img		*west;
 	t_img		*south;
 	t_img		*north;
-	t_img		*canva;
+	t_img		*door;
 
 }				t_text;
 
@@ -135,7 +137,6 @@ typedef struct s_vars
 {
 	void			*mlx;
 	void			*win;
-	float			err;
 	t_player	player;
 	t_text		text;
 	t_point		**map;
@@ -151,30 +152,33 @@ void	rotate_left(t_vars *v);
 void	rotate_right(t_vars *v);
 void	move_left(t_vars *v);
 void	move_right(t_vars *v);
+void	handle_door(t_vars *v);
 
 /*---------------WINDOW ACTIONS------------------------------*/
 
 int	window_action(int keycode, t_vars *vars);
 int	close_windows(t_vars *vars);
 
-/*----------------IMAGE MANAGEMENT-----------------------------*/
+/*----------------DRAW ON IMAGE------------------------------*/
 
 void	start_image(t_vars *v);
 void	color_ceiling(t_vars *v, int color);
 void	color_floor(t_vars *v, int color);
 void	clear_image(t_vars *v, int color);
-
-/*----------------RAYCASTING-----------------------------------*/
-
-void	raycasting(t_vars *v);
-void	raycast_one(t_vars *v, t_vecti map, t_dir d);
-
-/*----------------RAYCASTING-----------------------------------*/
-
-int    load_sprites(t_vars *v);
-
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+
+/*----------------RAYCASTING---------------------------------*/
+
+void	init_raycasting(t_vars *v);
+void	raycasting(t_vars *v);
+void	raycast_one(t_vars *v, t_vecti map, t_dir *d);
+
+/*----------------TEXTURES-----------------------------------*/
+
+int	load_textures(t_vars *v);
+
+/*----------------TEMPORAIRE____________________________________*/
 void	parsing_liddle(char *argv, t_vars *v);
-char    *read_map(char *argv);
+char	*read_map(char *argv);
 
 #endif

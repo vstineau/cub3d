@@ -10,7 +10,7 @@ SRC_NAME 	= main.c \
 						exec/parsing_liddle.c \
 						exec/raycasting.c \
 						exec/raycasting_utils.c \
-						exec/sprite.c \
+						exec/textures.c \
 						exec/window_action.c 
 OBJ_NAME 	= $(SRC_NAME:.c=.o) 
 MINILIBX	= .minilibx-linux/libmlx.a
