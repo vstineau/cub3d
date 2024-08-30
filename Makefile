@@ -5,6 +5,7 @@ SRC_PATH 	= src/
 OBJ_PATH 	= .obj/
 SRC_NAME 	= main.c \
 						exec/image.c \
+						exec/mouse.c \
 						exec/player_motions.c \
 						exec/player_motions2.c \
 						exec/parsing_liddle.c \

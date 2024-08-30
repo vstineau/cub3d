@@ -20,6 +20,7 @@ static void	vert_line(int x, int draw_start, t_vars *v, t_dir d)
 
 	while (draw_start < v->player.draw_end)
 	{
+		v->text.pos += v->text.step;
 		if (d == DOOR)
 			color = vert_line_utils(v, v->text.door, &height, &width);
 		else if (d == NORTH)
@@ -31,7 +32,6 @@ static void	vert_line(int x, int draw_start, t_vars *v, t_dir d)
 		else if (d == WEST)
 			color = vert_line_utils(v, v->text.west, &height, &width);
 		my_mlx_pixel_put(&v->data, x, draw_start++, color);
-		v->text.pos += v->text.step;
 	}
 }
 

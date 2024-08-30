@@ -2,9 +2,8 @@
 
 static void	raycast_five(t_vars *v, t_img *texture)
 {
-	v->text.x = v->text.wallx * texture->width;
-	if (v->player.ray_dir.y > 0)
-		v->text.x = texture->width - v->text.x - 1;
+	v->text.x = (int)(v->text.wallx * (double)texture->width);
+	v->text.x = texture->width - v->text.x - 1;
 	v->text.step = 1.0 * texture->height / v->player.line_height;
 }
 

@@ -137,6 +137,7 @@ typedef struct s_vars
 {
 	void			*mlx;
 	void			*win;
+	t_vecti		mouse_pos;
 	t_player	player;
 	t_text		text;
 	t_point		**map;
@@ -158,6 +159,7 @@ void	handle_door(t_vars *v);
 
 int	window_action(int keycode, t_vars *vars);
 int	close_windows(t_vars *vars);
+void	mouse_in_the_midle(t_vars *v);
 
 /*----------------DRAW ON IMAGE------------------------------*/
 
