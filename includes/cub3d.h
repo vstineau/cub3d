@@ -137,6 +137,7 @@ typedef struct s_vars
 {
 	void			*mlx;
 	void			*win;
+	bool			end;
 	t_vecti		mouse_pos;
 	t_player	player;
 	t_text		text;
@@ -163,6 +164,7 @@ void	mouse_in_the_midle(t_vars *v);
 
 /*----------------DRAW ON IMAGE------------------------------*/
 
+void	cub_loop(t_vars *v);
 void	start_image(t_vars *v);
 void	color_ceiling(t_vars *v, int color);
 void	color_floor(t_vars *v, int color);

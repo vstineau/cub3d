@@ -1,5 +1,6 @@
 #include "../../includes/cub3d.h"
 
+//contvert all the .xpm file in struct t_img
 int	load_textures(t_vars *v)
 {
 	t_vecti	dim;

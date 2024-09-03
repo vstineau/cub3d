@@ -3,16 +3,17 @@ CC 				= cc #clang
 CFLAGS 		= -Wall -Wextra -Werror -MMD -g3 -O2 -fno-builtin
 SRC_PATH 	= src/
 OBJ_PATH 	= .obj/
-SRC_NAME 	= main.c \
-						exec/image.c \
-						exec/mouse.c \
-						exec/player_motions.c \
-						exec/player_motions2.c \
-						exec/parsing_liddle.c \
-						exec/raycasting.c \
-						exec/raycasting_utils.c \
-						exec/textures.c \
-						exec/window_action.c 
+SRC_NAME 	=	main.c \
+				exec/image.c \
+				exec/mouse.c \
+				exec/game_loop.c \
+				exec/player_motions.c \
+				exec/player_motions2.c \
+				exec/parsing_liddle.c \
+				exec/raycasting.c \
+				exec/raycasting_utils.c \
+				exec/textures.c \
+					exec/window_action.c 
 OBJ_NAME 	= $(SRC_NAME:.c=.o) 
 MINILIBX	= .minilibx-linux/libmlx.a
 LIBFT 		= .LIBFT/libft.a

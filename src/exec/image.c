@@ -19,6 +19,7 @@ void	start_image(t_vars *v)
 			&v->data.line_length, &v->data.endian);
 }
 
+//clear all the pixel in the image
 void	clear_image(t_vars *v, int color)
 {
 	int		y;
@@ -40,6 +41,7 @@ void	clear_image(t_vars *v, int color)
 	}
 }
 
+//colorized all the pixel in the top half of the window
 void	color_ceiling(t_vars *v, int color)
 {
 	int		y;
@@ -61,6 +63,7 @@ void	color_ceiling(t_vars *v, int color)
 	}
 }
 
+//colorized all the pixel in the bottom half of the window
 void	color_floor(t_vars *v, int color)
 {
 	int		y;
