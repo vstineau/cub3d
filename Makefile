@@ -6,7 +6,7 @@ MINILIBX	= .minilibx-linux/libmlx.a
 CFLAGS 		= -Wall -Wextra -Werror -MMD -g3 -O2 -fno-builtin -gdwarf-4
 SRC_PATH 	= src/
 OBJ_PATH 	= .obj/
-SRC_NAME 	= parsing/main.c
+SRC_NAME 	= parsing/parsing.c
 OBJ_NAME 	= $(SRC_NAME:.c=.o)
 OBJ 		= $(addprefix $(OBJ_PATH), $(OBJ_NAME))
 SRC 		= $(addprefix $(SRC_PATH), $(SRC_NAME))
