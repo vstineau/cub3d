@@ -1,6 +1,8 @@
 #include "parsing.h"
-#include <X11/X.h>
 #include <stdio.h>
+// #include <X11/X.h>
+// #include <cstddef>
+// #include <stdio.h>
 
 char	*join_free(char *line, char *buffer)
 {
@@ -132,7 +134,7 @@ int skip_cmp(char *line, char *cmp)
     while(line[i] && ft_isspace(line[i]))
         i++;
     if(line[i] == '\0')
-        return (0);
+        return (1);
     return(ft_strncmp(line + i, cmp, ft_strlen(cmp)));
 }
 
@@ -309,44 +311,37 @@ void	atribute_color(char **c, char **f, t_parse *parse)
 
 void print_map(char **map)
 {
-    ft_printf("-----------------[Raw Map]------------------\n");
-    for(int i = 0; map[i]; i++)
-    {
-        ft_printf("%d- %s",i , map[i]);
-        // ft_putendl_fd(map[i], 1);
-    }
-    ft_printf("\n-----------------[Raw Map]------------------\n");
+	for(int i = 0; map[i]; i++)
+		printf("%s", map[i]);
+	printf("\n");
 }
 
-int	isolate_map(char *av, t_parse *parse)
+int	all_map(char *av, t_parse *parse)
 {
 	const int	fd = open(av, O_RDONLY);
 	int			count;
 	int			i;
-	char		*line;
 
-	i = 0;
+	i = -1;
 	count = 1;
-	while (parse->map[i])
-	{
+	while (parse->map[++i])
 		if (parse->map[i] == '\n')
 			count++;
-		i++;
-	}
 	parse->f_map = ft_calloc(count + 1, sizeof(char *));
 	if (!parse->f_map)
-		return (1);
-	i = 0;
-	line = get_next_line(fd);
-	if (!line)
 		return (close(fd), 1);
-	parse->f_map[i++] = line;
-	while (line)
+	i = 0;
+	parse->f_map[i] = get_next_line(fd);
+	if(!parse->f_map[i])
+			return (close(fd), free_tab(parse->f_map), 1);
+	while (parse->f_map[i])
 	{
-		line = get_next_line(fd);
-		parse->f_map[i++] = line;
+		if(!parse->f_map[i])
+			return (close(fd), 1);
+		i++;
+		parse->f_map[i] = get_next_line(fd);
 	}
-	return (0);
+	return (close(fd), 0);
 }
 
 // get the texture path of each wall sides
@@ -361,8 +356,7 @@ int find_map_config(t_parse *parse)
     if(!split)
         return (1);
     if(check_config_error((char **)split))
-        return (ft_err(NULL, "invalid map"), 1);
-    // print_map((char **)split);
+        return (ft_err(NULL, "invalid map"), free_tab((char **)split), 1);
     parse->north = find_in_map((char **)split, "NO");
     parse->south = find_in_map((char **)split, "SO");
     parse->east = find_in_map((char **)split, "EA");
@@ -378,29 +372,100 @@ int find_map_config(t_parse *parse)
     return (0);
 }
 
+int check_map_format(char **map)
+{
+	int	x;
+	int	y;
+
+	x = 0;
+	y = 0;
+	while(map[y])
+	{
+		x = 0;
+		while(map[y][x])
+		{
+			if(map[y][x] != '1' && map[y][x] != '0' && map[y][x] != '3'
+				&& map[y][x] != 'N' && map[y][x] != 'S' && map[y][x] != 'E'
+					&& map[y][x] != 'W' && !ft_isspace(map[y][x]))
+						return (ft_err(map[y], "Bad map format"), 1);
+			x++;
+		}
+		y++;
+	}
+	return (0);
+}
+
+
+int	isolate_map(t_parse *parse)
+{
+	int		i;
+	int		j;
+	char	**newmap;
+
+	i = 0;
+	j = 0;
+	while(parse->f_map[i] && skip_cmp(parse->f_map[i], "1"))
+		i++;
+	if(parse->f_map[i] == NULL)
+		return (ft_err(NULL, "no map detected"), 1);
+	while(parse->f_map[i])
+	{
+		i++;
+		j++;
+	}
+	newmap = ft_calloc(j + 1, sizeof(char *));
+	if(!newmap)
+		return (1);
+	j = i - j;
+	i = 0;
+	while(parse->f_map[j])
+		newmap[i++] = ft_strdup(parse->f_map[j++]);
+	free_tab(parse->f_map);
+	parse->f_map = newmap;
+	return (check_map_format(parse->f_map));
+}
+int	longest_line(t_parse *parse)
+{
+	int		i;
+	size_t	longest;
+
+	i = 0;
+	longest = 0;
+	while(parse->f_map[i])
+	{
+		if(ft_strlen(parse->f_map[i]) > longest)
+			longest = ft_strlen(parse->f_map[i]);
+		i++;
+	}
+	return (longest);
+}
+
+// int	resize_map(t_parse *parse)
+// {
+
+// }
 
 
 int main(int ac, char **av)
 {
-    t_parse parse;//ft_calloc(sizeof(t_parse), 1);
+    t_parse parse;
 
-    // ft_bzero(&parse, 0);
 	ft_memset(&parse, 0, sizeof(t_parse));
 	if(ac != 2)
 		return (1);
 	read_map(av[1], &parse);
-    if(find_map_config(&parse))
+    if(find_map_config(&parse) || all_map(av[1], &parse) || isolate_map(&parse))
 		return (free_parsing(&parse), 1);
-	if(isolate_map(av[1], &parse))
-		return (free_parsing(&parse), 1);
-    ft_printf("'%s'\n", parse.map);
+    // ft_printf("'%s'\n", parse.map);
+	printf("----------------[P A R S E D]-----------------\n");
+	printf("NO = '%s'\n", parse.north);
+	printf("SO = '%s'\n", parse.south);
+	printf("EA = '%s'\n", parse.east);
+	printf("WE = '%s'\n", parse.west);
+	printf("f_color = '%d'\n", parse.f_color);
+	printf("c_color = '%d'\n", parse.c_color);
     print_map(parse.f_map);
-	// printf("'%s'\n", parse.north);
-	// printf("'%s'\n", parse.south);
-	// printf("'%s'\n", parse.east);
-	// printf("'%s'\n", parse.west);
-	// printf("f_color = %d\n", parse.f_color);
-	// printf("c_color = %d\n", parse.c_color);
+	printf("-----------------[P A R S E D]-----------------\n");
     free_parsing(&parse);
 	return (0);
 }

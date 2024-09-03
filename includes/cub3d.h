@@ -21,9 +21,10 @@
 
 typedef enum s_tile
 {
+	DOOR_O,
+	DOOR_C,
 	FLOOR,
 	WALL,
-	DOOR,
 	VOID
 }	t_tile;
 
@@ -33,7 +34,8 @@ typedef enum s_dir
 	NORTH,
 	SOUTH,
 	EAST,
-	WEST
+	WEST,
+	DOOR
 }	t_dir;
 
 // y and x is the player position
