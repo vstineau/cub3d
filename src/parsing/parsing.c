@@ -298,10 +298,7 @@ char    **check_color(char **split, char *ceiling_or_floor)
     rgb = ft_split(line, ',');
     free((char *)line);
     if(!rgb)
-        return (free((char *)line), NULL);
-    // for(int i = 0; rgb[i]; i++)
-    //     printf("%s ", rgb[i]);
-    // printf("\n");
+        return (NULL);
     if(check_format(rgb))
         return (free_tab((char **)rgb), NULL);
     return ((char **)rgb);
@@ -358,8 +355,7 @@ int	all_map(char *av, t_parse *parse)
 	{
 		if(!parse->f_map[i])
 			return (close(fd), 1);
-		i++;
-		parse->f_map[i] = get_next_line(fd);
+		parse->f_map[++i] = get_next_line(fd);
 	}
 	return (close(fd), 0);
 }
