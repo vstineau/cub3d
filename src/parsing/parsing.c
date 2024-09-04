@@ -1,4 +1,5 @@
 #include "parsing.h"
+// #include <cstddef>
 #include <stdio.h>
 // #include <X11/X.h>
 // #include <cstddef>
@@ -311,9 +312,10 @@ void	atribute_color(char **c, char **f, t_parse *parse)
 
 void print_map(char **map)
 {
+	printf("           ---map---         \n");
 	for(int i = 0; map[i]; i++)
-		printf("%s", map[i]);
-	printf("\n");
+		printf("'%s'\n", map[i]);
+	printf("           ---map---         \n");
 }
 
 int	all_map(char *av, t_parse *parse)
@@ -424,7 +426,7 @@ int	isolate_map(t_parse *parse)
 	parse->f_map = newmap;
 	return (check_map_format(parse->f_map));
 }
-int	longest_line(t_parse *parse)
+int	map_lenth(t_parse *parse)
 {
 	int		i;
 	size_t	longest;
@@ -440,10 +442,61 @@ int	longest_line(t_parse *parse)
 	return (longest);
 }
 
-// int	resize_map(t_parse *parse)
-// {
+int	map_height(t_parse *parse)
+{
+	int	height;
 
-// }
+	height = 0;
+	while(parse->f_map[height])
+		height++;
+	return (height);
+}
+
+char	*cpy_and_fill(char *src, int len)
+{
+	int		i;
+	char	*dest;
+
+	i = 0;
+	dest = ft_calloc(len + 1, sizeof(char));
+	ft_memset(dest, ' ', len - 1);
+	if (!src)
+		return (NULL);
+	while(src[i])
+	{
+		if (src[i] && src[i] == '\n')
+			i++;
+		else
+		{
+			dest[i] = src[i];
+			i++;
+		}
+	}
+	return (dest);
+}
+
+int	resize_map(t_parse *parse)
+{
+	const int	len = map_lenth(parse);
+	printf("len = %d\n", len);
+	printf("height = %d\n", map_height(parse));
+	const char	**resized = ft_calloc(map_height(parse) + 1, sizeof(char *));
+	int			i;
+
+	i = 0;
+	if(!resized)
+		return (1);
+	while(parse->f_map[i])
+	{
+		resized[i] = cpy_and_fill(parse->f_map[i], len);
+		if(!resized[i])
+			return(free_tab((char **)resized), 1);
+		i++;
+	}
+	free_tab(parse->f_map);
+	parse->f_map = (char **)resized;
+	return (0);
+}
 
 
 int main(int ac, char **av)
@@ -455,6 +508,8 @@ int main(int ac, char **av)
 		return (1);
 	read_map(av[1], &parse);
     if(find_map_config(&parse) || all_map(av[1], &parse) || isolate_map(&parse))
+		return (free_parsing(&parse), 1);
+	if(resize_map(&parse))
 		return (free_parsing(&parse), 1);
     // ft_printf("'%s'\n", parse.map);
 	printf("----------------[P A R S E D]-----------------\n");
