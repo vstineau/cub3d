@@ -45,7 +45,6 @@ void	init_raycasting(t_vars *v)
 	v->player.dir.y = -1.0;
 	v->player.plane.x = 0.85;
 	v->player.plane.y = 0.0;
-	v->end = false;
 }
 
 void	raycasting(t_vars *v)

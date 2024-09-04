@@ -15,28 +15,21 @@ static void	f_init(t_vars *vars)
 	vars->f[XK_Down] = (void *)move_backward;
 	vars->f[XK_s] = (void *)move_backward;
 	vars->f[XK_f] = (void *)handle_door;
+	vars->f[XK_m] = (void *)lock_unlock_mouse;
 }
 
 int	window_action(int keycode, t_vars *vars)
 {
 	f_init(vars);
-	//clear_image(vars, 0);
-	printf("%d\n", keycode);
 	if (keycode >= 0xFFFF || !vars->f[keycode])
 		return (0);
 	else
 		vars->f[keycode](vars);
-//	color_ceiling(vars, P_WHITE);
-//	color_floor(vars, P_WHITE);
-//	mouse_in_the_midle(vars);
-//	raycasting(vars);
-//	mlx_put_image_to_window(vars->mlx, vars->win, vars->data.img, 0, 0);
 	return (0);
 }
 
 int	close_windows(t_vars *vars)
 {
-	vars->end = true;
 	mlx_loop_end(vars->mlx);
 	return (0);
 }
