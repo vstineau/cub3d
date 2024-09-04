@@ -9,9 +9,9 @@ int	mouse_in_the_midle(t_vars *v)
 		|| v->mouse_pos.x < 0 || v->mouse_pos.y < 0)
 		return (0);
 	if (v->mouse_pos.x > 480)
-		v->f[XK_Right](v);
+		rotate_right(v);
 	else if(v->mouse_pos.x < 480)
-		v->f[XK_Left](v);
+		rotate_left(v);
 	raycasting(v);
 	mlx_mouse_get_pos(v->mlx, v->win, &v->mouse_pos.x, &v->mouse_pos.y);
 	mlx_mouse_move(v->mlx, v->win, WIN_WIDTH / 2, WIN_HEIGHT / 2);
