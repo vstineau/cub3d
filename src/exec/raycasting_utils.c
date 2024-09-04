@@ -1,9 +1,16 @@
 #include "../../includes/cub3d.h"
 
-static void	raycast_five(t_vars *v, t_img *texture)
+static void	raycast_five(t_vars *v, t_img *texture, t_dir d)
 {
 	v->text.x = (int)(v->text.wallx * (double)texture->width);
-	v->text.x = texture->width - v->text.x - 1;
+	if (d == NORTH && v->player.ray_dir.y > 0)
+		v->text.x = texture->width - v->text.x - 1;
+	else if (d == EAST)
+		v->text.x = texture->width - v->text.x - 1;
+	else if (d == WEST && v->player.ray_dir.x < 0)
+		v->text.x = texture->width - v->text.x - 1;
+	else if (d == DOOR)
+		v->text.x = texture->width - v->text.x - 1;
 	v->text.step = 1.0 * texture->height / v->player.line_height;
 }
 
@@ -20,15 +27,15 @@ static void	raycast_four(t_vars *v, t_vecti map, t_dir *d)
 	else if (v->player.side == 1 && v->player.ray_dir.y <= 0)
 		*d = SOUTH;
 	if (*d == DOOR)
-		raycast_five(v, v->text.door);
+		raycast_five(v, v->text.door, *d);
 	else if (*d == NORTH)
-		raycast_five(v, v->text.north);
+		raycast_five(v, v->text.north, *d);
 	else if (*d == SOUTH)
-		raycast_five(v, v->text.south);
+		raycast_five(v, v->text.south, *d);
 	else if (*d == EAST)
-		raycast_five(v, v->text.east);
+		raycast_five(v, v->text.east, *d);
 	else if (*d == WEST)
-		raycast_five(v, v->text.west);
+		raycast_five(v, v->text.west, *d);
 	if (v->text.x < 0)
 			v->text.x = 0;
 	v->text.pos = ((double)v->player.draw_start
