@@ -473,7 +473,7 @@ int	check_pos(char **map, int x, int y, t_parse *parse)
 		return (0);
 }
 
-void	debug(char **map, int x, int y, t_parse *parse)
+void	print_err_map(char **map, int x, int y, t_parse *parse)
 {
 	int i = -1;
 	int j = 0;
@@ -487,7 +487,6 @@ void	debug(char **map, int x, int y, t_parse *parse)
 		printf(BHI_YELLOW"|"RESET);
 		while(map[i][j])
 		{
-
 			if(i == y && j == x)
 				printf(B_RED"%c"RESET, map[i][j]);
 			else
@@ -521,7 +520,7 @@ int check_surrounded(t_parse *parse)
 			{
 				if (check_pos(parse->f_map, x, y, parse))
 					return (ft_err(NULL, "map not surrounded"),
-						debug(parse->f_map, x, y, parse), 1);
+						print_err_map(parse->f_map, x, y, parse), 1);
 			}
 			x++;
 		}
@@ -623,6 +622,71 @@ int	isolate_map(t_parse *parse)
 	free_tab(parse->f_map);
 	parse->f_map = newmap;
 	return (check_map_format(parse->f_map, parse));
+}
+
+void	player_orientation(t_parse *parse, t_vars *v, int i, int j)
+{
+	if(parse->f_map[i][j] == 'N')
+	{
+		v->map[i][j].tile = FLOOR;
+		v->player.dir_y = 1;
+	}
+	if(parse->f_map[i][j] == 'S')
+	{
+		v->map[i][j].tile = FLOOR;
+		v->player.dir_y = -1;
+	}
+	if(parse->f_map[i][j] == 'W')
+	{
+		v->map[i][j].tile = FLOOR;
+		v->player.dir_x = -1;
+	}
+	if(parse->f_map[i][j] == 'E')
+	{
+		v->map[i][j].tile = FLOOR;
+		v->player.dir_x = 1;
+	}
+}
+
+
+int	fill_tiles(t_parse *parse, t_vars *v, int i)
+{
+	int	j;
+
+	j = 0;
+	while(parse->f_map[i][j])
+	{
+		if(parse->f_map[i][j] == '1')
+			v->map[i][j].tile = WALL;
+		if(parse->f_map[i][j] == '0')
+			v->map[i][j].tile = FLOOR;
+		if(parse->f_map[i][j] == '3')
+			v->map[i][j].tile = DOOR_C;
+		if(ft_isspace(parse->f_map[i][j]))
+			v->map[i][j].tile = VOID;
+		player_orientation(parse, v, i, j);
+		j++;
+	}
+}
+
+int	fill_struc(t_parse *parse, t_vars *vars)
+{
+	const int	height = map_height(parse);
+	const int	lenght = map_lenth(parse);
+	int i;
+
+	i = 0;
+	vars->map = ft_calloc(height, sizeof(t_point *));
+	if(!vars->map)
+		return (1);
+	while (i < height)
+	{
+		vars->map[i] = ft_calloc(lenght + 1, sizeof(t_point));
+		if(!vars->map[i])
+			return (1);
+		fill_tiles(parse, vars, i);
+		i++;
+	}
 }
 
 int main(int ac, char **av)

@@ -55,8 +55,6 @@ typedef struct    s_player
 typedef struct s_point
 {
 	t_tile		tile;
-	int			x;
-	int			y;
 	t_dir		di;
 }				t_point;
 
