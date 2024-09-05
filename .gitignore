@@ -1,4 +1,5 @@
 .obj
 *.d
 *.o
+*.a
 cub3d
