@@ -21,7 +21,6 @@ static void	f_init(t_vars *vars)
 int	window_action(int keycode, t_vars *vars)
 {
 	f_init(vars);
-	printf("%d\n", keycode);
 	if (keycode >= 0xFFFF || !vars->f[keycode])
 		return (0);
 	else
