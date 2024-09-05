@@ -473,6 +473,36 @@ int	check_pos(char **map, int x, int y, t_parse *parse)
 		return (0);
 }
 
+void	debug(char **map, int x, int y, t_parse *parse)
+{
+	int i = -1;
+	int j = 0;
+	while(++i <= map_lenth(parse))
+		printf(BHI_YELLOW"_"RESET);
+	printf("\n");
+	i = 0;
+	while (map[i])
+	{
+		j = 0;
+		printf(BHI_YELLOW"|"RESET);
+		while(map[i][j])
+		{
+
+			if(i == y && j == x)
+				printf(B_RED"%c"RESET, map[i][j]);
+			else
+				printf(B_GREEN"%c"RESET, map[i][j]);
+			j++;
+		}
+		printf(BHI_YELLOW"|\n"RESET);
+		i++;
+	}
+	i = -1;
+	while(++i <= map_lenth(parse))
+		printf(BHI_YELLOW"-"RESET);
+	printf("\n");
+}
+
 int check_surrounded(t_parse *parse)
 {
 	int	x;
@@ -490,7 +520,8 @@ int check_surrounded(t_parse *parse)
 					|| parse->f_map[y][x] == 'E' || parse->f_map[y][x] == 'S')
 			{
 				if (check_pos(parse->f_map, x, y, parse))
-					return (ft_err(parse->f_map[y], "map not surrounded"), 1);
+					return (ft_err(NULL, "map not surrounded"),
+						debug(parse->f_map, x, y, parse), 1);
 			}
 			x++;
 		}
@@ -571,10 +602,10 @@ int	isolate_map(t_parse *parse)
 	int		j;
 	char	**newmap;
 
-	i = -1;
+	i = 0;
 	j = 0;
-	while(parse->f_map[++i] && skip_cmp(parse->f_map[++i], "1", 1))
-		;
+	while(parse->f_map[i] && skip_cmp(parse->f_map[i], "1", 1))
+		i++;
 	if(parse->f_map[i] == NULL)
 		return (ft_err(NULL, "no map detected"), 1);
 	while(parse->f_map[i])

@@ -3,7 +3,6 @@ NO ./path_north
 WE ./path_west
 EA ./path_east
 
-
 C 1,2,3
 F 220,100,0                       
 

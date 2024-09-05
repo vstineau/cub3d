@@ -2,6 +2,7 @@
 # define PARSING_H
 
 # include "../../includes/cub3d.h"
+# include "../../includes/color.h"
 
 
 typedef struct s_map
