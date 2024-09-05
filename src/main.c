@@ -24,7 +24,6 @@ int	main(int argc, char **argv)
 	mlx_loop_hook(v.mlx, cub_loop, &v);
 	mlx_loop(v.mlx);
 	mlx_destroy_image(v.mlx, v.data.img);
-	mlx_destroy_window(v.mlx, v.win);
-	mlx_destroy_display(v.mlx);
-	free(v.mlx);
+	destroy_mlx(&v);
+	destroy_map(&v);
 }

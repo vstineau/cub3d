@@ -104,7 +104,7 @@ void    free_parsing(t_parse *parse)
 		free(parse->we);
 	if(parse->map)
 		free(parse->map);
-	if(parse->f_map)
+	if(parse->f_map && *parse->f_map)
 		free_tab(parse->f_map);
 }
 
@@ -389,7 +389,7 @@ int	all_map(char *av, t_parse *parse)
 	return (close(fd), 0);
 }
 
-int	map_lenth(t_parse *parse)
+int	map_length(t_parse *parse)
 {
 	int		i;
 	size_t	longest;
@@ -459,7 +459,7 @@ int	check_pos(char **map, int x, int y, t_parse *parse)
 	(void)parse;
 	if (y - 1 < 0 || x - 1 < 0)
 		return (1);
-	if (x + 1 >= map_lenth(parse) || y + 1 >= map_height(parse))
+	if (x + 1 >= map_length(parse) || y + 1 >= map_height(parse))
 		return (1);
 	if (check_char(map[y - 1][x]))
 		return (1);
@@ -477,7 +477,7 @@ void	print_err_map(char **map, int x, int y, t_parse *parse)
 {
 	int i = -1;
 	int j = 0;
-	while(++i <= map_lenth(parse))
+	while(++i <= map_length(parse))
 		printf(BHI_YELLOW"_"RESET);
 	printf("\n");
 	i = 0;
@@ -497,7 +497,7 @@ void	print_err_map(char **map, int x, int y, t_parse *parse)
 		i++;
 	}
 	i = -1;
-	while(++i <= map_lenth(parse))
+	while(++i <= map_length(parse))
 		printf(BHI_YELLOW"-"RESET);
 	printf("\n");
 }
@@ -618,7 +618,7 @@ int	isolate_map(t_parse *parse)
 	j = i - j;
 	i = 0;
 	while(parse->f_map[j])
-		newmap[i++] = cpy_and_fill(parse->f_map[j++], map_lenth(parse));
+		newmap[i++] = cpy_and_fill(parse->f_map[j++], map_length(parse));
 	free_tab(parse->f_map);
 	parse->f_map = newmap;
 	return (check_map_format(parse->f_map, parse));
@@ -684,7 +684,7 @@ void	fill_tiles(t_parse *parse, t_vars *v, int i)
 int	fill_struc(t_parse *parse, t_vars *vars)
 {
 	const int	height = map_height(parse);
-	const int	lenght = map_lenth(parse);
+	const int	length = map_length(parse);
 	int i;
 
 	i = 0;
@@ -693,25 +693,66 @@ int	fill_struc(t_parse *parse, t_vars *vars)
 		return (1);
 	while (i < height)
 	{
-		vars->map[i] = ft_calloc(lenght + 1, sizeof(t_point));
+		vars->map[i] = ft_calloc(length + 1, sizeof(t_point));
 		if(!vars->map[i])
 			return (1);
+		vars->map[i]->map_height = height;
 		fill_tiles(parse, vars, i);
 		i++;
 	}
 	return (0);
 }
 
+void	destroy_map(t_vars *v)
+{
+	int	i;
+	int length;
+	
+	i = 0;
+	length = v->map[i]->map_height;
+	while(i < length)
+	{
+		if(v->map[i])
+		{
+			free(v->map[i]);
+			v->map[i] = NULL;
+		}
+		i++;
+	}
+	if(v->map)
+	{
+		free(v->map);
+		v->map = NULL;
+	}
+}
+
+void	destroy_mlx(t_vars *v)
+{
+	if(v->text.door)
+		mlx_destroy_image(v->mlx, v->text.door);
+	if(v->text.north)
+		mlx_destroy_image(v->mlx, v->text.north);
+	if(v->text.south)
+		mlx_destroy_image(v->mlx, v->text.south);
+	if(v->text.west)
+		mlx_destroy_image(v->mlx, v->text.west);
+	if(v->text.east)
+		mlx_destroy_image(v->mlx, v->text.east);
+	mlx_destroy_window(v->mlx, v->win);
+	mlx_destroy_display(v->mlx);
+	free(v->mlx);
+}
+
 int parsing(t_parse *parse, t_vars *v, char *map)
 {
 	read_map(map, parse);
 	if(all_map(map, parse) || find_map_config(parse) || isolate_map(parse))
-		return (free_parsing(parse), 1);
+		return (destroy_mlx(v), free_parsing(parse), 1);
 	// free all textures
 	if (load_textures(v, parse))
-		return (free_parsing(parse), 1);
+		return (destroy_mlx(v), free_parsing(parse), 1);
 	if (fill_struc(parse, v))
-		return (free_parsing(parse), 1);
+		return (destroy_mlx(v), free_parsing(parse), 1);
 	v->color_c = parse->c_color;
 	v->color_f = parse->f_color;
 	free_parsing(parse);

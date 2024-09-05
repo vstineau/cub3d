@@ -109,9 +109,10 @@ typedef struct	s_player
 
 typedef struct s_point
 {
-	t_tile		tile;
+	t_tile			tile;
 	t_dir			di;
-}				t_point;
+	int				map_height;
+}					t_point;
 
 typedef struct s_data
 {
@@ -196,6 +197,8 @@ int	load_textures(t_vars *v, t_parse *p);
 int parsing(t_parse *parse, t_vars *v, char *map);
 int	read_map(char *argv, t_parse *parse);
 int    check_file(char *argv);
+void	destroy_mlx(t_vars *v);
+void	destroy_map(t_vars *v);
 
 /*----------------TEMPORAIRE____________________________________*/
 void	parsing_liddle(char *argv, t_vars *v);
