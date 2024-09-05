@@ -730,6 +730,12 @@ void	destroy_mlx(t_vars *v)
 {
 	if(v->text.door)
 		mlx_destroy_image(v->mlx, v->text.door);
+	if(v->text.door_a)
+		mlx_destroy_image(v->mlx, v->text.door_a);
+	if(v->text.door_b)
+		mlx_destroy_image(v->mlx, v->text.door_b);
+	if(v->text.door_c)
+		mlx_destroy_image(v->mlx, v->text.door_c);
 	if(v->text.north)
 		mlx_destroy_image(v->mlx, v->text.north);
 	if(v->text.south)

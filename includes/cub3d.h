@@ -73,6 +73,7 @@ typedef struct s_text
 {
 	int			x;
 	int			y;
+	int			text_door;
 	double	wallx;
 	double	step;
 	double	pos;
@@ -82,7 +83,9 @@ typedef struct s_text
 	t_img		*south;
 	t_img		*north;
 	t_img		*door;
-
+	t_img		*door_a;
+	t_img		*door_b;
+	t_img		*door_c;
 }				t_text;
 
 typedef struct	s_player

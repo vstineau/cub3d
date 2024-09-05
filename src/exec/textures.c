@@ -1,5 +1,25 @@
 #include "../../includes/cub3d.h"
 
+int animated_door(t_vars *v, t_vecti dim)
+{
+	v->text.door = mlx_xpm_file_to_image(v->mlx, \
+		"textures/anim.xpm", &dim.y, &dim.x);
+	if (!v->text.door)
+		return (1);
+	v->text.door_a = mlx_xpm_file_to_image(v->mlx, \
+		"textures/anim1.xpm", &dim.y, &dim.x);
+	if (!v->text.door_a)
+		return (1);
+	v->text.door_b = mlx_xpm_file_to_image(v->mlx, \
+		"textures/anim2.xpm", &dim.y, &dim.x);
+	if (!v->text.door_b)
+		return (1);
+	v->text.door_c = mlx_xpm_file_to_image(v->mlx, \
+		"textures/anim3.xpm", &dim.y, &dim.x);
+	if (!v->text.door_c)
+		return (1);
+	return (0);
+}
 //contvert all the .xpm file in struct t_img
 int	load_textures(t_vars *v, t_parse *p)
 {
@@ -20,9 +40,7 @@ int	load_textures(t_vars *v, t_parse *p)
 	v->text.north = mlx_xpm_file_to_image(v->mlx, p->no, &dim.y, &dim.x);
 	if (!v->text.north)
 		return (1);
-	v->text.door = mlx_xpm_file_to_image(v->mlx, \
-		"textures/door3.xpm", &dim.y, &dim.x);
-	if (!v->text.door)
+	if (animated_door(v, dim))
 		return (1);
 	return (0);
 }

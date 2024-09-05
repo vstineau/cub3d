@@ -14,6 +14,8 @@ int	main(int argc, char **argv)
 	parse = (t_parse){0};
 	v.text = (t_text){0};
 	v.mlx = mlx_init();
+	if (!v.mlx)
+		return (1);
 	v.win = mlx_new_window(v.mlx, WIN_WIDTH, WIN_HEIGHT, "CUB3D");
 	if (parsing(&parse, &v, argv[1]))
 		return (1);
