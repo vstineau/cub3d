@@ -3,6 +3,7 @@
 
 # include "../../includes/cub3d.h"
 
+
 typedef struct s_map
 {
 	char 	*map;

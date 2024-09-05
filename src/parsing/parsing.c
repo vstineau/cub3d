@@ -4,9 +4,12 @@
 void    ft_err(char *arg, char *err)
 {
     ft_putstr_fd("Error: ", 2);
-    if(arg)
-        ft_putstr_fd(arg, 2);
     ft_putendl_fd(err, 2);
+    if(arg)
+	{
+        ft_putstr_fd(arg, 2);
+        ft_putstr_fd("\n", 2);
+	}
 }
 char	*join_free(char *line, char *buffer)
 {
@@ -27,13 +30,13 @@ int    check_file(char *argv)
     lenght = ft_strlen(argv);
     if (lenght < 5)
     {
-        ft_err(argv, ": invalid file format");
+        ft_err(argv, "invalid file format");
         return (1);
     }
     if (ft_strcmp(&argv[lenght - 4], ".cub")
         || !ft_strcmp(&argv[lenght - 5], "/.cub"))
     {
-		ft_err(argv, ": invalid file format");
+		ft_err(argv, "invalid file format");
         return (1);
     }
     else
@@ -91,14 +94,14 @@ void	free_tab(char **tab)
 //free pre_parsing struct
 void    free_parsing(t_parse *parse)
 {
-	if(parse->east)
-		free(parse->east);
-	if(parse->north)
-		free(parse->north);
-	if(parse->south)
-		free(parse->south);
-	if(parse->west)
-		free(parse->west);
+	if(parse->ea)
+		free(parse->ea);
+	if(parse->no)
+		free(parse->no);
+	if(parse->so)
+		free(parse->so);
+	if(parse->we)
+		free(parse->we);
 	if(parse->map)
 		free(parse->map);
 	if(parse->f_map)
@@ -141,19 +144,46 @@ char    *isolate_element(char *line, char * key)
     return(ft_substr(line, i, end - i));
 }
 
+int	modified_ncmp(const char *s1, const char *s2, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	if (n == 0)
+		return (0);
+	while ((unsigned char)s1[i] && (unsigned char)s2[i] && i < n -1)
+	{
+		if (ft_isspace((unsigned char)s1[i]) || ft_isspace((unsigned char)s2[i]))
+			break;
+		if ((unsigned char)s1[i] == (unsigned char)s2[i])
+			i++;
+		else
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+	}
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+}
 
 //skip white space and cmp
-int skip_cmp(char *line, char *cmp)
+int skip_cmp(char *line, char *cmp, int map)
 {
     int i;
 
     i = 0;
-	while(line[i] && ft_isspace(line[i]))
+	while (line[i] && ft_isspace(line[i]))
 		i++;
-	if(line[i] == '\0')
+	if (line[i] == '\0')
 		return (1);
-    return(ft_strncmp(line + i, cmp, ft_strlen(cmp)));
+	if (ft_strncmp(line + i, cmp, ft_strlen(cmp)) != 0)
+		return (1);
+	if(map == 0)
+	{
+		i += ft_strlen(cmp);
+		if (!ft_isspace(line[i]))
+			return (1);
+	}
+    return (0);
 }
+
 
 // check if map config is valid
 int check_config_error(char **map)
@@ -163,11 +193,11 @@ int check_config_error(char **map)
     i = 0;
     while(map[i])
     {
-        if(map[i] && skip_cmp(map[i], "NO") && skip_cmp(map[i], "SO")
-            && skip_cmp(map[i], "WE") && skip_cmp(map[i], "EA")
-                && skip_cmp(map[i], "F") && skip_cmp(map[i], "C")
-                    && skip_cmp(map[i], "1"))
-                        return (printf("'%s'", map[i]), 1);
+        if(map[i] && skip_cmp(map[i], "NO", 0) && skip_cmp(map[i], "SO", 0)
+            && skip_cmp(map[i], "WE", 0) && skip_cmp(map[i], "EA", 0)
+                && skip_cmp(map[i], "F", 0) && skip_cmp(map[i], "C", 0)
+                    && skip_cmp(map[i], "1", 1))
+                        return (ft_err(map[i], "Invalid format"), 1);
         i++;
     }
     return (0);
@@ -188,8 +218,7 @@ char *find_in_map(char **map, char *key)
         if(map[i] && ft_strnstr(map[i], key, ft_strlen(map[i])))
         {
             if(found == true)
-                return(free(res),
-                    ft_err(key, " found multiple times"), NULL);
+                return(free(res), NULL);
             found = true;
             res = isolate_element(map[i], key);
         }
@@ -252,14 +281,14 @@ bool     check_format(char **rgb)
     i = -1;
     if(tab_len(rgb) != 3)
 	{
-		ft_putendl_fd("you need 3 RGB code separated by comma", 2);
+		ft_putendl_fd("Error: you need 3 RGB code separated by comma", 2);
         return (true);
 	}
     while(rgb[++i])
     {
         if(overflow(rgb[i]))
 		{
-			ft_err(rgb[i], ": invalid number, the range is between 0 to 255");
+			ft_err(rgb[i], "invalid number, the range is between 0 to 255");
             return (true);
 		}
     }
@@ -360,86 +389,6 @@ int	all_map(char *av, t_parse *parse)
 	return (close(fd), 0);
 }
 
-// get the texture path of each wall sides
-int find_map_config(t_parse *parse)
-{
-    const char  **split = (const char **)ft_split(parse->map, '\n');
-    char        **f_color;
-    char        **c_color;
-    int i;
-
-    i = 0;
-    if(!split)
-        return (1);
-    if(check_config_error((char **)split))
-        return (ft_err(NULL, "invalid map"), free_tab((char **)split), 1);
-    parse->north = find_in_map((char **)split, "NO");
-    parse->south = find_in_map((char **)split, "SO");
-    parse->east = find_in_map((char **)split, "EA");
-    parse->west = find_in_map((char **)split, "WE");
-    f_color = check_color((char **)split, "F");
-    if(!f_color || !*f_color)
-		return (free_tab((char **)split), 1);
-    c_color = check_color((char **)split, "C");
-    if(!c_color || !*c_color)
-		return (free_tab(f_color), free_tab((char **)split), 1);
-	atribute_color(c_color, f_color, parse);
-    free_tab((char **)split);
-    return (0);
-}
-
-int check_map_format(char **map)
-{
-	int	x;
-	int	y;
-
-	x = 0;
-	y = 0;
-	while(map[y])
-	{
-		x = 0;
-		while(map[y][x])
-		{
-			if(map[y][x] != '1' && map[y][x] != '0' && map[y][x] != '3'
-				&& map[y][x] != 'N' && map[y][x] != 'S' && map[y][x] != 'E'
-					&& map[y][x] != 'W' && !ft_isspace(map[y][x]))
-						return (ft_err(map[y], "Bad map format"), 1);
-			x++;
-		}
-		y++;
-	}
-	return (0);
-}
-
-
-int	isolate_map(t_parse *parse)
-{
-	int		i;
-	int		j;
-	char	**newmap;
-
-	i = 0;
-	j = 0;
-	while(parse->f_map[i] && skip_cmp(parse->f_map[i], "1"))
-		i++;
-	if(parse->f_map[i] == NULL)
-		return (ft_err(NULL, "no map detected"), 1);
-	while(parse->f_map[i])
-	{
-		i++;
-		j++;
-	}
-	newmap = ft_calloc(j + 1, sizeof(char *));
-	if(!newmap)
-		return (1);
-	j = i - j;
-	i = 0;
-	while(parse->f_map[j])
-		newmap[i++] = ft_strdup(parse->f_map[j++]);
-	free_tab(parse->f_map);
-	parse->f_map = newmap;
-	return (check_map_format(parse->f_map));
-}
 int	map_lenth(t_parse *parse)
 {
 	int		i;
@@ -466,33 +415,8 @@ int	map_height(t_parse *parse)
 	return (height);
 }
 
-char	*cpy_and_fill(char *src, int len)
-{
-	int		i;
-	char	*dest;
-
-	i = 0;
-	dest = ft_calloc(len + 1, sizeof(char));
-	ft_memset(dest, ' ', len - 1);
-	if (!src)
-		return (NULL);
-	while(src[i])
-	{
-		if (src[i] && src[i] == '\n')
-			i++;
-		else
-		{
-			dest[i] = src[i];
-			i++;
-		}
-	}
-	return (dest);
-}
-
-
 int check_char(char c)
 {
-	// printf("%c", c);
 	if(c == '1' || c == '0' || c == '3'
 		|| c == 'N' || c == 'S' || c == 'W' || c == 'E')
 			return (0);
@@ -500,26 +424,54 @@ int check_char(char c)
 		return (1);
 }
 
+// get the texture path of each wall sides
+int find_map_config(t_parse *p)
+{
+    const char  **split = (const char **)ft_split(p->map, '\n');
+    char        **f_color;
+    char        **c_color;
+    int i;
+
+    i = 0;
+    if(!split)
+        return (1);
+    if(check_config_error((char **)split))
+        return (/* ft_err(NULL, "invalid map"),  */free_tab((char **)split), 1);
+    p->no = find_in_map((char **)split, "NO");
+    p->so = find_in_map((char **)split, "SO");
+    p->ea = find_in_map((char **)split, "EA");
+    p->we = find_in_map((char **)split, "WE");
+	if(!p->no || !p->so || !p->ea || !p->we)
+		return (ft_err(NULL, "Invalid texture format"), free_tab((char **)split), 1);
+    f_color = check_color((char **)split, "F");
+    if(!f_color || !*f_color)
+		return (free_tab((char **)split), 1);
+    c_color = check_color((char **)split, "C");
+    if(!c_color || !*c_color)
+		return (free_tab(f_color), free_tab((char **)split), 1);
+	atribute_color(c_color, f_color, p);
+    free_tab((char **)split);
+    return (0);
+}
+
 int	check_pos(char **map, int x, int y, t_parse *parse)
 {
 	(void)parse;
 	if (y - 1 < 0 || x - 1 < 0)
-		return (printf("1 %s\n", map[y]), 1);
+		return (1);
 	if (x + 1 >= map_lenth(parse) || y + 1 >= map_height(parse))
-		return (printf("2 %s\n", map[y]), 1);
+		return (1);
 	if (check_char(map[y - 1][x]))
-		return (printf("3 %s\n", map[y]), 1);
+		return (1);
 	else if(check_char(map[y + 1][x]))
-		return (printf("3 %s\n", map[y]), 1);
+		return (1);
 	else if(check_char(map[y][x - 1]))
-		return (printf("3 %s\n", map[y]), 1);
+		return (1);
 	else if(check_char(map[y][x + 1]))
-		return (printf("3 %s\n", map[y]), 1);
+		return (1);
 	else
 		return (0);
 }
-
-
 
 int check_surrounded(t_parse *parse)
 {
@@ -538,7 +490,7 @@ int check_surrounded(t_parse *parse)
 					|| parse->f_map[y][x] == 'E' || parse->f_map[y][x] == 'S')
 			{
 				if (check_pos(parse->f_map, x, y, parse))
-					return (ft_err(NULL, "map not surrounded"), 1);
+					return (ft_err(parse->f_map[y], "map not surrounded"), 1);
 			}
 			x++;
 		}
@@ -548,27 +500,98 @@ int check_surrounded(t_parse *parse)
 	return (0);
 }
 
-int	resize_map(t_parse *parse)
+int check_map_format(char **map, t_parse *parse)
 {
-	const int	len = map_lenth(parse);
-	printf("len = %d\n", len);
-	printf("height = %d\n", map_height(parse));
-	const char	**resized = ft_calloc(map_height(parse) + 1, sizeof(char *));
-	int			i;
+	int	x;
+	int	y;
+
+	x = 0;
+	y = 0;
+	while(map[y])
+	{
+		x = 0;
+		while(map[y][x])
+		{
+			if(map[y][x] != '1' && map[y][x] != '0' && map[y][x] != '3'
+				&& map[y][x] != 'N' && map[y][x] != 'S' && map[y][x] != 'E'
+					&& map[y][x] != 'W' && !ft_isspace(map[y][x]))
+						return (ft_err(map[y], "Wrong map format"), 1);
+			x++;
+		}
+		y++;
+	}
+	return (check_surrounded(parse));
+}
+
+char *cpymap(char *s)
+{
+	size_t	i;
+	char	*dst;
 
 	i = 0;
-	if(!resized)
-		return (1);
-	while(parse->f_map[i])
+	dst = malloc(sizeof(char) * ft_strlen(s) + 1);
+	if (dst == 0)
+		return (NULL);
+	while (s[i] && s[i] != '\n')
 	{
-		resized[i] = cpy_and_fill(parse->f_map[i], len);
-		if(!resized[i])
-			return(free_tab((char **)resized), 1);
+		dst[i] = s[i];
 		i++;
 	}
+	dst[i] = '\0';
+	return (dst);
+}
+
+
+char	*cpy_and_fill(char *src, int len)
+{
+	int		i;
+	char	*dest;
+
+	i = 0;
+	dest = ft_calloc(len + 1, sizeof(char));
+	ft_memset(dest, ' ', len - 1);
+	if (!src)
+		return (NULL);
+	while(src[i])
+	{
+		if(src[i] && src[i] == '\n')
+			i++;
+		else
+		{
+			dest[i] = src[i];
+			i++;
+		}
+	}
+	return (dest);
+}
+
+int	isolate_map(t_parse *parse)
+{
+	int		i;
+	int		j;
+	char	**newmap;
+
+	i = -1;
+	j = 0;
+	while(parse->f_map[++i] && skip_cmp(parse->f_map[++i], "1", 1))
+		;
+	if(parse->f_map[i] == NULL)
+		return (ft_err(NULL, "no map detected"), 1);
+	while(parse->f_map[i])
+	{
+		i++;
+		j++;
+	}
+	newmap = ft_calloc(j + 1, sizeof(char *));
+	if(!newmap)
+		return (1);
+	j = i - j;
+	i = 0;
+	while(parse->f_map[j])
+		newmap[i++] = cpy_and_fill(parse->f_map[j++], map_lenth(parse));
 	free_tab(parse->f_map);
-	parse->f_map = (char **)resized;
-	return (check_surrounded(parse));
+	parse->f_map = newmap;
+	return (check_map_format(parse->f_map, parse));
 }
 
 int main(int ac, char **av)
@@ -581,14 +604,11 @@ int main(int ac, char **av)
 	read_map(av[1], &parse);
     if(all_map(av[1], &parse) || find_map_config(&parse) || isolate_map(&parse))
 		return (free_parsing(&parse), 1);
-	if(resize_map(&parse))
-		return (free_parsing(&parse), 1);
-    // ft_printf("'%s'\n", parse.map);
 	printf("----------------[P A R S E D]-----------------\n");
-	printf("NO = '%s'\n", parse.north);
-	printf("SO = '%s'\n", parse.south);
-	printf("EA = '%s'\n", parse.east);
-	printf("WE = '%s'\n", parse.west);
+	printf("NO = '%s'\n", parse.no);
+	printf("SO = '%s'\n", parse.so);
+	printf("EA = '%s'\n", parse.ea);
+	printf("WE = '%s'\n", parse.we);
 	printf("f_color = '%d'\n", parse.f_color);
 	printf("c_color = '%d'\n", parse.c_color);
     print_map(parse.f_map);

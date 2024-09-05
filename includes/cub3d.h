@@ -91,10 +91,10 @@ typedef struct s_parse
 {
 	char 				*map;
 	char				**f_map;
-	char				*north;
-	char				*south;
-	char				*west;
-	char				*east;
+	char				*no;
+	char				*so;
+	char				*we;
+	char				*ea;
 	unsigned int		f_color;
 	unsigned int		c_color;
 }						t_parse;
