@@ -85,9 +85,6 @@ typedef struct s_text
 
 }				t_text;
 
-// y and x is the player position
-// dir_x and dir_y is the direction of the player
-// plane_x and plane_y is the camera plane of the player
 typedef struct	s_player
 {
 	t_vect		pos;
