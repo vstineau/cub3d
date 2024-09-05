@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vstineau <vstineau@student.42.fr>          +#+  +:+       +#+         #
+#    By: wnocchi <wnocchi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/01 14:25:51 by vstineau          #+#    #+#              #
-#    Updated: 2024/04/02 13:52:27 by vstineau         ###   ########.fr        #
+#    Updated: 2024/08/20 14:57:46 by wnocchi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,7 @@ SRCS = ft_isalpha.c \
 			 ft_calloc.c \
 			 ft_realloc.c \
 			 ft_strdup.c \
+			 ft_strndup.c \
 			 ft_substr.c \
 			 ft_strjoin.c \
 			 ft_strtrim.c \

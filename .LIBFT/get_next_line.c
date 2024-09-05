@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vstineau <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: wnocchi <wnocchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 11:28:56 by vstineau          #+#    #+#             */
-/*   Updated: 2024/03/05 13:30:44 by vstineau         ###   ########.fr       */
+/*   Updated: 2024/09/04 16:04:34 by wnocchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,8 @@ char	*get_next_line(int fd)
 	if (!buffer)
 		return (NULL);
 	line = get_line(buffer);
+	if (!line)
+		free(buffer);
 	buffer = nextline(buffer, 0);
 	return (line);
 }

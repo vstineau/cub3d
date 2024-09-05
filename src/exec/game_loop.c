@@ -3,8 +3,8 @@
 int cub_loop(t_vars *v)
 {
 		clear_image(v, 0);
-		color_ceiling(v, P_WHITE);
-		color_floor(v, P_WHITE);
+		color_ceiling(v, v->color_f);
+		color_floor(v, v->color_c);
 		mlx_mouse_get_pos(v->mlx, v->win, &v->mouse_pos.x, &v->mouse_pos.y);
 		 if (!v->mouse_unlock)
 			mouse_in_the_midle(v);

@@ -105,7 +105,7 @@ typedef struct	s_player
 	int				draw_end;
 	int				hit;
 	int				side;
-}			t_player;
+}	t_player;
 
 typedef struct s_point
 {
@@ -133,13 +133,28 @@ typedef struct s_vars
 	void			*mlx;
 	void			*win;
 	int				mouse_unlock;
+	int				color_f;
+	int				color_c;
 	t_vecti		mouse_pos;
 	t_player	player;
 	t_text		text;
 	t_point		**map;
 	t_data		data;
-	t_fn			f[0xFFFF];
+	t_fn		f[0xFFFF];
 }				t_vars;
+
+//struct used for map parsing
+typedef struct s_parse
+{
+	char 				*map;
+	char				**f_map;
+	char				*no;
+	char				*so;
+	char				*we;
+	char				*ea;
+	unsigned int		f_color;
+	unsigned int		c_color;
+}						t_parse;
 
 /*---------------PLAYER MOTIONS------------------------------*/
 
@@ -175,10 +190,14 @@ void	raycast_one(t_vars *v, t_vecti map, t_dir *d);
 
 /*----------------TEXTURES-----------------------------------*/
 
-int	load_textures(t_vars *v);
+int	load_textures(t_vars *v, t_parse *p);
+
+/*----------------PARSING-------------------------------------*/
+int parsing(t_parse *parse, t_vars *v, char *map);
+int	read_map(char *argv, t_parse *parse);
+int    check_file(char *argv);
 
 /*----------------TEMPORAIRE____________________________________*/
 void	parsing_liddle(char *argv, t_vars *v);
-char	*read_map(char *argv);
 
 #endif
