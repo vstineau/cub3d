@@ -1,0 +1,84 @@
+#include "../../includes/cub3d.h"
+
+//--------------------------CHECK_COLORS.C-----------------------1
+bool     check_format(char **rgb)
+{
+    int i;
+
+    i = -1;
+    if (tab_len(rgb) != 3)
+	{
+		ft_putendl_fd("Error: you need 3 RGB code separated by comma", 2);
+        return (true);
+	}
+    while (rgb[++i])
+    {
+        if (overflow(rgb[i]))
+		{
+			ft_err(rgb[i], "invalid number, the range is between 0 to 255");
+            return (true);
+		}
+    }
+    return (false);
+}
+
+//--------------------------CHECK_COLORS.C-----------------------2
+bool	check_comma(char *line)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while (line[i])
+	{
+		if (line[i] == ',')
+			count += 1;
+		i++;
+	}
+	if (count != 2)
+		return (true);
+	return (false);
+}
+
+//--------------------------CHECK_COLORS.C-----------------------3
+char    **check_color(char **split, char *ceiling_or_floor)
+{
+    const char *line = find_in_map((char **)split, ceiling_or_floor);
+    char        **rgb;
+    int         i;
+
+    i = 0;
+    if (!line)
+		return (ft_putendl_fd("No color detected", 2), NULL);
+	if (check_comma((char *)line))
+		return (ft_putendl_fd("bad color format", 2), free((char *)line), NULL);
+    rgb = ft_split(line, ',');
+    free((char *)line);
+    if (!rgb)
+        return (NULL);
+    if (check_format(rgb))
+        return (free_tab((char **)rgb), NULL);
+    return ((char **)rgb);
+}
+
+//--------------------------CHECK_COLORS.C-----------------------4
+unsigned int    get_color(int red, int green, int blue)
+{
+    unsigned int    color;
+
+    color = 0;
+	color = (color << 8) | red;
+	color = (color << 8) | green;
+	color = (color << 8) | blue;
+    return (color);
+}
+
+void	atribute_color(char **c, char **f, t_parse *parse)
+{
+	parse->c_color = get_color(ft_atoi(c[0]), ft_atoi(c[1]), ft_atoi(c[2]));
+	free_tab(c);
+	parse->f_color = get_color(ft_atoi(f[0]), ft_atoi(f[1]), ft_atoi(f[2]));
+	free_tab(f);
+}
+

@@ -1,430 +1,432 @@
 #include "../../includes/cub3d.h"
-#include <stdbool.h>
-#include <stdio.h>
 
-void    ft_err(char *arg, char *err)
-{
-    ft_putstr_fd("Error: ", 2);
-    ft_putendl_fd(err, 2);
-    if(arg)
-	{
-        ft_putstr_fd(arg, 2);
-        ft_putstr_fd("\n", 2);
-	}
-}
-char	*join_free(char *line, char *buffer)
-{
-	char	*temp;
+// //--------------------------CHECK_ERRORS_UTILS.C----------------------1
+// void    ft_err(char *arg, char *err)
+// {
+//     ft_putstr_fd("Error: ", 2);
+//     ft_putendl_fd(err, 2);
+//     if (arg)
+// 	{
+//         ft_putstr_fd(arg, 2);
+//         ft_putstr_fd("\n", 2);
+// 	}
+// }
 
-	temp = ft_strjoin(line, buffer);
-	if (!temp)
-		return (NULL);
-	if (line)
-		free(line);
-	return (temp);
-}
+// //--------------------------CHECK_MAP_UTILS.C-------------------------1
+// char	*join_free(char *line, char *buffer)
+// {
+// 	char	*temp;
 
-int    check_file(char *argv)
-{
-    size_t    lenght;
+// 	temp = ft_strjoin(line, buffer);
+// 	if (!temp)
+// 		return (NULL);
+// 	if (line)
+// 		free(line);
+// 	return (temp);
+// }
 
-    lenght = ft_strlen(argv);
-    if (lenght < 5)
-    {
-        ft_err(argv, "invalid file format");
-        return (1);
-    }
-    if (ft_strcmp(&argv[lenght - 4], ".cub")
-        || !ft_strcmp(&argv[lenght - 5], "/.cub"))
-    {
-		ft_err(argv, "invalid file format");
-        return (1);
-    }
-    else
-        return (0);
-}
+// //--------------------------MAP_UTILS.C----------------------------2
+// int    check_file(char *argv)
+// {
+//     size_t    lenght;
 
-//read the map and store it in a char*
-int read_map(char *argv, t_parse *parse)
-{
-    const int		fd = open(argv, O_RDONLY);
-    int				rd;
-    char			buffer[4097];
+//     lenght = ft_strlen(argv);
+//     if (lenght < 5)
+//     {
+//         ft_err(argv, "invalid file format");
+//         return (1);
+//     }
+//     if (ft_strcmp(&argv[lenght - 4], ".cub")
+//         || !ft_strcmp(&argv[lenght - 5], "/.cub"))
+//     {
+// 		ft_err(argv, "invalid file format");
+//         return (1);
+//     }
+//     else
+//         return (0);
+// }
 
-    rd = 4096;
-	if(fd == -1)
-		return (1);
-    parse->map = ft_calloc(1, 1);
-    if (!parse->map)
-        return(close(fd), 1);
-    while (rd >= 4096)
-    {
-        rd = read(fd, buffer, 4096);
-        if (rd == -1)
-        {
-            free(parse->map);
-            return (close(fd), 1);
-        }
-        buffer[rd] = '\0';
-        parse->map = join_free(parse->map, buffer);
-    }
-    return (close(fd), 0);
-}
+// //--------------------------CHECK_MAP.C----------------------------1
+// //read the map and store it in a char*
+// int read_map(char *argv, t_parse *parse)
+// {
+//     const int		fd = open(argv, O_RDONLY);
+//     int				rd;
+//     char			buffer[4097];
 
-void	free_tab(char **tab)
-{
-	int	i;
+//     rd = 4096;
+// 	if (fd == -1)
+// 		return (1);
+//     parse->map = ft_calloc(1, 1);
+//     if (!parse->map)
+//         return (close(fd), 1);
+//     while (rd >= 4096)
+//     {
+//         rd = read(fd, buffer, 4096);
+//         if (rd == -1)
+//         {
+//             free(parse->map);
+//             return (close(fd), 1);
+//         }
+//         buffer[rd] = '\0';
+//         parse->map = join_free(parse->map, buffer);
+//     }
+//     return (close(fd), 0);
+// }
 
-	i = 0;
-	if (tab)
-	{
-		while (tab[i])
-		{
-			if (tab[i])
-			{
-				free(tab[i]);
-				tab[i] = NULL;
-			}
-			i++;
-		}
-		free(tab);
-		tab = NULL;
-	}
-}
+// //--------------------------MAP_MANAGE.C---------------------------1
+// void	free_tab(char **tab)
+// {
+// 	int	i;
 
-//free pre_parsing struct
-void    free_parsing(t_parse *parse)
-{
-	if(parse->ea)
-		free(parse->ea);
-	if(parse->no)
-		free(parse->no);
-	if(parse->so)
-		free(parse->so);
-	if(parse->we)
-		free(parse->we);
-	if(parse->map)
-		free(parse->map);
-	if(parse->f_map && *parse->f_map)
-		free_tab(parse->f_map);
-}
+// 	i = 0;
+// 	if (tab)
+// 	{
+// 		while (tab[i])
+// 		{
+// 			if (tab[i])
+// 			{
+// 				free(tab[i]);
+// 				tab[i] = NULL;
+// 			}
+// 			i++;
+// 		}
+// 		free(tab);
+// 		tab = NULL;
+// 	}
+// }
 
+// //--------------------------MAP_MANAGE.C----------------------------2
+// //free pre_parsing struct
+// void    free_parsing(t_parse *parse)
+// {
+// 	if (parse->ea)
+// 		free(parse->ea);
+// 	if (parse->no)
+// 		free(parse->no);
+// 	if (parse->so)
+// 		free(parse->so);
+// 	if (parse->we)
+// 		free(parse->we);
+// 	if (parse->map)
+// 		free(parse->map);
+// 	if (parse->f_map && *parse->f_map)
+// 		free_tab(parse->f_map);
+// }
 
-//do i really need to explain what this does?
-int	ft_isspace(int c)
-{
-	if (c == ' ' || c == '\t' || c == '\n'
-		|| c == '\v' || c == '\f' || c == '\r')
-		return (1);
-	return (0);
-}
+// //--------------------------CHECK_MAP_UTILS.C------------------------2
+// //do i really need to explain what this does?
+// int	ft_isspace(int c)
+// {
+// 	if (c == ' ' || c == '\t' || c == '\n'
+// 		|| c == '\v' || c == '\f' || c == '\r')
+// 		return (1);
+// 	return (0);
+// }
 
-//skip white space before and after the argument and check errors
-char    *isolate_element(char *line, char * key)
-{
-    int	i;
-	int	end;
-	int	check;
+// //--------------------------CHECK_MAP.C----------------------------2
+// //skip white space before and after the argument and check errors
+// char    *isolate_element(char *line, char * key)
+// {
+//     int	i;
+// 	int	end;
+// 	int	check;
 
-    i = 0;
-    line = ft_strnstr(line, key, ft_strlen(line));
-    while(line[i] && !ft_isspace(line[i]))
-		i++;
-    while(line[i] && ft_isspace(line[i]))
-		i++;
-	if(line[i] == '\0')
-		return (NULL);
-	end = i;
-	while(line[end] && !ft_isspace(line[end]))
-		end++;
-	check = end;
-	while(line[check] && ft_isspace(line[check]))
-		check++;
-	if(line[check] != 0)
-		return (NULL);
-    return(ft_substr(line, i, end - i));
-}
+//     i = 0;
+//     line = ft_strnstr(line, key, ft_strlen(line));
+//     while (line[i] && !ft_isspace(line[i]))
+// 		i++;
+//     while (line[i] && ft_isspace(line[i]))
+// 		i++;
+// 	if (line[i] == '\0')
+// 		return (NULL);
+// 	end = i;
+// 	while (line[end] && !ft_isspace(line[end]))
+// 		end++;
+// 	check = end;
+// 	while (line[check] && ft_isspace(line[check]))
+// 		check++;
+// 	if (line[check] != 0)
+// 		return (NULL);
+//     return (ft_substr(line, i, end - i));
+// }
 
-int	modified_ncmp(const char *s1, const char *s2, size_t n)
-{
-	size_t	i;
+// //--------------------------CHECK_MAP_UTILS.C----------------------------3
+// //skip white space and cmp
+// int skip_cmp(char *line, char *cmp, int map)
+// {
+//     int i;
 
-	i = 0;
-	if (n == 0)
-		return (0);
-	while ((unsigned char)s1[i] && (unsigned char)s2[i] && i < n -1)
-	{
-		if (ft_isspace((unsigned char)s1[i]) || ft_isspace((unsigned char)s2[i]))
-			break;
-		if ((unsigned char)s1[i] == (unsigned char)s2[i])
-			i++;
-		else
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-	}
-	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-}
+//     i = 0;
+// 	while (line[i] && ft_isspace(line[i]))
+// 		i++;
+// 	if (line[i] == '\0')
+// 		return (1);
+// 	if (ft_strncmp(line + i, cmp, ft_strlen(cmp)) != 0)
+// 		return (1);
+// 	if (map == 0)
+// 	{
+// 		i += ft_strlen(cmp);
+// 		if (!ft_isspace(line[i]))
+// 			return (1);
+// 	}
+//     return (0);
+// }
 
-//skip white space and cmp
-int skip_cmp(char *line, char *cmp, int map)
-{
-    int i;
+// //--------------------------CHECK_MAP.C----------------------------3
+// // check if map config is valid
+// int check_config_error(char **map)
+// {
+//     int i;
 
-    i = 0;
-	while (line[i] && ft_isspace(line[i]))
-		i++;
-	if (line[i] == '\0')
-		return (1);
-	if (ft_strncmp(line + i, cmp, ft_strlen(cmp)) != 0)
-		return (1);
-	if(map == 0)
-	{
-		i += ft_strlen(cmp);
-		if (!ft_isspace(line[i]))
-			return (1);
-	}
-    return (0);
-}
+//     i = 0;
+//     while (map[i])
+//     {
+//         if (map[i] && skip_cmp(map[i], "NO", 0) && skip_cmp(map[i], "SO", 0)
+//             && skip_cmp(map[i], "WE", 0) && skip_cmp(map[i], "EA", 0)
+//                 && skip_cmp(map[i], "F", 0) && skip_cmp(map[i], "C", 0)
+//                     && skip_cmp(map[i], "1", 1))
+//                         return (ft_err(map[i], "Invalid format"), 1);
+//         i++;
+//     }
+//     return (0);
+// }
 
+// //--------------------------CHECK_MAP.C----------------------------4
+// //browse map to find key
+// char *find_in_map(char **map, char *key)
+// {
+//     int i;
+//     char *res;
+//     bool found;
 
-// check if map config is valid
-int check_config_error(char **map)
-{
-    int i;
+//     res = NULL;
+//     found = false;
+//     i = 0;
+//     while (map[i])
+//     {
+//         if (map[i] && ft_strnstr(map[i], key, ft_strlen(map[i])))
+//         {
+//             if (found == true)
+//                 return (free(res), NULL);
+//             found = true;
+//             res = isolate_element(map[i], key);
+//         }
+//         i++;
+//     }
+//     return (res);
+// }
 
-    i = 0;
-    while(map[i])
-    {
-        if(map[i] && skip_cmp(map[i], "NO", 0) && skip_cmp(map[i], "SO", 0)
-            && skip_cmp(map[i], "WE", 0) && skip_cmp(map[i], "EA", 0)
-                && skip_cmp(map[i], "F", 0) && skip_cmp(map[i], "C", 0)
-                    && skip_cmp(map[i], "1", 1))
-                        return (ft_err(map[i], "Invalid format"), 1);
-        i++;
-    }
-    return (0);
-}
+// //--------------------------PARSING_UTILS.C----------------------------1
+// int tab_len(char **tab)
+// {
+//     int i;
 
-//browse map to find key
-char *find_in_map(char **map, char *key)
-{
-    int i;
-    char *res;
-    bool found;
+//     i = 0;
+//     while (tab[i])
+//         i++;
+//     return (i);
+// }
 
-    res = NULL;
-    found = false;
-    i = 0;
-    while(map[i])
-    {
-        if(map[i] && ft_strnstr(map[i], key, ft_strlen(map[i])))
-        {
-            if(found == true)
-                return(free(res), NULL);
-            found = true;
-            res = isolate_element(map[i], key);
-        }
-        i++;
-    }
-    return (res);
-}
+// //--------------------------CHECK_ERRORS_UTILS.C-----------------------1
+// bool	only_digit_string(char *s)
+// {
+// 	int	i;
 
-int tab_len(char **tab)
-{
-    int i;
+// 	i = 0;
+// 	while (s[i])
+// 	{
+// 		if (s[i] >= '0' && s[i] <= '9')
+// 			i++;
+// 		else
+// 			return (true);
+// 	}
+// 	return (false);
+// }
 
-    i = 0;
-    while (tab[i])
-        i++;
-    return (i);
-}
+// //--------------------------CHECK_ERRORS_UTILS.C-----------------------2
+// bool	overflow(char *s)
+// {
+// 	int			i;
+// 	int			sign;
+// 	int			nbr;
 
-bool	only_digit_string(char *s)
-{
-	int	i;
+// 	i = 0;
+// 	sign = 1;
+// 	nbr = 0;
+// 	while ((s[i] >= 9 && s[i] <= 13) || s[i] == ' ')
+// 		i++;
+// 	if (only_digit_string(s + i))
+// 		return (true);
+// 	while (s[i] >= '0' && s[i] <= '9')
+// 	{
+// 		nbr = (nbr * 10 + s[i++] - '0');
+// 		if (nbr * sign > 255 || nbr * sign < 0)
+// 			return (true);
+// 	}
+// 	return (false);
+// }
 
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] >= '0' && s[i] <= '9')
-			i++;
-		else
-			return (true);
-	}
-	return (false);
-}
+// //--------------------------CHECK_COLORS.C-----------------------1
+// bool     check_format(char **rgb)
+// {
+//     int i;
 
-bool	overflow(char *s)
-{
-	int			i;
-	int			sign;
-	int			nbr;
+//     i = -1;
+//     if (tab_len(rgb) != 3)
+// 	{
+// 		ft_putendl_fd("Error: you need 3 RGB code separated by comma", 2);
+//         return (true);
+// 	}
+//     while (rgb[++i])
+//     {
+//         if (overflow(rgb[i]))
+// 		{
+// 			ft_err(rgb[i], "invalid number, the range is between 0 to 255");
+//             return (true);
+// 		}
+//     }
+//     return (false);
+// }
 
-	i = 0;
-	sign = 1;
-	nbr = 0;
-	while ((s[i] >= 9 && s[i] <= 13) || s[i] == ' ')
-		i++;
-	if (only_digit_string(s + i))
-		return (true);
-	while (s[i] >= '0' && s[i] <= '9')
-	{
-		nbr = (nbr * 10 + s[i++] - '0');
-		if (nbr * sign > 255 || nbr * sign < 0)
-			return (true);
-	}
-	return (false);
-}
+// //--------------------------CHECK_COLORS.C-----------------------2
+// bool	check_comma(char *line)
+// {
+// 	int	i;
+// 	int	count;
 
-bool     check_format(char **rgb)
-{
-    int i;
+// 	i = 0;
+// 	count = 0;
+// 	while (line[i])
+// 	{
+// 		if (line[i] == ',')
+// 			count += 1;
+// 		i++;
+// 	}
+// 	if (count != 2)
+// 		return (true);
+// 	return (false);
+// }
 
-    i = -1;
-    if(tab_len(rgb) != 3)
-	{
-		ft_putendl_fd("Error: you need 3 RGB code separated by comma", 2);
-        return (true);
-	}
-    while(rgb[++i])
-    {
-        if(overflow(rgb[i]))
-		{
-			ft_err(rgb[i], "invalid number, the range is between 0 to 255");
-            return (true);
-		}
-    }
-    return (false);
-}
+// //--------------------------CHECK_COLORS.C-----------------------3
+// char    **check_color(char **split, char *ceiling_or_floor)
+// {
+//     const char *line = find_in_map((char **)split, ceiling_or_floor);
+//     char        **rgb;
+//     int         i;
 
-bool	check_comma(char *line)
-{
-	int	i;
-	int	count;
+//     i = 0;
+//     if (!line)
+// 		return (ft_putendl_fd("No color detected", 2), NULL);
+// 	if (check_comma((char *)line))
+// 		return (ft_putendl_fd("bad color format", 2), free((char *)line), NULL);
+//     rgb = ft_split(line, ',');
+//     free((char *)line);
+//     if (!rgb)
+//         return (NULL);
+//     if (check_format(rgb))
+//         return (free_tab((char **)rgb), NULL);
+//     return ((char **)rgb);
+// }
 
-	i = 0;
-	count = 0;
-	while(line[i])
-	{
-		if(line[i] == ',')
-			count += 1;
-		i++;
-	}
-	if(count != 2)
-		return (true);
-	return (false);
-}
+// //--------------------------CHECK_COLORS.C-----------------------4
+// unsigned int    get_color(int red, int green, int blue)
+// {
+//     unsigned int    color;
 
-char    **check_color(char **split, char *ceiling_or_floor)
-{
-    const char *line = find_in_map((char **)split, ceiling_or_floor);
-    char        **rgb;
-    int         i;
+//     color = 0;
+// 	color = (color << 8) | red;
+// 	color = (color << 8) | green;
+// 	color = (color << 8) | blue;
+//     return (color);
+// }
 
-    i = 0;
-    if(!line)
-		return (ft_putendl_fd("No color detected", 2), NULL);
-	if(check_comma((char *)line))
-		return (ft_putendl_fd("bad color format", 2), free((char *)line), NULL);
-    rgb = ft_split(line, ',');
-    free((char *)line);
-    if(!rgb)
-        return (NULL);
-    if(check_format(rgb))
-        return (free_tab((char **)rgb), NULL);
-    return ((char **)rgb);
-}
+// void	atribute_color(char **c, char **f, t_parse *parse)
+// {
+// 	parse->c_color = get_color(ft_atoi(c[0]), ft_atoi(c[1]), ft_atoi(c[2]));
+// 	free_tab(c);
+// 	parse->f_color = get_color(ft_atoi(f[0]), ft_atoi(f[1]), ft_atoi(f[2]));
+// 	free_tab(f);
+// }
 
-unsigned int    get_color(int red, int green, int blue)
-{
-    unsigned int    color;
+// // REMOVE
+// void print_map(char **map)
+// {
+// 	printf("           ---map---         \n");
+// 	for(int i = 0; map[i]; i++)
+// 		printf("|%s|\n", map[i]);
+// 	printf("           ---map---         \n");
+// }
 
-    color = 0;
-	color = (color << 8) | red;
-	color = (color << 8) | green;
-	color = (color << 8) | blue;
-    return (color);
-}
+// //--------------------------GET_MAP.C-----------------------1
+// int	all_map(char *av, t_parse *parse)
+// {
+// 	const int	fd = open(av, O_RDONLY);
+// 	int			count;
+// 	int			i;
 
-void	atribute_color(char **c, char **f, t_parse *parse)
-{
-	parse->c_color = get_color(ft_atoi(c[0]), ft_atoi(c[1]), ft_atoi(c[2]));
-	free_tab(c);
-	parse->f_color = get_color(ft_atoi(f[0]), ft_atoi(f[1]), ft_atoi(f[2]));
-	free_tab(f);
-}
+// 	if (fd == -1)
+// 		return (1);
+// 	i = -1;
+// 	count = 1;
+// 	while (parse->map[++i])
+// 		if (parse->map[i] == '\n')
+// 			count++;
+// 	parse->f_map = ft_calloc(count + 1, sizeof(char *));
+// 	if (!parse->f_map)
+// 		return (close(fd), 1);
+// 	i = 0;
+// 	parse->f_map[i] = get_next_line(fd);
+// 	if (!parse->f_map[i])
+// 			return (close(fd), free_tab(parse->f_map), 1);
+// 	while (parse->f_map[i])
+// 	{
+// 		if (!parse->f_map[i])
+// 			return (close(fd), 1);
+// 		parse->f_map[++i] = get_next_line(fd);
+// 	}
+// 	return (close(fd), 0);
+// }
 
-void print_map(char **map)
-{
-	printf("           ---map---         \n");
-	for(int i = 0; map[i]; i++)
-		printf("|%s|\n", map[i]);
-	printf("           ---map---         \n");
-}
+// //--------------------------GET_MAP_UTILS.C-----------------------1
+// int	map_length(t_parse *parse)
+// {
+// 	int		i;
+// 	size_t	longest;
 
-int	all_map(char *av, t_parse *parse)
-{
-	const int	fd = open(av, O_RDONLY);
-	int			count;
-	int			i;
+// 	i = 0;
+// 	longest = 0;
+// 	while (parse->f_map[i])
+// 	{
+// 		if (ft_strlen(parse->f_map[i]) > longest)
+// 			longest = ft_strlen(parse->f_map[i]);
+// 		i++;
+// 	}
+// 	return (longest);
+// }
 
-	if (fd == -1)
-		return (1);
-	i = -1;
-	count = 1;
-	while (parse->map[++i])
-		if (parse->map[i] == '\n')
-			count++;
-	parse->f_map = ft_calloc(count + 1, sizeof(char *));
-	if (!parse->f_map)
-		return (close(fd), 1);
-	i = 0;
-	parse->f_map[i] = get_next_line(fd);
-	if(!parse->f_map[i])
-			return (close(fd), free_tab(parse->f_map), 1);
-	while (parse->f_map[i])
-	{
-		if(!parse->f_map[i])
-			return (close(fd), 1);
-		parse->f_map[++i] = get_next_line(fd);
-	}
-	return (close(fd), 0);
-}
+// //--------------------------GET_MAP_UTILS.C-----------------------2
+// int	map_height(t_parse *parse)
+// {
+// 	int	height;
 
-int	map_length(t_parse *parse)
-{
-	int		i;
-	size_t	longest;
+// 	height = 0;
+// 	while (parse->f_map[height])
+// 		height++;
+// 	return (height);
+// }
 
-	i = 0;
-	longest = 0;
-	while(parse->f_map[i])
-	{
-		if(ft_strlen(parse->f_map[i]) > longest)
-			longest = ft_strlen(parse->f_map[i]);
-		i++;
-	}
-	return (longest);
-}
+// //--------------------------CHECK_MAP_UTILS.C-----------------------5
+// int check_char(char c)
+// {
+// 	if (c == '1' || c == '0' || c == '3'
+// 		|| c == 'N' || c == 'S' || c == 'W' || c == 'E')
+// 			return (0);
+// 	else
+// 		return (1);
+// }
 
-int	map_height(t_parse *parse)
-{
-	int	height;
-
-	height = 0;
-	while(parse->f_map[height])
-		height++;
-	return (height);
-}
-
-int check_char(char c)
-{
-	if(c == '1' || c == '0' || c == '3'
-		|| c == 'N' || c == 'S' || c == 'W' || c == 'E')
-			return (0);
-	else
-		return (1);
-}
-
+//--------------------------PARSING.C-----------------------1
 // get the texture path of each wall sides
 int find_map_config(t_parse *p)
 {
@@ -434,284 +436,292 @@ int find_map_config(t_parse *p)
     int i;
 
     i = 0;
-    if(!split)
+    if (!split)
         return (1);
-    if(check_config_error((char **)split))
-        return (/* ft_err(NULL, "invalid map"),  */free_tab((char **)split), 1);
+    if (check_config_error((char **)split))
+        return (free_tab((char **)split), 1);
     p->no = find_in_map((char **)split, "NO");
     p->so = find_in_map((char **)split, "SO");
     p->ea = find_in_map((char **)split, "EA");
     p->we = find_in_map((char **)split, "WE");
-	if(!p->no || !p->so || !p->ea || !p->we)
+	if (!p->no || !p->so || !p->ea || !p->we)
 		return (ft_err(NULL, "Invalid texture format"), free_tab((char **)split), 1);
     f_color = check_color((char **)split, "F");
-    if(!f_color || !*f_color)
+    if (!f_color || !*f_color)
 		return (free_tab((char **)split), 1);
     c_color = check_color((char **)split, "C");
-    if(!c_color || !*c_color)
+    if (!c_color || !*c_color)
 		return (free_tab(f_color), free_tab((char **)split), 1);
 	atribute_color(c_color, f_color, p);
     free_tab((char **)split);
     return (0);
 }
 
-int	check_pos(char **map, int x, int y, t_parse *parse)
-{
-	(void)parse;
-	if (y - 1 < 0 || x - 1 < 0)
-		return (1);
-	if (x + 1 >= map_length(parse) || y + 1 >= map_height(parse))
-		return (1);
-	if (check_char(map[y - 1][x]))
-		return (1);
-	else if(check_char(map[y + 1][x]))
-		return (1);
-	else if(check_char(map[y][x - 1]))
-		return (1);
-	else if(check_char(map[y][x + 1]))
-		return (1);
-	else
-		return (0);
-}
+// //--------------------------CHECK_ERRORS.C-----------------------1
+// int	check_pos(char **map, int x, int y, t_parse *parse)
+// {
+// 	if (y - 1 < 0 || x - 1 < 0)
+// 		return (1);
+// 	if (x + 1 >= map_length(parse) || y + 1 >= map_height(parse))
+// 		return (1);
+// 	if (check_char(map[y - 1][x]))
+// 		return (1);
+// 	else if (check_char(map[y + 1][x]))
+// 		return (1);
+// 	else if (check_char(map[y][x - 1]))
+// 		return (1);
+// 	else if (check_char(map[y][x + 1]))
+// 		return (1);
+// 	else
+// 		return (0);
+// }
 
-void	print_err_map(char **map, int x, int y, t_parse *parse)
-{
-	int i = -1;
-	int j = 0;
-	while(++i <= map_length(parse))
-		printf(BHI_YELLOW"_"RESET);
-	printf("\n");
-	i = 0;
-	while (map[i])
-	{
-		j = 0;
-		printf(BHI_YELLOW"|"RESET);
-		while(map[i][j])
-		{
-			if(i == y && j == x)
-				printf(BG_RED"%c"RESET, map[i][j]);
-			else
-				printf(B_GREEN"%c"RESET, map[i][j]);
-			j++;
-		}
-		printf(BHI_YELLOW"|\n"RESET);
-		i++;
-	}
-	i = -1;
-	while(++i <= map_length(parse))
-		printf(BHI_YELLOW"-"RESET);
-	printf("\n");
-}
+// //--------------------------CHECK_ERRORS.C-----------------------2
+// void	print_err_map(char **map, int x, int y)
+// {
+// 	int	i;
+// 	int	j;
 
-int check_surrounded(t_parse *parse)
-{
-	int	x;
-	int	y;
+// 	i = 0;
+// 	i = 0;
+// 	while (map[i])
+// 	{
+// 		j = 0;
+// 		while (map[i][j])
+// 		{
+// 			if (i == y && j == x)
+// 				printf(BG_GREEN B_RED"%c"RESET, map[i][j]);
+// 			else
+// 				printf(BG_GREEN BHI_WHITE"%c"RESET, map[i][j]);
+// 			j++;
+// 		}
+// 		printf("\n");
+// 		i++;
+// 	}
+// 	i = -1;
+// }
 
-	x = 0;
-	y = 0;
-	while(parse->f_map[y])
-	{
-		x = 0;
-		while(parse->f_map[y][x])
-		{
-			if(parse->f_map[y][x] == '0' || parse->f_map[y][x] == '3'
-				|| parse->f_map[y][x] == 'N' || parse->f_map[y][x] == 'W'
-					|| parse->f_map[y][x] == 'E' || parse->f_map[y][x] == 'S')
-			{
-				if (check_pos(parse->f_map, x, y, parse))
-					return (ft_err(NULL, "map not surrounded"),
-						print_err_map(parse->f_map, x, y, parse), 1);
-			}
-			x++;
-		}
-		y++;
-	}
-	return (0);
-}
+// //--------------------------CHECK_ERRORS.C-----------------------3
+// int check_surrounded(t_parse *parse)
+// {
+// 	int	x;
+// 	int	y;
 
+// 	x = 0;
+// 	y = 0;
+// 	while (parse->f_map[y])
+// 	{
+// 		x = 0;
+// 		while (parse->f_map[y][x])
+// 		{
+// 			if (parse->f_map[y][x] == '0' || parse->f_map[y][x] == '3'
+// 				|| parse->f_map[y][x] == 'N' || parse->f_map[y][x] == 'W'
+// 					|| parse->f_map[y][x] == 'E' || parse->f_map[y][x] == 'S')
+// 			{
+// 				if (check_pos(parse->f_map, x, y, parse))
+// 					return (ft_err(NULL, "map not surrounded"),
+// 						print_err_map(parse->f_map, x, y), 1);
+// 			}
+// 			x++;
+// 		}
+// 		y++;
+// 	}
+// 	return (0);
+// }
 
-int	check_player_nb(char **map, t_parse *parse)
-{
-	int		i;
-	int		j;
-	bool	player;
+// //--------------------------CHECK_ERRORS.C-----------------------4
+// int	check_player_nb(char **map, t_parse *parse)
+// {
+// 	int		i;
+// 	int		j;
+// 	bool	player;
 
-	player = false;
-	i = 0;
-	j = 0;
-	while(map[i])
-	{
-		j = 0;
-		while(map[i][j])
-		{
-			if((map[i][j]== 'N' || map[i][j]== 'W' || map[i][j]== 'E'
-				|| map[i][j]== 'S') && player == true)
-					return (ft_err(NULL, "multiple player found"),
-						print_err_map(parse->f_map, j, i, parse), 1);
-			if((map[i][j]== 'N' || map[i][j]== 'W' || map[i][j]== 'E'
-				|| map[i][j]== 'S') && player == false)
-					player = true;
-			j++;
-		}
-		i++;
-	}
-	return (0);
-}
+// 	player = false;
+// 	i = 0;
+// 	j = 0;
+// 	while (map[i])
+// 	{
+// 		j = 0;
+// 		while (map[i][j])
+// 		{
+// 			if ((map[i][j]== 'N' || map[i][j]== 'W' || map[i][j]== 'E'
+// 				|| map[i][j]== 'S') && player == true)
+// 					return (ft_err(NULL, "multiple player found"),
+// 						print_err_map(parse->f_map, j, i), 1);
+// 			if ((map[i][j]== 'N' || map[i][j]== 'W' || map[i][j]== 'E'
+// 				|| map[i][j]== 'S') && player == false)
+// 					player = true;
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// 	return (0);
+// }
 
-int check_map_format(char **map, t_parse *parse)
-{
-	int	x;
-	int	y;
+// //--------------------------CHECK_ERRORS.C-----------------------5
+// int check_map_format(char **map, t_parse *parse)
+// {
+// 	int	x;
+// 	int	y;
 
-	x = 0;
-	y = 0;
-	if(check_player_nb(map, parse))
-		return (1);
-	while(map[y])
-	{
-		x = 0;
-		while(map[y][x])
-		{
-			if(map[y][x] != '1' && map[y][x] != '0' && map[y][x] != '3'
-				&& map[y][x] != 'N' && map[y][x] != 'S' && map[y][x] != 'E'
-					&& map[y][x] != 'W' && !ft_isspace(map[y][x]))
-						return (print_err_map(parse->f_map, x, y, parse), 1);
-			x++;
-		}
-		y++;
-	}
-	return (check_surrounded(parse));
-}
+// 	if (check_player_nb(map, parse))
+// 		return (1);
+// 	x = 0;
+// 	y = 0;
+// 	while (map[y])
+// 	{
+// 		x = 0;
+// 		while (map[y][x])
+// 		{
+// 			if (map[y][x] != '1' && map[y][x] != '0' && map[y][x] != '3'
+// 				&& map[y][x] != 'N' && map[y][x] != 'S' && map[y][x] != 'E'
+// 					&& map[y][x] != 'W' && !ft_isspace(map[y][x]))
+// 						return (print_err_map(parse->f_map, x, y), 1);
+// 			x++;
+// 		}
+// 		y++;
+// 	}
+// 	return (check_surrounded(parse));
+// }
 
-char *cpymap(char *s)
-{
-	size_t	i;
-	char	*dst;
+// //--------------------------GET_MAP_UTILS.C-----------------------4
+// char *cpymap(char *s)
+// {
+// 	size_t	i;
+// 	char	*dst;
 
-	i = 0;
-	dst = malloc(sizeof(char) * ft_strlen(s) + 1);
-	if (dst == 0)
-		return (NULL);
-	while (s[i] && s[i] != '\n')
-	{
-		dst[i] = s[i];
-		i++;
-	}
-	dst[i] = '\0';
-	return (dst);
-}
+// 	i = 0;
+// 	dst = malloc(sizeof(char) * ft_strlen(s) + 1);
+// 	if (dst == 0)
+// 		return (NULL);
+// 	while (s[i] && s[i] != '\n')
+// 	{
+// 		dst[i] = s[i];
+// 		i++;
+// 	}
+// 	dst[i] = '\0';
+// 	return (dst);
+// }
 
+// //--------------------------GET_MAP_UTILS.C-----------------------5
+// char	*cpy_and_fill(char *src, int len)
+// {
+// 	int		i;
+// 	char	*dest;
 
-char	*cpy_and_fill(char *src, int len)
-{
-	int		i;
-	char	*dest;
+// 	i = 0;
+// 	dest = ft_calloc(len + 1, sizeof(char));
+// 	ft_memset(dest, ' ', len - 1);
+// 	if (!src)
+// 		return (NULL);
+// 	while (src[i])
+// 	{
+// 		if (src[i] && src[i] == '\n')
+// 			i++;
+// 		else
+// 		{
+// 			dest[i] = src[i];
+// 			i++;
+// 		}
+// 	}
+// 	return (dest);
+// }
 
-	i = 0;
-	dest = ft_calloc(len + 1, sizeof(char));
-	ft_memset(dest, ' ', len - 1);
-	if (!src)
-		return (NULL);
-	while(src[i])
-	{
-		if(src[i] && src[i] == '\n')
-			i++;
-		else
-		{
-			dest[i] = src[i];
-			i++;
-		}
-	}
-	return (dest);
-}
+// //--------------------------GET_MAP.C-----------------------2
+// int	isolate_map(t_parse *parse)
+// {
+// 	int		i;
+// 	int		j;
+// 	char	**newmap;
 
-int	isolate_map(t_parse *parse)
-{
-	int		i;
-	int		j;
-	char	**newmap;
+// 	i = 0;
+// 	j = 0;
+// 	while (parse->f_map[i] && skip_cmp(parse->f_map[i], "1", 1))
+// 		i++;
+// 	if (parse->f_map[i] == NULL)
+// 		return (ft_err(NULL, "no map detected"), 1);
+// 	while (parse->f_map[i])
+// 	{
+// 		i++;
+// 		j++;
+// 	}
+// 	newmap = ft_calloc(j + 1, sizeof(char *));
+// 	if (!newmap)
+// 		return (1);
+// 	j = i - j;
+// 	i = 0;
+// 	while (parse->f_map[j])
+// 		newmap[i++] = cpy_and_fill(parse->f_map[j++], map_length(parse));
+// 	free_tab(parse->f_map);
+// 	parse->f_map = newmap;
+// 	return (check_map_format(parse->f_map, parse));
+// }
 
-	i = 0;
-	j = 0;
-	while(parse->f_map[i] && skip_cmp(parse->f_map[i], "1", 1))
-		i++;
-	if(parse->f_map[i] == NULL)
-		return (ft_err(NULL, "no map detected"), 1);
-	while(parse->f_map[i])
-	{
-		i++;
-		j++;
-	}
-	newmap = ft_calloc(j + 1, sizeof(char *));
-	if(!newmap)
-		return (1);
-	j = i - j;
-	i = 0;
-	while(parse->f_map[j])
-		newmap[i++] = cpy_and_fill(parse->f_map[j++], map_length(parse));
-	free_tab(parse->f_map);
-	parse->f_map = newmap;
-	return (check_map_format(parse->f_map, parse));
-}
+// //--------------------------GET_MAP_INFO.C-----------------------1
+// void	player_orientation_x(t_parse *parse, t_vars *v, int i, int j)
+// {
+// 	if (parse->f_map[i][j] == 'E')
+// 	{
+// 		v->map[i][j].tile = FLOOR;
+// 		v->player.dir.y = 1;
+// 		v->player.pos.x = i;
+// 		v->player.pos.y = j;
+// 		v->player.plane.x = 0.85;
+// 	}
+// 	if (parse->f_map[i][j] == 'W')
+// 	{
+// 		v->map[i][j].tile = FLOOR;
+// 		v->player.dir.y = -1;
+// 		v->player.pos.x = i;
+// 		v->player.pos.y = j;
+// 		v->player.plane.x = -0.8;
+// 	}
+// }
 
-void	player_orientation(t_parse *parse, t_vars *v, int i, int j)
-{
-	if(parse->f_map[i][j] == 'N')
-	{
-		v->map[i][j].tile = FLOOR;
-		v->player.dir.x = -1;
-		v->player.pos.x = i;
-		v->player.pos.y = j;
-		v->player.plane.y = 0.66;
-	}
-	if(parse->f_map[i][j] == 'S')
-	{
-		v->map[i][j].tile = FLOOR;
-		v->player.dir.x = 1;
-		v->player.pos.x = i;
-		v->player.pos.y = j;
-		v->player.plane.y = -0.8;
-	}
-	if(parse->f_map[i][j] == 'W')
-	{
-		v->map[i][j].tile = FLOOR;
-		v->player.dir.y = -1;
-		v->player.pos.x = i;
-		v->player.pos.y = j;
-		v->player.plane.x = -0.8;
-	}
-	if(parse->f_map[i][j] == 'E')
-	{
-		v->map[i][j].tile = FLOOR;
-		v->player.dir.y = 1;
-		v->player.pos.x = i;
-		v->player.pos.y = j;
-		v->player.plane.x = 0.85;
-	}
-}
+// //--------------------------GET_MAP_INFO.C-----------------------2
+// void	player_orientation(t_parse *parse, t_vars *v, int i, int j)
+// {
+// 	if (parse->f_map[i][j] == 'N')
+// 	{
+// 		v->map[i][j].tile = FLOOR;
+// 		v->player.dir.x = -1;
+// 		v->player.pos.x = i;
+// 		v->player.pos.y = j;
+// 		v->player.plane.y = 0.66;
+// 	}
+// 	if (parse->f_map[i][j] == 'S')
+// 	{
+// 		v->map[i][j].tile = FLOOR;
+// 		v->player.dir.x = 1;
+// 		v->player.pos.x = i;
+// 		v->player.pos.y = j;
+// 		v->player.plane.y = -0.8;
+// 	}
+// 	player_orientation_x(parse, v, i, j);
+// }
 
+// //--------------------------GET_MAP_INFO.C-----------------------3
+// void	fill_tiles(t_parse *parse, t_vars *v, int i)
+// {
+// 	int	j;
 
-void	fill_tiles(t_parse *parse, t_vars *v, int i)
-{
-	int	j;
+// 	j = 0;
+// 	while (parse->f_map[i][j])
+// 	{
+// 		if (parse->f_map[i][j] == '1')
+// 			v->map[i][j].tile = WALL;
+// 		if (parse->f_map[i][j] == '0')
+// 			v->map[i][j].tile = FLOOR;
+// 		if (parse->f_map[i][j] == '3')
+// 			v->map[i][j].tile = DOOR_C;
+// 		if (ft_isspace(parse->f_map[i][j]))
+// 			v->map[i][j].tile = VOID;
+// 		player_orientation(parse, v, i, j);
+// 		j++;
+// 	}
+// }
 
-	j = 0;
-	while(parse->f_map[i][j])
-	{
-		if(parse->f_map[i][j] == '1')
-			v->map[i][j].tile = WALL;
-		if(parse->f_map[i][j] == '0')
-			v->map[i][j].tile = FLOOR;
-		if(parse->f_map[i][j] == '3')
-			v->map[i][j].tile = DOOR_C;
-		if(ft_isspace(parse->f_map[i][j]))
-			v->map[i][j].tile = VOID;
-		player_orientation(parse, v, i, j);
-		j++;
-	}
-}
-
+//--------------------------PARSING.C-----------------------5
 int	fill_struc(t_parse *parse, t_vars *vars)
 {
 	const int	height = map_height(parse);
@@ -720,12 +730,12 @@ int	fill_struc(t_parse *parse, t_vars *vars)
 
 	i = 0;
 	vars->map = ft_calloc(height, sizeof(t_point *));
-	if(!vars->map)
+	if (!vars->map)
 		return (1);
 	while (i < height)
 	{
 		vars->map[i] = ft_calloc(length + 1, sizeof(t_point));
-		if(!vars->map[i])
+		if (!vars->map[i])
 			return (1);
 		vars->map[i]->map_height = height;
 		fill_tiles(parse, vars, i);
@@ -734,6 +744,7 @@ int	fill_struc(t_parse *parse, t_vars *vars)
 	return (0);
 }
 
+//--------------------------PARSING.C-----------------------2
 void	destroy_map(t_vars *v)
 {
 	int	i;
@@ -741,49 +752,51 @@ void	destroy_map(t_vars *v)
 	
 	i = 0;
 	length = v->map[i]->map_height;
-	while(i < length)
+	while (i < length)
 	{
-		if(v->map[i])
+		if (v->map[i])
 		{
 			free(v->map[i]);
 			v->map[i] = NULL;
 		}
 		i++;
 	}
-	if(v->map)
+	if (v->map)
 	{
 		free(v->map);
 		v->map = NULL;
 	}
 }
 
+//--------------------------PARSING.C-----------------------3
 void	destroy_mlx(t_vars *v)
 {
-	if(v->text.door)
+	if (v->text.door)
 		mlx_destroy_image(v->mlx, v->text.door);
-	if(v->text.door_a)
+	if (v->text.door_a)
 		mlx_destroy_image(v->mlx, v->text.door_a);
-	if(v->text.door_b)
+	if (v->text.door_b)
 		mlx_destroy_image(v->mlx, v->text.door_b);
-	if(v->text.door_c)
+	if (v->text.door_c)
 		mlx_destroy_image(v->mlx, v->text.door_c);
-	if(v->text.north)
+	if (v->text.north)
 		mlx_destroy_image(v->mlx, v->text.north);
-	if(v->text.south)
+	if (v->text.south)
 		mlx_destroy_image(v->mlx, v->text.south);
-	if(v->text.west)
+	if (v->text.west)
 		mlx_destroy_image(v->mlx, v->text.west);
-	if(v->text.east)
+	if (v->text.east)
 		mlx_destroy_image(v->mlx, v->text.east);
 	mlx_destroy_window(v->mlx, v->win);
 	mlx_destroy_display(v->mlx);
 	free(v->mlx);
 }
 
+//--------------------------PARSING.C-----------------------4
 int parsing(t_parse *parse, t_vars *v, char *map)
 {
 	read_map(map, parse);
-	if(all_map(map, parse) || find_map_config(parse) || isolate_map(parse))
+	if (all_map(map, parse) || find_map_config(parse) || isolate_map(parse))
 		return (destroy_mlx(v), free_parsing(parse), 1);
 	// free all textures
 	if (load_textures(v, parse))
@@ -801,10 +814,10 @@ int parsing(t_parse *parse, t_vars *v, char *map)
 //    t_parse parse;
 //
 //	ft_memset(&parse, 0, sizeof(t_parse));
-//	if(ac != 2 || check_file(av[1]))
+//	if (ac != 2 || check_file(av[1]))
 //		return (1);
 //	read_map(av[1], &parse);
-//    if(all_map(av[1], &parse) || find_map_config(&parse) || isolate_map(&parse))
+//    if (all_map(av[1], &parse) || find_map_config(&parse) || isolate_map(&parse))
 //		return (free_parsing(&parse), 1);
 //	printf("----------------[P A R S E D]-----------------\n");
 //	printf("NO = '%s'\n", parse.no);

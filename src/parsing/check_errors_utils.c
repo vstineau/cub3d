@@ -1,0 +1,52 @@
+#include "../../includes/cub3d.h"
+
+//--------------------------CHECK_ERRORS_UTILS.C----------------------1
+void    ft_err(char *arg, char *err)
+{
+    ft_putstr_fd("Error: ", 2);
+    ft_putendl_fd(err, 2);
+    if (arg)
+	{
+        ft_putstr_fd(arg, 2);
+        ft_putstr_fd("\n", 2);
+	}
+}
+
+//--------------------------CHECK_ERRORS_UTILS.C-----------------------1
+bool	only_digit_string(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] >= '0' && s[i] <= '9')
+			i++;
+		else
+			return (true);
+	}
+	return (false);
+}
+
+//--------------------------CHECK_ERRORS_UTILS.C-----------------------2
+bool	overflow(char *s)
+{
+	int			i;
+	int			sign;
+	int			nbr;
+
+	i = 0;
+	sign = 1;
+	nbr = 0;
+	while ((s[i] >= 9 && s[i] <= 13) || s[i] == ' ')
+		i++;
+	if (only_digit_string(s + i))
+		return (true);
+	while (s[i] >= '0' && s[i] <= '9')
+	{
+		nbr = (nbr * 10 + s[i++] - '0');
+		if (nbr * sign > 255 || nbr * sign < 0)
+			return (true);
+	}
+	return (false);
+}

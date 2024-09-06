@@ -194,16 +194,33 @@ void	raycast_one(t_vars *v, t_vecti map, t_dir *d);
 
 /*----------------TEXTURES-----------------------------------*/
 
-int	load_textures(t_vars *v, t_parse *p);
+int		load_textures(t_vars *v, t_parse *p);
 
 /*----------------PARSING-------------------------------------*/
-int parsing(t_parse *parse, t_vars *v, char *map);
-int	read_map(char *argv, t_parse *parse);
-int    check_file(char *argv);
+int		parsing(t_parse *parse, t_vars *v, char *map);
+int		read_map(char *argv, t_parse *parse);
+int		check_file(char *argv);
 void	destroy_mlx(t_vars *v);
 void	destroy_map(t_vars *v);
-
-/*----------------TEMPORAIRE____________________________________*/
-void	parsing_liddle(char *argv, t_vars *v);
+int		check_config_error(char **map);
+void	free_tab(char **tab);
+char	*find_in_map(char **map, char *key);
+void	ft_err(char *arg, char *err);
+char	**check_color(char **split, char *ceiling_or_floor);
+void	atribute_color(char **c, char **f, t_parse *parse);
+int		all_map(char *av, t_parse *parse);
+int		isolate_map(t_parse *parse);
+void	free_parsing(t_parse *parse);
+int		map_height(t_parse *parse);
+int		map_length(t_parse *parse);
+void	fill_tiles(t_parse *parse, t_vars *v, int i);
+int		ft_isspace(int c);
+int		skip_cmp(char *line, char *cmp, int map);
+char	*cpy_and_fill(char *src, int len);
+int		check_map_format(char **map, t_parse *parse);
+char	*join_free(char *line, char *buffer);
+int		check_char(char c);
+int		tab_len(char **tab);
+bool	overflow(char *s);
 
 #endif

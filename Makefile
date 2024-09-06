@@ -12,8 +12,17 @@ SRC_NAME 	=	main.c \
 				exec/raycasting.c \
 				exec/raycasting_utils.c \
 				exec/textures.c \
-				parsing/parsing.c \
-				exec/window_action.c 
+				exec/window_action.c \
+				parsing/check_colors.c \
+				parsing/check_errors_utils.c \
+				parsing/check_errors.c \
+				parsing/check_map_utils.c \
+				parsing/check_map.c \
+				parsing/get_map_info.c \
+				parsing/get_map_utils.c \
+				parsing/get_map.c \
+				parsing/map_manage.c \
+				parsing/parsing.c
 OBJ_NAME 	= $(SRC_NAME:.c=.o) 
 MINILIBX	= .minilibx-linux/libmlx.a
 LIBFT 		= .LIBFT/libft.a
