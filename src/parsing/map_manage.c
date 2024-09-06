@@ -1,6 +1,5 @@
 #include "../../includes/cub3d.h"
 
-//--------------------------MAP_MANAGE.C---------------------------1
 void	free_tab(char **tab)
 {
 	int	i;
@@ -22,9 +21,8 @@ void	free_tab(char **tab)
 	}
 }
 
-//--------------------------MAP_MANAGE.C----------------------------2
 //free pre_parsing struct
-void    free_parsing(t_parse *parse)
+void	free_parsing(t_parse *parse)
 {
 	if (parse->ea)
 		free(parse->ea);

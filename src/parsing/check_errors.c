@@ -1,6 +1,5 @@
 #include "../../includes/cub3d.h"
 
-//--------------------------CHECK_ERRORS.C-----------------------1
 int	check_pos(char **map, int x, int y, t_parse *parse)
 {
 	if (y - 1 < 0 || x - 1 < 0)
@@ -19,7 +18,6 @@ int	check_pos(char **map, int x, int y, t_parse *parse)
 		return (0);
 }
 
-//--------------------------CHECK_ERRORS.C-----------------------2
 void	print_err_map(char **map, int x, int y)
 {
 	int	i;
@@ -44,8 +42,7 @@ void	print_err_map(char **map, int x, int y)
 	i = -1;
 }
 
-//--------------------------CHECK_ERRORS.C-----------------------3
-int check_surrounded(t_parse *parse)
+int	check_surrounded(t_parse *parse)
 {
 	int	x;
 	int	y;
@@ -72,7 +69,6 @@ int check_surrounded(t_parse *parse)
 	return (0);
 }
 
-//--------------------------CHECK_ERRORS.C-----------------------4
 int	check_player_nb(char **map, t_parse *parse)
 {
 	int		i;
@@ -87,12 +83,12 @@ int	check_player_nb(char **map, t_parse *parse)
 		j = 0;
 		while (map[i][j])
 		{
-			if ((map[i][j]== 'N' || map[i][j]== 'W' || map[i][j]== 'E'
-				|| map[i][j]== 'S') && player == true)
-					return (ft_err(NULL, "multiple player found"),
-						print_err_map(parse->f_map, j, i), 1);
-			if ((map[i][j]== 'N' || map[i][j]== 'W' || map[i][j]== 'E'
-				|| map[i][j]== 'S') && player == false)
+			if ((map[i][j] == 'N' || map[i][j] == 'W' || map[i][j] == 'E'
+				|| map[i][j] == 'S') && player == true)
+				return (ft_err(NULL, "multiple player found"),
+					print_err_map(parse->f_map, j, i), 1);
+			if ((map[i][j] == 'N' || map[i][j] == 'W' || map[i][j] == 'E'
+				|| map[i][j] == 'S') && player == false)
 					player = true;
 			j++;
 		}
@@ -101,8 +97,7 @@ int	check_player_nb(char **map, t_parse *parse)
 	return (0);
 }
 
-//--------------------------CHECK_ERRORS.C-----------------------5
-int check_map_format(char **map, t_parse *parse)
+int	check_map_format(char **map, t_parse *parse)
 {
 	int	x;
 	int	y;
@@ -119,11 +114,10 @@ int check_map_format(char **map, t_parse *parse)
 			if (map[y][x] != '1' && map[y][x] != '0' && map[y][x] != '3'
 				&& map[y][x] != 'N' && map[y][x] != 'S' && map[y][x] != 'E'
 					&& map[y][x] != 'W' && !ft_isspace(map[y][x]))
-						return (print_err_map(parse->f_map, x, y), 1);
+				return (print_err_map(parse->f_map, x, y), 1);
 			x++;
 		}
 		y++;
 	}
 	return (check_surrounded(parse));
 }
-

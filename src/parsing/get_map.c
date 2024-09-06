@@ -1,6 +1,5 @@
 #include "../../includes/cub3d.h"
 
-//--------------------------GET_MAP.C-----------------------1
 int	all_map(char *av, t_parse *parse)
 {
 	const int	fd = open(av, O_RDONLY);
@@ -20,7 +19,7 @@ int	all_map(char *av, t_parse *parse)
 	i = 0;
 	parse->f_map[i] = get_next_line(fd);
 	if (!parse->f_map[i])
-			return (close(fd), free_tab(parse->f_map), 1);
+		return (close(fd), free_tab(parse->f_map), 1);
 	while (parse->f_map[i])
 	{
 		if (!parse->f_map[i])
@@ -30,7 +29,6 @@ int	all_map(char *av, t_parse *parse)
 	return (close(fd), 0);
 }
 
-//--------------------------GET_MAP.C-----------------------2
 int	isolate_map(t_parse *parse)
 {
 	int		i;
@@ -59,4 +57,3 @@ int	isolate_map(t_parse *parse)
 	parse->f_map = newmap;
 	return (check_map_format(parse->f_map, parse));
 }
-

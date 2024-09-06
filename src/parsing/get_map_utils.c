@@ -1,6 +1,5 @@
 #include "../../includes/cub3d.h"
 
-//--------------------------GET_MAP_UTILS.C-----------------------1
 int	map_length(t_parse *parse)
 {
 	int		i;
@@ -17,7 +16,6 @@ int	map_length(t_parse *parse)
 	return (longest);
 }
 
-//--------------------------GET_MAP_UTILS.C-----------------------2
 int	map_height(t_parse *parse)
 {
 	int	height;
@@ -28,8 +26,7 @@ int	map_height(t_parse *parse)
 	return (height);
 }
 
-//--------------------------GET_MAP_UTILS.C-----------------------3
-char *cpymap(char *s)
+char	*cpymap(char *s)
 {
 	size_t	i;
 	char	*dst;
@@ -47,7 +44,6 @@ char *cpymap(char *s)
 	return (dst);
 }
 
-//--------------------------GET_MAP_UTILS.C-----------------------4
 char	*cpy_and_fill(char *src, int len)
 {
 	int		i;
@@ -71,13 +67,12 @@ char	*cpy_and_fill(char *src, int len)
 	return (dest);
 }
 
-//--------------------------PARSING_UTILS.C----------------------------1
-int tab_len(char **tab)
+int	tab_len(char **tab)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (tab[i])
-        i++;
-    return (i);
+	i = 0;
+	while (tab[i])
+		i++;
+	return (i);
 }

@@ -1,18 +1,16 @@
 #include "../../includes/cub3d.h"
 
-//--------------------------CHECK_ERRORS_UTILS.C----------------------1
-void    ft_err(char *arg, char *err)
+void	ft_err(char *arg, char *err)
 {
-    ft_putstr_fd("Error: ", 2);
-    ft_putendl_fd(err, 2);
-    if (arg)
+	ft_putstr_fd("Error: ", 2);
+	ft_putendl_fd(err, 2);
+	if (arg)
 	{
-        ft_putstr_fd(arg, 2);
-        ft_putstr_fd("\n", 2);
+		ft_putstr_fd(arg, 2);
+		ft_putstr_fd("\n", 2);
 	}
 }
 
-//--------------------------CHECK_ERRORS_UTILS.C-----------------------1
 bool	only_digit_string(char *s)
 {
 	int	i;
@@ -28,7 +26,6 @@ bool	only_digit_string(char *s)
 	return (false);
 }
 
-//--------------------------CHECK_ERRORS_UTILS.C-----------------------2
 bool	overflow(char *s)
 {
 	int			i;

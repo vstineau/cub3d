@@ -1,28 +1,26 @@
 #include "../../includes/cub3d.h"
 
-//--------------------------CHECK_COLORS.C-----------------------1
-bool     check_format(char **rgb)
+bool	check_format(char **rgb)
 {
-    int i;
+	int	i;
 
-    i = -1;
-    if (tab_len(rgb) != 3)
+	i = -1;
+	if (tab_len(rgb) != 3)
 	{
 		ft_putendl_fd("Error: you need 3 RGB code separated by comma", 2);
-        return (true);
+		return (true);
 	}
-    while (rgb[++i])
-    {
-        if (overflow(rgb[i]))
+	while (rgb[++i])
+	{
+		if (overflow(rgb[i]))
 		{
 			ft_err(rgb[i], "invalid number, the range is between 0 to 255");
-            return (true);
+			return (true);
 		}
-    }
-    return (false);
+	}
+	return (false);
 }
 
-//--------------------------CHECK_COLORS.C-----------------------2
 bool	check_comma(char *line)
 {
 	int	i;
@@ -41,37 +39,35 @@ bool	check_comma(char *line)
 	return (false);
 }
 
-//--------------------------CHECK_COLORS.C-----------------------3
-char    **check_color(char **split, char *ceiling_or_floor)
+char	**check_color(char **split, char *ceiling_or_floor)
 {
-    const char *line = find_in_map((char **)split, ceiling_or_floor);
-    char        **rgb;
-    int         i;
+	const char	*line = find_in_map((char **)split, ceiling_or_floor);
+	char		**rgb;
+	int			i;
 
-    i = 0;
-    if (!line)
+	i = 0;
+	if (!line)
 		return (ft_putendl_fd("No color detected", 2), NULL);
 	if (check_comma((char *)line))
 		return (ft_putendl_fd("bad color format", 2), free((char *)line), NULL);
-    rgb = ft_split(line, ',');
-    free((char *)line);
-    if (!rgb)
-        return (NULL);
-    if (check_format(rgb))
-        return (free_tab((char **)rgb), NULL);
-    return ((char **)rgb);
+	rgb = ft_split(line, ',');
+	free((char *)line);
+	if (!rgb)
+		return (NULL);
+	if (check_format(rgb))
+		return (free_tab((char **)rgb), NULL);
+	return ((char **)rgb);
 }
 
-//--------------------------CHECK_COLORS.C-----------------------4
-unsigned int    get_color(int red, int green, int blue)
+unsigned int	get_color(int red, int green, int blue)
 {
-    unsigned int    color;
+	unsigned int	color;
 
-    color = 0;
+	color = 0;
 	color = (color << 8) | red;
 	color = (color << 8) | green;
 	color = (color << 8) | blue;
-    return (color);
+	return (color);
 }
 
 void	atribute_color(char **c, char **f, t_parse *parse)
@@ -81,4 +77,3 @@ void	atribute_color(char **c, char **f, t_parse *parse)
 	parse->f_color = get_color(ft_atoi(f[0]), ft_atoi(f[1]), ft_atoi(f[2]));
 	free_tab(f);
 }
-

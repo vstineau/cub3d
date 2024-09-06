@@ -1,6 +1,5 @@
 #include "../../includes/cub3d.h"
 
-//--------------------------GET_MAP_INFO.C-----------------------1
 void	player_orientation_x(t_parse *parse, t_vars *v, int i, int j)
 {
 	if (parse->f_map[i][j] == 'E')
@@ -21,7 +20,6 @@ void	player_orientation_x(t_parse *parse, t_vars *v, int i, int j)
 	}
 }
 
-//--------------------------GET_MAP_INFO.C-----------------------2
 void	player_orientation(t_parse *parse, t_vars *v, int i, int j)
 {
 	if (parse->f_map[i][j] == 'N')
@@ -43,7 +41,6 @@ void	player_orientation(t_parse *parse, t_vars *v, int i, int j)
 	player_orientation_x(parse, v, i, j);
 }
 
-//--------------------------GET_MAP_INFO.C-----------------------3
 void	fill_tiles(t_parse *parse, t_vars *v, int i)
 {
 	int	j;
@@ -63,4 +60,3 @@ void	fill_tiles(t_parse *parse, t_vars *v, int i)
 		j++;
 	}
 }
-
