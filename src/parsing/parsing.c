@@ -1,4 +1,5 @@
 #include "../../includes/cub3d.h"
+#include <stdbool.h>
 #include <stdio.h>
 
 void    ft_err(char *arg, char *err)
@@ -488,7 +489,7 @@ void	print_err_map(char **map, int x, int y, t_parse *parse)
 		while(map[i][j])
 		{
 			if(i == y && j == x)
-				printf(B_RED"%c"RESET, map[i][j]);
+				printf(BG_RED"%c"RESET, map[i][j]);
 			else
 				printf(B_GREEN"%c"RESET, map[i][j]);
 			j++;
@@ -524,8 +525,36 @@ int check_surrounded(t_parse *parse)
 			}
 			x++;
 		}
-		// printf("\n");
 		y++;
+	}
+	return (0);
+}
+
+
+int	check_player_nb(char **map, t_parse *parse)
+{
+	int		i;
+	int		j;
+	bool	player;
+
+	player = false;
+	i = 0;
+	j = 0;
+	while(map[i])
+	{
+		j = 0;
+		while(map[i][j])
+		{
+			if((map[i][j]== 'N' || map[i][j]== 'W' || map[i][j]== 'E'
+				|| map[i][j]== 'S') && player == true)
+					return (ft_err(NULL, "multiple player found"),
+						print_err_map(parse->f_map, j, i, parse), 1);
+			if((map[i][j]== 'N' || map[i][j]== 'W' || map[i][j]== 'E'
+				|| map[i][j]== 'S') && player == false)
+					player = true;
+			j++;
+		}
+		i++;
 	}
 	return (0);
 }
@@ -537,6 +566,8 @@ int check_map_format(char **map, t_parse *parse)
 
 	x = 0;
 	y = 0;
+	if(check_player_nb(map, parse))
+		return (1);
 	while(map[y])
 	{
 		x = 0;
@@ -545,7 +576,7 @@ int check_map_format(char **map, t_parse *parse)
 			if(map[y][x] != '1' && map[y][x] != '0' && map[y][x] != '3'
 				&& map[y][x] != 'N' && map[y][x] != 'S' && map[y][x] != 'E'
 					&& map[y][x] != 'W' && !ft_isspace(map[y][x]))
-						return (ft_err(map[y], "Wrong map format"), 1);
+						return (print_err_map(parse->f_map, x, y, parse), 1);
 			x++;
 		}
 		y++;
