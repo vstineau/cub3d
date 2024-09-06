@@ -47,8 +47,7 @@ void	init_raycasting(t_vars *v)
 	v->player.rotspeed = 0.09;
 	v->player.pos.x += 0.5;
 	v->player.pos.y += 0.5;
-	//v->player.plane.x = 0.85;
-	//v->player.plane.y = 0.0;
+	start_image(v);
 }
 
 void	raycasting(t_vars *v)

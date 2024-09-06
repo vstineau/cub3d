@@ -2,12 +2,11 @@
 
 int	main(int argc, char **argv)
 {
-	(void)argc;
-	(void)argv;
 	t_vars	v;
-	t_parse parse;
+	t_parse	parse;
 
-	if(argc != 2 || check_file(argv[1]))
+	(void)argc;
+	if (argc != 2 || check_file(argv[1]))
 		return (1);
 	v = (t_vars){0};
 	v.player = (t_player){0};
@@ -20,7 +19,6 @@ int	main(int argc, char **argv)
 	if (parsing(&parse, &v, argv[1]))
 		return (1);
 	init_raycasting(&v);
-	start_image(&v);
 	mlx_hook(v.win, DestroyNotify, 0, close_windows, &v);
 	mlx_hook(v.win, KeyPress, KeyPressMask, window_action, &v);
 	mlx_loop_hook(v.mlx, cub_loop, &v);
