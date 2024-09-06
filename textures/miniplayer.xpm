@@ -1,0 +1,20 @@
+/* XPM */
+static char *miniplayer[] = {
+/* columns rows colors chars-per-pixel */
+"8 8 6 1 ",
+"  c black",
+". c #663931",
+"X c #DF7126",
+"o c #37946E",
+"O c #D9A066",
+"+ c white",
+/* pixels */
+".OOOOOO.",
+"Oo+OOo+O",
+"O++OO++O",
+"OOO  OOO",
+"OOO  OOO",
+"O+ + + O",
+"O + + +O",
+"XOOOOOOX"
+};

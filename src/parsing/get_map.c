@@ -19,11 +19,11 @@ int	all_map(char *av, t_parse *parse)
 	i = 0;
 	parse->f_map[i] = get_next_line(fd);
 	if (!parse->f_map[i])
-		return (close(fd), free_tab(parse->f_map), 1);
+		return (get_next_line(-42), 1);
 	while (parse->f_map[i])
 	{
 		if (!parse->f_map[i])
-			return (close(fd), 1);
+			return (get_next_line(-42), close(fd), 1);
 		parse->f_map[++i] = get_next_line(fd);
 	}
 	return (close(fd), 0);

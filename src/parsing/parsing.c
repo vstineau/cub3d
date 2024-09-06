@@ -93,6 +93,7 @@ void	destroy_mlx(t_vars *v)
 		mlx_destroy_image(v->mlx, v->text.west);
 	if (v->text.east)
 		mlx_destroy_image(v->mlx, v->text.east);
+	free_minimap(v);
 	mlx_destroy_window(v->mlx, v->win);
 	mlx_destroy_display(v->mlx);
 	free(v->mlx);
@@ -101,12 +102,14 @@ void	destroy_mlx(t_vars *v)
 int	parsing(t_parse *parse, t_vars *v, char *map)
 {
 	read_map(map, parse);
-	if (all_map(map, parse) || find_map_config(parse) || isolate_map(parse))
+	if (all_map(map, parse))
+		return (free_tab(parse->f_map), free(parse->map), destroy_mlx(v), 1);
+	if (find_map_config(parse) || isolate_map(parse))
 		return (destroy_mlx(v), free_parsing(parse), 1);
 	if (load_textures(v, parse))
 		return (destroy_mlx(v), free_parsing(parse), 1);
 	if (fill_struc(parse, v))
-		return (destroy_mlx(v), free_parsing(parse), 1);
+		return (destroy_map(v), destroy_mlx(v), free_parsing(parse), 1);
 	v->color_c = parse->c_color;
 	v->color_f = parse->f_color;
 	free_parsing(parse);

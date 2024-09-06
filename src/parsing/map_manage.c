@@ -9,11 +9,8 @@ void	free_tab(char **tab)
 	{
 		while (tab[i])
 		{
-			if (tab[i])
-			{
-				free(tab[i]);
-				tab[i] = NULL;
-			}
+			free(tab[i]);
+			tab[i] = NULL;
 			i++;
 		}
 		free(tab);
@@ -34,6 +31,18 @@ void	free_parsing(t_parse *parse)
 		free(parse->we);
 	if (parse->map)
 		free(parse->map);
-	if (parse->f_map && *parse->f_map)
+	if (parse->f_map)
 		free_tab(parse->f_map);
+}
+
+void	free_minimap(t_vars *v)
+{
+	if (v->mini.door)
+		mlx_destroy_image(v->mlx, v->mini.door);
+	if (v->mini.floor)
+		mlx_destroy_image(v->mlx, v->mini.floor);
+	if (v->mini.player)
+		mlx_destroy_image(v->mlx, v->mini.player);
+	if (v->mini.wall)
+		mlx_destroy_image(v->mlx, v->mini.wall);
 }

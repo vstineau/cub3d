@@ -1,5 +1,16 @@
 #include "../includes/cub3d.h"
 
+int	init_mlx(t_vars *v)
+{
+	v->mlx = mlx_init();
+	if (!v->mlx)
+		return (1);
+	v->win = mlx_new_window(v->mlx, WIN_WIDTH, WIN_HEIGHT, "CUB3D");
+	if (!v->win)
+		return (mlx_destroy_display(v->mlx), 1);
+	return (0);
+}
+
 int	main(int argc, char **argv)
 {
 	t_vars	v;
@@ -12,10 +23,9 @@ int	main(int argc, char **argv)
 	v.player = (t_player){0};
 	parse = (t_parse){0};
 	v.text = (t_text){0};
-	v.mlx = mlx_init();
-	if (!v.mlx)
+	v.mini = (t_mini){0};
+	if (init_mlx(&v))
 		return (1);
-	v.win = mlx_new_window(v.mlx, WIN_WIDTH, WIN_HEIGHT, "CUB3D");
 	if (parsing(&parse, &v, argv[1]))
 		return (1);
 	init_raycasting(&v);

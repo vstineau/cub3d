@@ -87,6 +87,14 @@ typedef struct s_text
 	t_img		*door_c;
 }				t_text;
 
+typedef struct s_mini
+{
+	t_img	*floor;
+	t_img	*player;
+	t_img	*wall;
+	t_img	*door;
+} 			t_mini;
+
 typedef struct s_player
 {
 	t_vect		pos;
@@ -141,6 +149,7 @@ typedef struct s_vars
 	t_vecti		mouse_pos;
 	t_player	player;
 	t_text		text;
+	t_mini		mini;
 	t_point		**map;
 	t_data		data;
 	t_fn		f[0xFFFF];
@@ -221,5 +230,6 @@ char	*join_free(char *line, char *buffer);
 int		check_char(char c);
 int		tab_len(char **tab);
 bool	overflow(char *s);
+void	free_minimap(t_vars *v);
 
 #endif

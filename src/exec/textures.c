@@ -1,6 +1,27 @@
 #include "../../includes/cub3d.h"
 
-int	animated_door(t_vars *v, t_vecti dim)
+static int	minimap(t_vars *v, t_vecti dim)
+{
+	v->mini.floor = mlx_xpm_file_to_image(v->mlx, \
+		"textures/minidoor.xpm", &dim.y, &dim.x);
+	if (!v->mini.floor)
+		return (1);
+	v->mini.wall = mlx_xpm_file_to_image(v->mlx, \
+		"textures/miniwall.xpm", &dim.y, &dim.x);
+	if (!v->mini.wall)
+		return (1);
+	v->mini.player = mlx_xpm_file_to_image(v->mlx, \
+		"textures/miniplayer.xpm", &dim.y, &dim.x);
+	if (!v->mini.player)
+		return (1);
+	v->mini.door = mlx_xpm_file_to_image(v->mlx, \
+		"textures/minidoor.xpm", &dim.y, &dim.x);
+	if (!v->mini.door)
+		return (1);
+	return (0);
+}
+
+static int	animated_door(t_vars *v, t_vecti dim)
 {
 	v->text.door = mlx_xpm_file_to_image(v->mlx, \
 		"textures/anim.xpm", &dim.y, &dim.x);
@@ -28,7 +49,6 @@ int	load_textures(t_vars *v, t_parse *p)
 
 	dim.x = 10000;
 	dim.y = 10000;
-	printf("%s\n", p->ea);
 	v->text.east = mlx_xpm_file_to_image(v->mlx, p->ea, &dim.y, &dim.x);
 	if (!v->text.east)
 		return (1);
@@ -42,6 +62,8 @@ int	load_textures(t_vars *v, t_parse *p)
 	if (!v->text.north)
 		return (1);
 	if (animated_door(v, dim))
+		return (1);
+	if (minimap(v, dim))
 		return (1);
 	return (0);
 }

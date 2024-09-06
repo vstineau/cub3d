@@ -1,0 +1,16 @@
+/* XPM */
+static char *miniwall[] = {
+/* columns rows colors chars-per-pixel */
+"8 8 2 1 ",
+"  c #9BADB7",
+". c white",
+/* pixels */
+"  ..  ..",
+"  ..  ..",
+"..  ..  ",
+"..  ..  ",
+"  ..  ..",
+"  ..  ..",
+"..  ..  ",
+"..  ..  "
+};
