@@ -22,7 +22,6 @@
 # define WIN_WIDTH 960
 # define WIN_HEIGHT 540
 
-
 //typedef struct	s_img
 //{
 //	XImage			*image;
@@ -55,7 +54,7 @@ typedef enum s_dir
 	EAST,
 	WEST,
 	DOOR
-}    t_dir;
+}	t_dir;
 
 typedef struct s_vecti
 {
@@ -74,9 +73,9 @@ typedef struct s_text
 	int			x;
 	int			y;
 	int			text_door;
-	double	wallx;
-	double	step;
-	double	pos;
+	double		wallx;
+	double		step;
+	double		pos;
 	t_img		*win;
 	t_img		*east;
 	t_img		*west;
@@ -88,7 +87,7 @@ typedef struct s_text
 	t_img		*door_c;
 }				t_text;
 
-typedef struct	s_player
+typedef struct s_player
 {
 	t_vect		pos;
 	t_vect		dir;
@@ -97,17 +96,17 @@ typedef struct	s_player
 	t_vect		side_dist;
 	t_vect		delta_dist;
 	t_vect		step;
-	double			perpwalldist;
-	double			movespeed;
-	double			rotspeed;
-	double			old_dir_x;
-	double			old_plane_x;
-	double			camera_x;
-	int				line_height;
-	int				draw_start;
-	int				draw_end;
-	int				hit;
-	int				side;
+	double		perpwalldist;
+	double		movespeed;
+	double		rotspeed;
+	double		old_dir_x;
+	double		old_plane_x;
+	double		camera_x;
+	int			line_height;
+	int			draw_start;
+	int			draw_end;
+	int			hit;
+	int			side;
 }	t_player;
 
 typedef struct s_point
@@ -134,11 +133,11 @@ typedef void			(*t_fn)(t_vars *vars);
 
 typedef struct s_vars
 {
-	void			*mlx;
-	void			*win;
-	int				mouse_unlock;
-	int				color_f;
-	int				color_c;
+	void		*mlx;
+	void		*win;
+	int			mouse_unlock;
+	int			color_f;
+	int			color_c;
 	t_vecti		mouse_pos;
 	t_player	player;
 	t_text		text;
@@ -150,7 +149,7 @@ typedef struct s_vars
 //struct used for map parsing
 typedef struct s_parse
 {
-	char 				*map;
+	char				*map;
 	char				**f_map;
 	char				*no;
 	char				*so;
@@ -194,16 +193,13 @@ void	raycast_one(t_vars *v, t_vecti map, t_dir *d);
 
 /*----------------TEXTURES-----------------------------------*/
 
-int	load_textures(t_vars *v, t_parse *p);
+int		load_textures(t_vars *v, t_parse *p);
 
 /*----------------PARSING-------------------------------------*/
-int parsing(t_parse *parse, t_vars *v, char *map);
-int	read_map(char *argv, t_parse *parse);
-int    check_file(char *argv);
+int		parsing(t_parse *parse, t_vars *v, char *map);
+int		read_map(char *argv, t_parse *parse);
+int		check_file(char *argv);
 void	destroy_mlx(t_vars *v);
 void	destroy_map(t_vars *v);
-
-/*----------------TEMPORAIRE____________________________________*/
-void	parsing_liddle(char *argv, t_vars *v);
 
 #endif

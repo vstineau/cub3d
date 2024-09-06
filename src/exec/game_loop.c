@@ -1,14 +1,14 @@
 #include "../../includes/cub3d.h"
 
-int cub_loop(t_vars *v)
+int	cub_loop(t_vars *v)
 {
-	static int i;
+	static int	i;
 
 	clear_image(v, 0);
 	color_ceiling(v, v->color_f);
 	color_floor(v, v->color_c);
 	mlx_mouse_get_pos(v->mlx, v->win, &v->mouse_pos.x, &v->mouse_pos.y);
-	 if (!v->mouse_unlock)
+	if (!v->mouse_unlock)
 		mouse_in_the_midle(v);
 	raycasting(v);
 	i++;
