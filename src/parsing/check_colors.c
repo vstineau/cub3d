@@ -43,9 +43,7 @@ char	**check_color(char **split, char *ceiling_or_floor)
 {
 	const char	*line = find_in_map((char **)split, ceiling_or_floor);
 	char		**rgb;
-	int			i;
 
-	i = 0;
 	if (!line)
 		return (ft_putendl_fd("No color detected", 2), NULL);
 	if (check_comma((char *)line))

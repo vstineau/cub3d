@@ -6,9 +6,7 @@ int	find_map_config(t_parse *p)
 	const char	**split = (const char **)ft_split(p->map, '\n');
 	char		**f_color;
 	char		**c_color;
-	int			i;
 
-	i = 0;
 	if (!split)
 		return (1);
 	if (check_config_error((char **)split))
