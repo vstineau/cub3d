@@ -1,83 +1,68 @@
 #include "../../includes/cub3d.h"
-#include <math.h>
-
 
 void	ft_draw_sprite(t_vars *v, t_img *img, int x, int y)
 {
 	int				i;
 	int				j;
+	int				x2;
 	unsigned int	color;
 
 	if (!img)
 		return ;
 	i = 0;
-	while (i < img->width)
+	while (i < img->height)
 	{
 		j = -1;
-		while (++j < img->height)
+		x2 = x;
+		while (++j < img->width)
 		{
-			if (j + y < 0 || j + y >= v->map[0]->map_height * 9
-				|| i + x < 0 || i + x >= v->map[0]->map_length * 9)
-				continue ;
-			color = ((int *)img->data)[j * img->width + i];
-			my_mlx_pixel_put(&v->data, x, y, color);
-			x++;
+			color = ((int *)img->data)[i * img->width + j];
+			my_mlx_pixel_put(&v->data, x2, y, color);
+			x2++;
 		}
 		y++;
 		i++;
 	}
-
 }
 
 void	draw_sprite(t_vars *v, int x, int y)
 {
-	// double	i;
-	// double	j;
-
-	// while(i < y)
-	// 	i++;
-	// while(j < x)
-	// 	j++;
-
-	if(v->map[y][x].tile == VOID)
-		mlx_put_image_to_window(v->mlx, v->win, v->mini.floor, x * 8, y * 8);
-	else if(v->map[y][x].tile == FLOOR || v->map[y][x].tile == DOOR_O)
-		mlx_put_image_to_window(v->mlx, v->win, v->mini.nothing, x * 8, y * 8);
-	else if(v->map[y][x].tile == WALL)
-		mlx_put_image_to_window(v->mlx, v->win, v->mini.floor, x * 8, y * 8);
-	else if(v->map[y][x].tile == DOOR_C)
-		mlx_put_image_to_window(v->mlx, v->win, v->mini.door, x * 8, y * 8);
-	// else
-	// 	mlx_put_image_to_window(v->mlx, v->win, v->win, v->mini.nothing, x, y);
-	mlx_put_image_to_window(v->mlx, v->win, v->mini.player, v->player.pos.y, v->player.pos.x);
-}
-
-void	skip_and_draw(t_vars *v)
-{
-	double	y;
-	double	x;
-
-	x = 0;
-	y = 0;
-	while(y < v->map[0]->map_height)
-	{
-		x = 0;
-		while(x < v->map[0]->map_length)
-		{
-			draw_sprite(v, x, y);
-			x++;
-		}
-		y++;
-	}
+	if ((int)v->mini.y == (int)v->player.pos.x
+		&& (int)v->mini.x == (int)v->player.pos.y)
+		ft_draw_sprite(v, v->mini.player, x, y);
+	else if (v->mini.y < 0 || v->mini.x < 0
+		|| v->mini.y >= v->map[0]->map_height
+		|| v->mini.x >= v->map[0]->map_length
+		|| v->map[(int)v->mini.y][(int)v->mini.x].tile == VOID)
+		ft_draw_sprite(v, v->mini.floor, x, y);
+	else if (v->map[(int)v->mini.y][(int)v->mini.x].tile == FLOOR
+			|| v->map[(int)v->mini.y][(int)v->mini.x].tile == DOOR_O)
+		ft_draw_sprite(v, v->mini.nothing, x, y);
+	else if (v->map[(int)v->mini.y][(int)v->mini.x].tile == WALL)
+		ft_draw_sprite(v, v->mini.floor, x, y);
+	else if (v->map[(int)v->mini.y][(int)v->mini.x].tile == DOOR_C)
+		ft_draw_sprite(v, v->mini.door, x, y);
 }
 
 void	draw_minimap(t_vars *v)
 {
-	// double	y;
-	// double	x;
+	int	i;
+	int	j;
 
-	// y = 0;
-	// x = 0;
-	skip_and_draw(v);
-	//v->player.pos.y
+	i = 0;
+	v->mini.y = v->player.pos.x - 14;
+	while (i < WIN_HEIGHT / 3)
+	{
+		j = 0;
+		v->mini.x = v->player.pos.y - 14;
+		while (j < WIN_WIDTH / 4)
+		{
+			draw_sprite(v, j, i);
+			v->mini.x++;
+			j += 8;
+		}
+		v->mini.y++;
+		i += 8;
+	}
 }
+

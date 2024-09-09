@@ -51,7 +51,7 @@ void	color_ceiling(t_vars *v, int color)
 	y = 0;
 	while (y < WIN_HEIGHT / 2)
 	{
-		x = 0;
+		x = 0 ;
 		while (x < WIN_WIDTH)
 		{
 			pixel = v->data.addr + (y * v->data.line_length

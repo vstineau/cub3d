@@ -1,5 +1,5 @@
 NAME 			= cub3d
-CC 				= cc #clang
+CC 				= clang
 CFLAGS 		= -Wall -Wextra -Werror -MMD -g3 -O2 -fno-builtin
 SRC_PATH 	= src/
 OBJ_PATH 	= .obj/

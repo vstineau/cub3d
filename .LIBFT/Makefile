@@ -6,12 +6,12 @@
 #    By: wnocchi <wnocchi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/01 14:25:51 by vstineau          #+#    #+#              #
-#    Updated: 2024/08/20 14:57:46 by wnocchi          ###   ########.fr        #
+#    Updated: 2024/09/09 12:00:57 by vstineau         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
-CC = cc
+CC = clang
 CFLAGS = -Wall -Wextra -Werror -MMD -g -O2 -fno-builtin
 SRCS = ft_isalpha.c \
 			 ft_isdigit.c \
