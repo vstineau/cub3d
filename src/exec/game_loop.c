@@ -19,5 +19,6 @@ int	cub_loop(t_vars *v)
 	}
 	i %= 35;
 	mlx_put_image_to_window(v->mlx, v->win, v->data.img, 0, 0);
+	draw_minimap(v);
 	return (0);
 }

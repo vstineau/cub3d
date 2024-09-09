@@ -45,4 +45,6 @@ void	free_minimap(t_vars *v)
 		mlx_destroy_image(v->mlx, v->mini.player);
 	if (v->mini.wall)
 		mlx_destroy_image(v->mlx, v->mini.wall);
+	if (v->mini.nothing)
+		mlx_destroy_image(v->mlx, v->mini.nothing);
 }

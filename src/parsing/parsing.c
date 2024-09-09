@@ -46,6 +46,7 @@ int	fill_struc(t_parse *parse, t_vars *vars)
 		if (!vars->map[i])
 			return (1);
 		vars->map[i]->map_height = height;
+		vars->map[i]->map_length = length;
 		fill_tiles(parse, vars, i);
 		i++;
 	}

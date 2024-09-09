@@ -89,10 +89,13 @@ typedef struct s_text
 
 typedef struct s_mini
 {
+	double	x;
+	double	y;
 	t_img	*floor;
 	t_img	*player;
 	t_img	*wall;
 	t_img	*door;
+	t_img	*nothing;
 } 			t_mini;
 
 typedef struct s_player
@@ -122,6 +125,7 @@ typedef struct s_point
 	t_tile			tile;
 	t_dir			di;
 	int				map_height;
+	int				map_length;
 }					t_point;
 
 typedef struct s_data
@@ -231,5 +235,8 @@ int		check_char(char c);
 int		tab_len(char **tab);
 bool	overflow(char *s);
 void	free_minimap(t_vars *v);
+
+/*----------------MINIMAP-------------------------------------*/
+void	draw_minimap(t_vars *v);
 
 #endif

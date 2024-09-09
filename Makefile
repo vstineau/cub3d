@@ -13,6 +13,7 @@ SRC_NAME 	=	main.c \
 				exec/raycasting_utils.c \
 				exec/textures.c \
 				exec/window_action.c \
+				exec/minimap.c \
 				parsing/check_colors.c \
 				parsing/check_errors_utils.c \
 				parsing/check_errors.c \

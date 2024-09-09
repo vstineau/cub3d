@@ -3,7 +3,7 @@
 static int	minimap(t_vars *v, t_vecti dim)
 {
 	v->mini.floor = mlx_xpm_file_to_image(v->mlx, \
-		"textures/minidoor.xpm", &dim.y, &dim.x);
+		"textures/minifloor.xpm", &dim.y, &dim.x);
 	if (!v->mini.floor)
 		return (1);
 	v->mini.wall = mlx_xpm_file_to_image(v->mlx, \
@@ -17,6 +17,10 @@ static int	minimap(t_vars *v, t_vecti dim)
 	v->mini.door = mlx_xpm_file_to_image(v->mlx, \
 		"textures/minidoor.xpm", &dim.y, &dim.x);
 	if (!v->mini.door)
+		return (1);
+	v->mini.nothing = mlx_xpm_file_to_image(v->mlx, \
+		"textures/minivoid.xpm", &dim.y, &dim.x);
+	if (!v->mini.nothing)
 		return (1);
 	return (0);
 }
