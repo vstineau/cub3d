@@ -65,4 +65,3 @@ void	draw_minimap(t_vars *v)
 		i += 8;
 	}
 }
-
