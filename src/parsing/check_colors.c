@@ -45,7 +45,7 @@ char	**check_color(char **split, char *ceiling_or_floor)
 	char		**rgb;
 
 	if (!line)
-		return (ft_putendl_fd("No color detected", 2), NULL);
+		return (ft_putendl_fd("Missing color", 2), NULL);
 	if (check_comma((char *)line))
 		return (ft_putendl_fd("bad color format", 2), free((char *)line), NULL);
 	rgb = ft_split(line, ',');
