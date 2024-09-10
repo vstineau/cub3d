@@ -52,7 +52,7 @@ int	isolate_map(t_parse *parse)
 	j = i - j;
 	i = 0;
 	while (parse->f_map[j])
-		newmap[i++] = cpy_and_fill(parse->f_map[j++], map_length(parse));
+		newmap[i++] = cpy_and_fill(parse->f_map[j++], parse->map_length);
 	free_tab(parse->f_map);
 	parse->f_map = newmap;
 	return (check_map_format(parse->f_map, parse));

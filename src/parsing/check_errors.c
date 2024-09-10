@@ -4,7 +4,7 @@ int	check_pos(char **map, int x, int y, t_parse *parse)
 {
 	if (y - 1 < 0 || x - 1 < 0)
 		return (1);
-	if (x + 1 >= map_length(parse) || y + 1 >= map_height(parse))
+	if (x + 1 >= parse->map_length || y + 1 >= parse->map_height)
 		return (1);
 	if (check_char(map[y - 1][x]))
 		return (1);

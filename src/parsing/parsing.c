@@ -103,6 +103,8 @@ int	parsing(t_parse *parse, t_vars *v, char *map)
 	read_map(map, parse);
 	if (all_map(map, parse))
 		return (free_tab(parse->f_map), free(parse->map), destroy_mlx(v), 1);
+	parse->map_length = map_length(parse);
+	parse->map_height = map_height(parse);
 	if (find_map_config(parse) || isolate_map(parse))
 		return (destroy_mlx(v), free_parsing(parse), 1);
 	if (load_textures(v, parse))

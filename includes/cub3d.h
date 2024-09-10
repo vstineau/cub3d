@@ -168,6 +168,8 @@ typedef struct s_parse
 	char				*so;
 	char				*we;
 	char				*ea;
+	int					map_length;
+	int					map_height;
 	unsigned int		f_color;
 	unsigned int		c_color;
 }						t_parse;
