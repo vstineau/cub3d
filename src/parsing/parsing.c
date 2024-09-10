@@ -100,7 +100,8 @@ void	destroy_mlx(t_vars *v)
 
 int	parsing(t_parse *parse, t_vars *v, char *map)
 {
-	read_map(map, parse);
+	if (read_map(map, parse))
+		return (destroy_mlx(v), ft_err(NULL, "open map failed"), 1);
 	if (all_map(map, parse))
 		return (free_tab(parse->f_map), free(parse->map), destroy_mlx(v), 1);
 	parse->map_length = map_length(parse);

@@ -1,5 +1,17 @@
 #include "../../includes/cub3d.h"
 
+int	is_it_dir(char *argv)
+{
+	int	fd;
+
+	fd = open(argv, O_RDONLY | O_DIRECTORY);
+	if (fd == -1)
+		return (0);
+	if (fd != -1)
+		return (close(fd), 1);
+	return (close(fd), 0);
+}
+
 //read the map and store it in a char*
 int	read_map(char *argv, t_parse *parse)
 {
@@ -8,7 +20,9 @@ int	read_map(char *argv, t_parse *parse)
 	char			buffer[4097];
 
 	rd = 4096;
-	if (fd == -1)
+	if (is_it_dir(argv))
+		return (close(fd), 1);
+	if (fd < 0)
 		return (1);
 	parse->map = ft_calloc(1, 1);
 	if (!parse->map)
@@ -17,12 +31,11 @@ int	read_map(char *argv, t_parse *parse)
 	{
 		rd = read(fd, buffer, 4096);
 		if (rd == -1)
-		{
-			free(parse->map);
-			return (close(fd), 1);
-		}
+			return (free(parse->map), close(fd), 1);
 		buffer[rd] = '\0';
 		parse->map = join_free(parse->map, buffer);
+		if (!parse->map)
+			return (close(fd), 1);
 	}
 	return (close(fd), 0);
 }

@@ -2,13 +2,14 @@
 
 void	ft_err(char *arg, char *err)
 {
-	ft_putstr_fd("Error: ", 2);
+	ft_putstr_fd(B_RED"Error: ", 2);
 	ft_putendl_fd(err, 2);
 	if (arg)
 	{
 		ft_putstr_fd(arg, 2);
 		ft_putstr_fd("\n", 2);
 	}
+	ft_putstr_fd(RESET, 2);
 }
 
 bool	only_digit_string(char *s)

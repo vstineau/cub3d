@@ -17,7 +17,9 @@ int	main(int argc, char **argv)
 	t_parse	parse;
 
 	(void)argc;
-	if (argc != 2 || check_file(argv[1]))
+	if (argc != 2)
+		return (ft_err(NULL, "invalid arguments number"), 1);
+	if (check_file(argv[1]))
 		return (1);
 	v = (t_vars){0};
 	v.player = (t_player){0};
@@ -25,7 +27,7 @@ int	main(int argc, char **argv)
 	v.text = (t_text){0};
 	v.mini = (t_mini){0};
 	if (init_mlx(&v))
-		return (1);
+		return (ft_err(NULL, "mlx loading failed"), 1);
 	if (parsing(&parse, &v, argv[1]))
 		return (1);
 	init_raycasting(&v);
@@ -35,5 +37,5 @@ int	main(int argc, char **argv)
 	mlx_loop(v.mlx);
 	mlx_destroy_image(v.mlx, v.data.img);
 	destroy_mlx(&v);
-	destroy_map(&v);
+	return (destroy_map(&v), 0);
 }

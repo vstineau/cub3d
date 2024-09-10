@@ -55,19 +55,19 @@ int	load_textures(t_vars *v, t_parse *p)
 	dim.y = 10000;
 	v->text.east = mlx_xpm_file_to_image(v->mlx, p->ea, &dim.y, &dim.x);
 	if (!v->text.east)
-		return (1);
+		return (ft_err(NULL, "east texture load failed"), 1);
 	v->text.west = mlx_xpm_file_to_image(v->mlx, p->we, &dim.y, &dim.x);
 	if (!v->text.west)
-		return (1);
+		return (ft_err(NULL, "west texture load failed"), 1);
 	v->text.south = mlx_xpm_file_to_image(v->mlx, p->so, &dim.y, &dim.x);
 	if (!v->text.south)
-		return (1);
+		return (ft_err(NULL, "south texture load failed"), 1);
 	v->text.north = mlx_xpm_file_to_image(v->mlx, p->no, &dim.y, &dim.x);
 	if (!v->text.north)
-		return (1);
+		return (ft_err(NULL, "north texture load failed"), 1);
 	if (animated_door(v, dim))
-		return (1);
+		return (ft_err(NULL, "door textures load failed"), 1);
 	if (minimap(v, dim))
-		return (1);
+		return (ft_err(NULL, "minimap texture load failed"), 1);
 	return (0);
 }

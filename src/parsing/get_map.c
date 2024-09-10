@@ -26,7 +26,7 @@ int	all_map(char *av, t_parse *parse)
 			return (get_next_line(-42), close(fd), 1);
 		parse->f_map[++i] = get_next_line(fd);
 	}
-	return (close(fd), 0);
+	return (get_next_line(-42), close(fd), 0);
 }
 
 int	isolate_map(t_parse *parse)

@@ -7,7 +7,7 @@ bool	check_format(char **rgb)
 	i = -1;
 	if (tab_len(rgb) != 3)
 	{
-		ft_putendl_fd("Error: you need 3 RGB code separated by comma", 2);
+		ft_err(NULL, "you need 3 RGB code separated by comma");
 		return (true);
 	}
 	while (rgb[++i])

@@ -5,10 +5,10 @@ char	*join_free(char *line, char *buffer)
 	char	*temp;
 
 	temp = ft_strjoin(line, buffer);
-	if (!temp)
-		return (NULL);
 	if (line)
 		free(line);
+	if (!temp)
+		return (NULL);
 	return (temp);
 }
 
