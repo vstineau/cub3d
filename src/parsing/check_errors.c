@@ -24,22 +24,20 @@ void	print_err_map(char **map, int x, int y)
 	int	j;
 
 	i = 0;
-	i = 0;
 	while (map[i])
 	{
 		j = 0;
 		while (map[i][j])
 		{
 			if (i == y && j == x)
-				printf(BG_GREEN B_RED"%c"RESET, map[i][j]);
+				print_color_error(BG_GREEN, B_RED, map[i][j]);
 			else
-				printf(BG_GREEN BHI_WHITE"%c"RESET, map[i][j]);
+				print_color_error(BG_GREEN, BHI_WHITE, map[i][j]);
 			j++;
 		}
 		printf("\n");
 		i++;
 	}
-	i = -1;
 }
 
 int	check_surrounded(t_parse *parse)
@@ -114,7 +112,8 @@ int	check_map_format(char **map, t_parse *parse)
 			if (map[y][x] != '1' && map[y][x] != '0' && map[y][x] != '3'
 				&& map[y][x] != 'N' && map[y][x] != 'S' && map[y][x] != 'E'
 					&& map[y][x] != 'W' && !ft_isspace(map[y][x]))
-				return (print_err_map(parse->f_map, x, y), 1);
+				return (ft_err(&map[y][x], "Wrong map input"),
+					print_err_map(parse->f_map, x, y), 1);
 			x++;
 		}
 		y++;

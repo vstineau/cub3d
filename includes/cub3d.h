@@ -234,6 +234,7 @@ char	*join_free(char *line, char *buffer);
 int		check_char(char c);
 int		tab_len(char **tab);
 bool	overflow(char *s);
+void	print_color_error(char *color_one, char *color_two, char c);
 void	free_minimap(t_vars *v);
 
 /*----------------MINIMAP-------------------------------------*/

@@ -47,3 +47,13 @@ bool	overflow(char *s)
 	}
 	return (false);
 }
+
+void	print_color_error(char *color_one, char *color_two, char c)
+{
+	if (color_one)
+		ft_putstr_fd(color_one, 2);
+	if (color_two)
+		ft_putstr_fd(color_two, 2);
+	ft_putchar_fd(c, 2);
+	ft_putstr_fd(RESET, 2);
+}
