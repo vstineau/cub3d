@@ -96,7 +96,7 @@ typedef struct s_mini
 	t_img	*wall;
 	t_img	*door;
 	t_img	*nothing;
-} 			t_mini;
+}			t_mini;
 
 typedef struct s_player
 {
