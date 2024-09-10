@@ -71,9 +71,7 @@ int	check_player_nb(char **map, t_parse *parse)
 {
 	int		i;
 	int		j;
-	bool	player;
 
-	player = false;
 	i = 0;
 	j = 0;
 	while (map[i])
@@ -82,16 +80,18 @@ int	check_player_nb(char **map, t_parse *parse)
 		while (map[i][j])
 		{
 			if ((map[i][j] == 'N' || map[i][j] == 'W' || map[i][j] == 'E'
-				|| map[i][j] == 'S') && player == true)
+				|| map[i][j] == 'S') && parse->player == true)
 				return (ft_err(NULL, "multiple player found"),
 					print_err_map(parse->f_map, j, i), 1);
 			if ((map[i][j] == 'N' || map[i][j] == 'W' || map[i][j] == 'E'
-				|| map[i][j] == 'S') && player == false)
-					player = true;
+				|| map[i][j] == 'S') && parse->player == false)
+					parse->player = true;
 			j++;
 		}
 		i++;
 	}
+	if (parse->player == false)
+		return (ft_putendl_fd("Error: no character detected", 2), 1);
 	return (0);
 }
 
@@ -100,6 +100,7 @@ int	check_map_format(char **map, t_parse *parse)
 	int	x;
 	int	y;
 
+	parse->player = false;
 	if (check_player_nb(map, parse))
 		return (1);
 	x = 0;
