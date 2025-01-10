@@ -37,6 +37,12 @@
 //	XShmSegmentInfo	shm;
 //}	
 
+typedef union u_color
+{
+		unsigned char trgb[3];
+    unsigned int color;
+} u_color;
+
 typedef enum s_tile
 {
 	DOOR_O,
@@ -148,8 +154,8 @@ typedef struct s_vars
 	void		*mlx;
 	void		*win;
 	int			mouse_unlock;
-	int			color_f;
-	int			color_c;
+	u_color			color_f;
+	u_color			color_c;
 	t_vecti		mouse_pos;
 	t_player	player;
 	t_text		text;
@@ -171,8 +177,8 @@ typedef struct s_parse
 	int					map_length;
 	int					map_height;
 	bool				player;
-	unsigned int		f_color;
-	unsigned int		c_color;
+	u_color			f_color;
+	u_color			c_color;
 }						t_parse;
 
 /*---------------PLAYER MOTIONS------------------------------*/

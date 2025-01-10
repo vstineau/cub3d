@@ -57,21 +57,25 @@ char	**check_color(char **split, char *ceiling_or_floor)
 	return ((char **)rgb);
 }
 
-unsigned int	get_color(int red, int green, int blue)
-{
-	unsigned int	color;
-
-	color = 0;
-	color = (color << 8) | red;
-	color = (color << 8) | green;
-	color = (color << 8) | blue;
-	return (color);
-}
+//unsigned int	get_color(int red, int green, int blue)
+//{
+//	unsigned int	color;
+//
+//	color = 0;
+//	color = (color << 8) | red;
+//	color = (color << 8) | green;
+//	color = (color << 8) | blue;
+//	return (color);
+//}
 
 void	atribute_color(char **c, char **f, t_parse *parse)
 {
-	parse->c_color = get_color(ft_atoi(c[0]), ft_atoi(c[1]), ft_atoi(c[2]));
+	parse->c_color.trgb[0] = ft_atoi(c[2]);
+	parse->c_color.trgb[1] = ft_atoi(c[1]);
+	parse->c_color.trgb[2] = ft_atoi(c[0]);
 	free_tab(c);
-	parse->f_color = get_color(ft_atoi(f[0]), ft_atoi(f[1]), ft_atoi(f[2]));
+	parse->f_color.trgb[0] = ft_atoi(f[2]);
+	parse->f_color.trgb[1] = ft_atoi(f[1]);
+	parse->f_color.trgb[2] = ft_atoi(f[0]);
 	free_tab(f);
 }
